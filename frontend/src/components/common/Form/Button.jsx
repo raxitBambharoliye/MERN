@@ -6,14 +6,14 @@ function Button({
     className = '',
     them=true,
     ...props
-}) {
+},ref) {
     if (them) {
         className += ' btn-them';
     }
     return (
       
-    <button type={type} className={`${className}`} {...props}>{children}</button>
+    <button type={type} className={`${className}`} {...props} ref={ref}>{children}</button>
   )
 }
 
-export default Button
+export default React.forwardRef(Button)

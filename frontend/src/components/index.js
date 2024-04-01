@@ -9,7 +9,9 @@ import Interior from './Home/Interior/Interior'
 import InteriorIdea from './Home/InteriorIdea/InteriorIdea'
 import Subscribe from './Home/Subscribe/Subscribe'
 import Login from './Login/Login'
+import Register from './Register/Register'
 export {
+    Register,
     Login,
     Subscribe,
     InteriorIdea,

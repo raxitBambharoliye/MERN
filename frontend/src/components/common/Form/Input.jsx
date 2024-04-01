@@ -1,23 +1,22 @@
-import React from 'react'
+import React, { useId } from 'react'
 
 function Input({
     type = "text",
-    name = "",
-    id = "",
     className = "",
     label,
     labelClass = '',
     ...props
 }, ref) {
+    const id=useId()
     return (
         <div className="mb-3">
             {label && <label htmlFor={id} className={`form-label ${labelClass}`}>{label}</label>}
             <input
                 type={type}
-                className={`form-control ${className} `}
+                className={`form-control  ${className}`}
                 id={id}
-                {...props}
                 ref={ref}
+                {...props}
             />
         </div>
     )
