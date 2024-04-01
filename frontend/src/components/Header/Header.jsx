@@ -1,9 +1,11 @@
 import { Link, NavLink } from 'react-router-dom'
 import '../../assets/css/style.css'
+import Login from '../Login/Login'
 function Header() {
   const Menu = [{ title: "home", path: "/" },{ title: "products", path: "/products" },{ title: "Sale", path: "/sale" },{ title: "About", path: "/about" },{ title: "concat", path: "/contact" },]
     return (
-        <header>
+       <>
+         <header>
         <div className="container">
           <div className="d-flex justify-content-between align-center">
             {/* logo */}
@@ -27,7 +29,7 @@ function Header() {
                 </Link>
               </li>
               <li>
-                <Link to="/">
+                <Link to="/"  data-bs-toggle="modal" data-bs-target="#login">
                     <i className="fa-solid fa-user" />
                 </Link>
               </li>
@@ -41,6 +43,9 @@ function Header() {
           </div>
         </div>
       </header>
+      <Login/>
+       </>
+
     )
 }
 export default Header

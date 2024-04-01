@@ -8,7 +8,9 @@ import Models from './Home/Models/Models'
 import Interior from './Home/Interior/Interior'
 import InteriorIdea from './Home/InteriorIdea/InteriorIdea'
 import Subscribe from './Home/Subscribe/Subscribe'
+import Login from './Login/Login'
 export {
+    Login,
     Subscribe,
     InteriorIdea,
     Interior,
