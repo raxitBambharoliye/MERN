@@ -8,6 +8,7 @@ export const reqLoginValidation = [
     body('password')
         .notEmpty().withMessage("Password is required")
         .isLength({ min: 6 }).withMessage("password must be at least 6 characters"),
+
     (req: any, res: any, next: any) => {
         const error = validationResult(req);
         if (!error.isEmpty()) {

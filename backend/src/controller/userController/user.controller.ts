@@ -12,16 +12,18 @@ const UserRegister =async (req:any,res:any) => {
         console.log('CATCH ERROR : IN : user : register : ', error);
     }
 }
+
 const UserLogin = async (req: any, res: any) => {
     try {
         const { email, password } = req.body;
         const user = await UserModal.findOne({ email: email });
         if (!user) {
-            return res.status(400).json({ error: "Invalid Credentials" });
+            return res.status(400).json({ message:[{path: "root",msg:"Invalid password or email "}] });
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ error: "Invalid Credentials   " });
+            // {type: 'field', msg: 'test is required', path: 'test', location: 'body'}
+            return res.status(400).json({ message:[{path: "root",msg:"Invalid password or email "}] });
         }
         const secret = process.env.JWT_SECRET || "";
         const token = jwt.sign({ _id: user._id, email: user.email },secret, {

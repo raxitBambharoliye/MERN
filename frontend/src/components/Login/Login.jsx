@@ -3,15 +3,35 @@ import { Button, Input } from '../common'
 import Register from '../Register/Register'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import axiosClient from '../../utility/api/axiosClient'
 
 function Login() {
     const inputRef = useRef();
     const id = useId();
-    const { register, formState: { errors, isSubmitting }, handleSubmit } = useForm();
-    const submitHan = (data) => {
-        console.log("submit run ")
-        console.log(data);
+    const { register, formState: { errors, isSubmitting }, handleSubmit,setError } = useForm();
+
+    const submitHan = async (data) => {
+        try {
+            console.log("submit run ")
+            console.log(data);
+            const response = await axiosClient.post('/user/login', data);
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+            if(error && error.response.status==400){
+                error.response.data.message.forEach(element => {
+                    setError(element.path,{
+                        message:element.msg
+                    })
+                });
+            }
+            else{
+                console.log("CATCH ERROR IN : Login : ")
+            }
+        }
     }
+
+
     return (
         <>
             <div
@@ -37,17 +57,22 @@ function Login() {
                                 aria-label="Close"
                             />
                         </div>
+                        {errors.root && <p className="ValidationError text-center mt-2">{errors.root.message}</p>}
                         <div className="modal-body login">
 
                             <Input label="Email : " type="email" className="input" placeholder='Enter your Email Id... ' ref={inputRef}
-                                {...register("email")}
+                                {...register("email", {
+                                    required: "email required"
+                                })}
                             />
+                            {errors.email && (<p className="ValidationError">{errors.email.message}</p>)}
+
                             <Input label="Password : " type="password" className="input" placeholder='Enter your password ... ' ref={inputRef}
                                 {...register("password", {
                                     required: "password is required",
                                     minLength: {
                                         value: 6,
-                                        message:"password must be at least 6 characters"
+                                        message: "password must be at least 6 characters"
                                     }
                                 })}
                             />
