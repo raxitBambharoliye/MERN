@@ -5,7 +5,7 @@
     --gry: rgb(132, 131, 131);
     --d-gry: rgb(78, 78, 78);
     --hover: 0.4s all ease-in-out;
-
+    --poppins: 'poppins'
 }
 
 * {
@@ -27,7 +27,7 @@ body {
     font-family: 'LyonsSerifBlack';
 }
 
-label{
+label {
     font-size: 18px;
 }
 
@@ -37,6 +37,17 @@ label{
     margin: 0 auto;
 }
 
+.input.bd-bark{
+    border-color: #767272 !important;
+    border-radius: 0 !important;
+    color: #6f6f6f !important;
+}
+.input.bd-bark:focus{
+    color: #6f6f6f !important;
+
+    box-shadow: 0 0 0 .25rem rgba(116, 116, 117, 0.374) !important;
+
+}
 /* com class */
 .d-flex {
     display: flex;
@@ -100,41 +111,47 @@ label{
     font-weight: 600;
     padding: 8px 25px;
     border-radius: 5px;
-    background-color: transparent ;
+    background-color: transparent;
     cursor: pointer;
     transition: var(--hover);
     text-transform: uppercase;
     border: 2px solid black;
 }
-.btn-them.light{
+
+.btn-them.light {
     color: #fff !important;
     border-color: #fff;
     background-color: transparent;
 }
-.btn-them.light:hover{
+
+.btn-them.light:hover {
     color: #000 !important;
     border-color: #fff;
     background-color: white;
 }
 
-.btn-them.dark.fill{
-    background-color: black ;
-    color:#fff !important;
+.btn-them.dark.fill {
+    background-color: black;
+    color: #fff !important;
 }
-.btn-them.fill:hover{
-    background-color: transparent ;
-    color: #000 ;
-    border: 2px solid black ;
+
+.btn-them.fill:hover {
+    background-color: transparent;
+    color: #000;
+    border: 2px solid black;
 }
-.btn-them.dark:hover{
+
+.btn-them.dark:hover {
     background-color: transparent !important;
     color: #fffefe !important;
     border: 2px solid rgb(255, 255, 255) !important;
 }
-.btn-them.rounded{
+
+.btn-them.rounded {
     border-radius: 20px !important;
 
 }
+
 .btn-them:hover {
     background-color: black;
     color: var(--white);
@@ -586,29 +603,123 @@ footer .d-flex {
 
 .form h1 {
     font-size: 36px !important;
-    text-align: center  
+    text-align: center
 }
-.input,.input:{
+
+.input,
+.input:focus{
     background-color: transparent !important;
     border: none !important;
     border-bottom: 1px solid #fff !important;
     color: #fff !important;
 }
-.input:focus{
+
+.input:focus {
     box-shadow: 0 0 0 .25rem #ffffff30 !important;
 }
-.input::placeholder{
+
+.input::placeholder {
     color: #767272 !important;
 }
-.ValidationError{
+
+.ValidationError {
     margin-top: 2px;
     color: red;
 }
-.fromLInk{
+
+.fromLInk {
     color: rgb(149, 149, 232);
     text-decoration: underline;
     cursor: pointer;
-}   
-.modal-body.login{
+}
+
+.modal-body.login {
     padding: 16px 24px;
+}
+
+
+
+
+
+/* //////////////////////////////////////////////////////////////////// */
+.contactUs {
+    background-color: #fbfbfb;
+    padding: 30px;
+}
+
+.contactUsTitle h2 {
+    font-size: 40px;
+    font-family: var(--poppins);
+}
+
+.contactUsTitle h4 {
+    font-weight: 500;
+    color: #6f6f6f;
+    text-align: center;
+
+}
+
+.contactUsInner {
+    background-color: var(--color-white);
+    box-shadow: 0 0 60px 30px rgba(0, 0, 0, 0.03);
+    margin: 20px 0 ;
+    border-radius: 12px;
+}
+.contactUsLeft{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 39rem;
+    position: relative;
+    margin: 12px;
+    border-radius: 12px;
+    padding: 40px 30px;
+    background-color: #000;
+    color: white;
+}
+.contactUsLeft h2{
+    font-weight: 600;
+    font-family: var(--poppins);
+}
+.contactUsLeft p{
+    font-family: var(--poppins);
+    font-size: 18px;
+    color:#c9c9c9 ;
+}
+.contactUsItem:not(:first-child){
+    margin: 30px 0 0 0;
+}
+.contactUsItem .icon i{
+    font-size: 28px;
+}
+.contactUsItem .content{
+    padding: 0 20px;
+}
+.contactUsLinks .LinkItem{
+    margin: 0 8px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.395);
+}
+ 
+/* =====================================================  */
+.contactUsRight{
+    padding: 40px 30px;
+}
+
+
+.profileButton{
+    font-family: var(--poppins);
+}
+.headerProfile{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: contain;  
+    display: block;
 }

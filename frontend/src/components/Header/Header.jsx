@@ -1,13 +1,16 @@
 import { Link, NavLink } from 'react-router-dom'
 import '../../assets/css/style.css'
 import Login from '../Login/Login'
+import { useSelector } from 'react-redux'
 function Header() {
-  const Menu = [{ title: "home", path: "/" },{ title: "products", path: "/products" },{ title: "Sale", path: "/sale" },{ title: "About", path: "/about" },{ title: "concat", path: "/contact" },]
-    return (
-       <>
-         <header>
+  const auth = useSelector((state) => state);
+  console.log('auth', auth)
+  const Menu = [{ title: "home", path: "/" }, { title: "products", path: "/products" }, { title: "Sale", path: "/sale" }, { title: "About", path: "/about" }, { title: "concat", path: "/contact" },]
+  return (
+    <>
+      <header>
         <div className="container">
-          <div className="d-flex justify-content-between align-center">
+          <div className="d-flex justify-content-between align-items-center">
             {/* logo */}
             <Link to="/" className="logo">
               light store
@@ -15,23 +18,43 @@ function Header() {
             {/* menu */}
             <nav>
               <ul className="d-flex align-center m-0 ">
-                { Menu.map((element,index) => (
-                <li key={index}>
-                <NavLink to={element.path}>{element.title}</NavLink>
-              </li>
-              ))}
+                {Menu.map((element, index) => (
+                  <li key={index}>
+                    <NavLink to={element.path}>{element.title}</NavLink>
+                  </li>
+                ))}
               </ul>
             </nav>
-            <ul className="d-flex header-icon">
+            <ul className="d-flex header-icon m-0">
               <li>
                 <Link to="/">
                   <i className="fa-solid fa-magnifying-glass" />
                 </Link>
               </li>
               <li>
-                <Link to="/"  data-bs-toggle="modal" data-bs-target="#login">
+                {auth.isAuth ? (
+                  <div className="dropdown">
+                    <div className="profileButton btn-secondary dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img src="./image/profile.jpg" className='headerProfile me-2' alt="userProfile" />
+                      <p className='m-0'>{auth.userData.userName}</p>
+                    </div>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <Link className="dropdown-item" to="/logOut">
+                          < i className="fa-solid fa-right-from-bracket m-0 me-2" /> Logo Out
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="#">
+                        <i className="fa-solid fa-user-pen m-0 me-2"/>
+                          Edit Profile
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>) : (<Link to="/" data-bs-toggle="modal" data-bs-target="#login">
                     <i className="fa-solid fa-user" />
-                </Link>
+                  </Link>)}
+
               </li>
               <li>
                 <Link to="/">
@@ -43,9 +66,9 @@ function Header() {
           </div>
         </div>
       </header>
-      <Login/>
-       </>
+      <Login />
+    </>
 
-    )
+  )
 }
 export default Header

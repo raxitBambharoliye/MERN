@@ -1,17 +1,26 @@
 import React, { useId, useRef } from 'react';
 import { Button, Input } from '../common';
 import { useForm } from 'react-hook-form';
+import axiosClient from '../../utility/api/axiosClient';
 
 function Register() {
     const inputRef = useRef();
-    const {register,handleSubmit, formState:{errors} } = useForm();
+    const { register, handleSubmit, formState: { errors }, getValues,setError } = useForm();
 
 
-    const registerSubmit= async (data)=>{
+    const registerSubmit = async (data) => {
         try {
-            console.log(data)
+            const response = await axiosClient.post('/user/register',data)
+            console.log(response.data)
         } catch (error) {
-            
+            console.log('error', error)
+            if (error && error.response.status == 400) {
+                error.response.data.error.forEach(element => {
+                    setError(element.path, {
+                        message: element.msg
+                    })
+                });
+            }
         }
     }
 
@@ -39,34 +48,39 @@ function Register() {
                         />
                     </div>
                     <div className="modal-body login">
-                        <Input label="Email : " type="email" className="input" placeholder='Enter your Email Id... ' ref={inputRef} 
-                        {...register("email",{
-                            required : "email required",
-                        })}
+                        <Input label="Email : " type="email" className="input" placeholder='Enter your Email Id... ' ref={inputRef}
+                            {...register("email", {
+                                required: "email required",
+                            })}
                         />
-                        {errors.email && <p className="ValidationError text-center mt-2">{errors.email.message}</p>}
+                        {errors.email && <p className="ValidationError">{errors.email.message}</p>}
 
-                        <Input label="User Name : " type="text" className="input" placeholder='Enter your user name... ' ref={inputRef} 
-                        {...register("userName",{
-                            required:"user name required"
-                        })}
+                        <Input label="User Name : " type="text" className="input" placeholder='Enter your user name... ' ref={inputRef}
+                            {...register("userName", {
+                                required: "user name required"
+                            })}
                         />
-                        {errors.userName && <p className="ValidationError text-center mt-2">{errors.userName.message}</p>}
+                        {errors.userName && <p className="ValidationError">{errors.userName.message}</p>}
 
                         <Input label="Password : " type="password" className="input" placeholder='Enter your password ... ' ref={inputRef}
-                        {...register("password",{
-                            required:"password required",
-                            minLength: {
-                                value: 6,
-                                message: "Password must be at least 6 characters long"
-                            }
-                        })}
-                         />
-                        {errors.password && <p className="ValidationError text-center mt-2">{errors.password.message}</p>}
-
-                        <Input label="Conform Password : " type="password" className="input" placeholder='Conform your password ... ' ref={inputRef} 
-                        {...register("CPassword")}
+                            {...register("password", {
+                                required: "password required",
+                                minLength: {
+                                    value: 6,
+                                    message: "Password must be at least 6 characters long"
+                                }
+                            })}
                         />
+                        {errors.password && <p className="ValidationError">{errors.password.message}</p>}
+
+                        <Input label="Conform Password : " type="password" className="input" placeholder='Conform your password ... ' ref={inputRef}
+                            {...register("CPassword", {
+                                required: "conform password required ",
+                                validate: value => value == getValues("password") || "password not matching"
+                            })}
+                        />
+                        {errors.CPassword && <p className="ValidationError">{errors.CPassword.message}</p>}
+
                     </div>
                     <div className="modal-footer">
                         <Button className="rounded light" type="submit" children="Sign Up" ref={inputRef} />

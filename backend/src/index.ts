@@ -3,6 +3,7 @@ import router from "./router/index.router";
 import dotenv from "dotenv";
 import { mongoConnection } from "./connection/mongo.conection";
 import cors from 'cors'
+import logger from "./utility/log";
 dotenv.config({ path: "./.env" });
 
 
@@ -19,7 +20,7 @@ app.use(cors())
 
 app.use("/", router);
 app.listen(process.env.PORT, async () => {
-  console.log("Server is running on port ", process.env.PORT);
+  logger.info(`Server is running on port : :  ${process.env.PORT} ❣ ❣ ❣ `);
   await mongoConnection();
 });
 
@@ -33,7 +34,7 @@ function logMid(req: any, res: any, next: any) {
   // Perform any actions before sending the response (optional)
   // ...
 
-  // Call the next middleware or send the response (depending on your flow)
+  // Call the next middleware or send the response (depending on your flow)s
   next(); // Pass control to the next middleware function
 
   // Alternatively, if you want to send the response directly from the middleware:

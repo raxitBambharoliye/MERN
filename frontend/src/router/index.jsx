@@ -1,5 +1,5 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
-import {Root} from "../components/";
+import {Logout, Root} from "../components/";
 import { About, ContactUs, Home, Products, Sale } from "../pages";
 
 
@@ -11,6 +11,7 @@ const router = createBrowserRouter(
             <Route path="contact" element={<ContactUs />}></Route>
             <Route path="products" element={<Products />}></Route>
             <Route path="sale" element={<Sale />}></Route>
+            <Route path="/logOut" element={<Logout />}></Route>
         </Route>
     )
 )

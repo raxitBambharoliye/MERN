@@ -1,37 +1,44 @@
 import React, { useId, useRef } from 'react'
 import { Button, Input } from '../common'
 import Register from '../Register/Register'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axiosClient from '../../utility/api/axiosClient'
+import { getUser, setToken, setUser } from '../../utility/common'
 
 function Login() {
     const inputRef = useRef();
     const id = useId();
-    const { register, formState: { errors, isSubmitting }, handleSubmit,setError } = useForm();
+    const { register, formState: { errors, isSubmitting }, handleSubmit, setError } = useForm({
+        defaultValues: {
+            email: 'a@gmail.com',
+            password: '123456'
+        }
+    });
 
     const submitHan = async (data) => {
         try {
             console.log("submit run ")
             console.log(data);
             const response = await axiosClient.post('/user/login', data);
-            console.log(response.data)
+            console.log(response.data.token)
+            if (response.status == 200 && response.data.token !='' && response.data.user) {
+                setToken(response.data.token);
+                setUser(response.data.user); 
+                Navigate('/')
+            }
         } catch (error) {
             console.log(error)
-            if(error && error.response.status==400){
-                error.response.data.message.forEach(element => {
-                    setError(element.path,{
-                        message:element.msg
+            if (error && error.response.status == 400 && error.response.data.message.length>0) {
+                error.response.data.message.forEach(element => { 
+                    setError(element.path, {
+                        message: element.msg
                     })
                 });
             }
-            else{
-                console.log("CATCH ERROR IN : Login : ")
-            }
+            console.log("CATCH ERROR IN : Login : ")
         }
     }
-
-
     return (
         <>
             <div
@@ -81,8 +88,7 @@ function Login() {
                         <div className="modal-footer">
                             <Link className='fromLInk' data-bs-toggle="modal" data-bs-target="#register" >create new Account</Link>
                             < Button className=' rounded light ' type='submit' children='LogIn' />
-                        </div>
-
+                        </div>              
                     </form>
                 </div>
             </div>
