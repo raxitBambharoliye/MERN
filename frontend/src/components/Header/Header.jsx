@@ -43,7 +43,7 @@ function Header() {
                   <div className="dropdown">
                     <div className="profileButton btn-secondary dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="./image/profile.jpg" className='headerProfile me-2' alt="userProfile" />
-                      <p className='m-0'>{auth.userData.userName}</p>
+                      {/* <p className='m-0'>{auth.userData.userName}</p> */}
                     </div>
                     <ul className="dropdown-menu">
                       <li>
@@ -52,7 +52,7 @@ function Header() {
                         </button>
                       </li>
                       <li>
-                        <Link className="dropdown-item" to="#">
+                        <Link className="dropdown-item" to="/profile">
                         <i className="fa-solid fa-user-pen m-0 me-2"/>
                           Edit Profile
                         </Link>

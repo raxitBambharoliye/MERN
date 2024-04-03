@@ -59,4 +59,9 @@ const UserAddContact = async (req: any, res: any) => {
   }
 };
 
-export { UserRegister, UserLogin, UserAddContact };
+const UploadImage = async (req: any, res: any) => {
+  console.log("test upload image")
+  console.log(req.body);
+}
+
+export { UserRegister, UserLogin, UserAddContact,UploadImage };
