@@ -10,7 +10,6 @@ function Root() {
     const dispatch = useDispatch();
     useEffect(() => { 
         const user = getUser();
-        console.log('user', user)
         const token = getToken();
         if (user && token) {
             dispatch(setLogin(user));

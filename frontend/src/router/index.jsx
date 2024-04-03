@@ -1,5 +1,5 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
-import {Logout, Root} from "../components/";
+import {Logout, Private, Root} from "../components/";
 import { About, ContactUs, Home, Products, Sale } from "../pages";
 
 
@@ -9,9 +9,10 @@ const router = createBrowserRouter(
             <Route path="" element={<Home />}></Route>
             <Route path="about" element={<About />}></Route>
             <Route path="contact" element={<ContactUs />}></Route>
+            <Route path="" element={<Private/>}>
             <Route path="products" element={<Products />}></Route>
+            </Route>
             <Route path="sale" element={<Sale />}></Route>
-            <Route path="/logOut" element={<Logout />}></Route>
         </Route>
     )
 )

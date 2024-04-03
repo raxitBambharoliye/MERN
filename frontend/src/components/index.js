@@ -12,7 +12,9 @@ import Login from './Login/Login'
 import Register from './Register/Register'
 import { Button, Input, TextArea } from './common'
 import Logout from './Logout/Logout'
+import Private from './Private/Private'
 export {
+    Private,
     Logout,
     Button,
     TextArea,

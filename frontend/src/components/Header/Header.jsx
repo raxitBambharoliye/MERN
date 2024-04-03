@@ -2,10 +2,17 @@ import { Link, NavLink } from 'react-router-dom'
 import '../../assets/css/style.css'
 import Login from '../Login/Login'
 import { useSelector } from 'react-redux'
+import { logOut } from '../../store/auth.slice';
+import {useDispatch} from 'react-redux'
 function Header() {
   const auth = useSelector((state) => state);
-  console.log('auth', auth)
   const Menu = [{ title: "home", path: "/" }, { title: "products", path: "/products" }, { title: "Sale", path: "/sale" }, { title: "About", path: "/about" }, { title: "concat", path: "/contact" },]
+  const dispatch= useDispatch();
+  const logOutHandler=()=>{
+    dispatch(logOut());
+
+  }
+
   return (
     <>
       <header>
@@ -40,9 +47,9 @@ function Header() {
                     </div>
                     <ul className="dropdown-menu">
                       <li>
-                        <Link className="dropdown-item" to="/logOut">
+                        <button className="dropdown-item" onClick={logOutHandler} >
                           < i className="fa-solid fa-right-from-bracket m-0 me-2" /> Logo Out
-                        </Link>
+                        </button>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="#">

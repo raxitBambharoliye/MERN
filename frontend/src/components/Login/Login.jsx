@@ -11,7 +11,7 @@ function Login() {
     const id = useId();
     const { register, formState: { errors, isSubmitting }, handleSubmit, setError } = useForm({
         defaultValues: {
-            email: 'a@gmail.com',
+            email: 'r@gmail.com',
             password: '123456'
         }
     });
@@ -25,7 +25,8 @@ function Login() {
             if (response.status == 200 && response.data.token !='' && response.data.user) {
                 setToken(response.data.token);
                 setUser(response.data.user); 
-                Navigate('/')
+                window.location.reload();
+
             }
         } catch (error) {
             console.log(error)

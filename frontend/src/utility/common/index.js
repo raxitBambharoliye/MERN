@@ -7,6 +7,9 @@ const setToken = (token) => {
 }
 const getToken = () => {
     const token = JSON.parse(Cookies.getItem('userToken'));
+    if(!token){
+        return false;
+    }
     const enToken = crypto.AES.decrypt(token, secret).toString(crypto.enc.Utf8);
     return enToken;
 }
