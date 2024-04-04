@@ -61,7 +61,7 @@ const UserAddContact = async (req: any, res: any) => {
 
 const UploadImage = async (req: any, res: any) => {
   console.log("test upload image")
-  console.log(req.body);
+  console.log("req.body",req.body);
 }
 
 export { UserRegister, UserLogin, UserAddContact,UploadImage };

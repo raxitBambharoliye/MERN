@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Input } from '../../components';
 import { Link } from 'react-router-dom';
@@ -9,11 +9,22 @@ function Profile() {
 
     const auth = useSelector((state) => state);
     const time = getTime();
-    const { register, handleSubmit } = useForm();
+    const inputRef=useRef();
+    const { register, handleSubmit,getValues } = useForm();
     const testSubmit = (data) => {
-        console.log(data.test[0])
-        axiosClient.post('/user/uploadImage',data.test[0])
+        let formData= new FormData();
+        formData.append('image',data.image[0]);
+        console.log('formData', formData)
+        axiosClient.post('/user/uploadImage',formData)
     }
+    const openImgInput=()=>{
+        inputRef.current.click;
+    }
+    const onChangeHandler = (event)=>{
+        console.log(event.target.file);
+        // document.getElementById('preImg').innerHTML =`<img src='${ event.target.file[0] }'  alt='pre image '/>` 
+    }
+
     return (
         <>
         <section className='ProfileView'>
@@ -129,7 +140,10 @@ function Profile() {
             </div>
             </section>
             <form action="" onSubmit={handleSubmit(testSubmit)}>
-                <Input type='file' {...register("test")} />
+
+                <input type='file' id="imageId"  hidden onChange={onChangeHandler} ref={inputRef}/>
+                <label htmlFor='imageId' className='imagePrLabel' onClick={openImgInput}  id='preImg' >
+                </label>
                 <Button type='submit'>Upload file </Button>
         </form>
         </>
