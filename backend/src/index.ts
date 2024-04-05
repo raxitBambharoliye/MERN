@@ -3,6 +3,7 @@ import router from "./router/index.router";
 import dotenv from "dotenv";
 import { mongoConnection } from "./connection/mongo.conection";
 import cors from 'cors'
+import path from 'path'
 import logger from "./utility/log";
 dotenv.config({ path: "./.env" });
 
@@ -12,7 +13,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(logMid)
+app.use ('/upload',express.static(path.join(__dirname,'upload')))
+// app.use(logMid)
 app.use(cors())
 
 

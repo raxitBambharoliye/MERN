@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import cookies from 'js-cookies'
+import { Navigate } from "react-router-dom";
 const init = {
     isAuth: false,
     userData: null,
@@ -18,14 +19,16 @@ const AuthSlice = createSlice({
 })
 
 function setLoginFan(state, action) {
+    console.log('action 🙌🤷‍♂️', action)
     state.isAuth = true;
     state.userData = action.payload;
 }
 function logOutFan(state,action) {
     state.isAuth = false;
     state.userData = null;
-    cookies.removeItem('token');
+    cookies.removeItem('userToken');
     cookies.removeItem('user');
+    window.location.reload()
 }
 export const { changeLogin, logOut,setLogin } = AuthSlice.actions;
 export const AuthReducer = AuthSlice.reducer;

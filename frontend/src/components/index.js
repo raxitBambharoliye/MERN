@@ -13,7 +13,9 @@ import Register from './Register/Register'
 import { Button, Input, TextArea } from './common'
 import Logout from './Logout/Logout'
 import Private from './Private/Private'
+import EditProfile from './EditProfile/EditProfile'
 export {
+    EditProfile,
     Private,
     Logout,
     Button,

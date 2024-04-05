@@ -15,9 +15,7 @@ const getToken = () => {
 }
 
 const setUser = (user) => {
-    console.log('user', user)
     const enUser = crypto.AES.encrypt(JSON.stringify(user), secret).toString();
-    console.log('enUser', enUser)
     return Cookies.setItem("user", JSON.stringify(enUser))
 }
 const getUser = () => {

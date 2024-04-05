@@ -1,15 +1,21 @@
 import { UserModal } from "../../model/user.modal";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import ContactModal from "../../model/constact.model";
 import { generateToken } from "../../common/generateToken";
 import logger from "../../utility/log";
+import { MQ } from "../../common";
+import { MODAL } from "../../constant";
+import { UserIn } from "../../interface/User.intereface";
+import fs from "fs";
+import path from "path";
 const UserRegister = async (req: any, res: any) => {
   try {
-
+    if (!req.body.role) {
+      req.body.role = "user";
+    }
     const data = await UserModal.create(req.body);
     let token = await generateToken(data._id, data.email);
-      res.status(200).json({ user: data, token });
+    res.status(200).json({ user: data, token });
   } catch (error) {
     logger.error(`CATCH ERROR : IN : user : register : 🐞🐞🐞 :\n ${error}`);
   }
@@ -18,21 +24,17 @@ const UserRegister = async (req: any, res: any) => {
 const UserLogin = async (req: any, res: any) => {
   try {
     const { email, password } = req.body;
-    const user = await UserModal.findOne({ email: email });
+    const user = await MQ.findOne<UserIn>(MODAL.USER_MODAL, { email: email });
     if (!user) {
-      return res
-        .status(400)
-        .json({
-          message: [{ path: "root", msg: "Invalid password or email " }],
-        });
+      return res.status(400).json({
+        error: [{ path: "root", msg: "Invalid password or email " }],
+      });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({
-          message: [{ path: "root", msg: "Invalid password or email " }],
-        });
+      return res.status(400).json({
+        error: [{ path: "root", msg: "Invalid password or email " }],
+      });
     }
     let token = await generateToken(user._id, user.email);
     res.status(200).json({
@@ -40,7 +42,7 @@ const UserLogin = async (req: any, res: any) => {
       user,
     });
   } catch (error) {
-    logger.error(`CATCH ERROR : IN : user : UserLogin : 🐞🐞🐞 : \n ${error} ` );
+    logger.error(`CATCH ERROR : IN : user : UserLogin : 🐞🐞🐞 : \n ${error} `);
   }
 };
 
@@ -55,13 +57,36 @@ const UserAddContact = async (req: any, res: any) => {
       res.status(500).json({ message: "contact not added" });
     }
   } catch (error) {
-    logger.error(`CATCH ERROR : IN : user : UserAddContact : 🐞🐞🐞 : \n `, error);
+    logger.error(
+      `CATCH ERROR : IN : user : UserAddContact : 🐞🐞🐞 : \n `,
+      error
+    );
   }
 };
 
-const UploadImage = async (req: any, res: any) => {
-  console.log("test upload image")
-  console.log("req.body",req.body);
-}
+const editProfile = async (req: any, res: any) => {
+  try {
+    let userData = await MQ.findById<UserIn>(MODAL.USER_MODAL, req.body.userId);
+    if (!userData) {
+      return res.status(401).json({ message: "user unauthenticated" });
+    }
+    if (req.file) {
+      console.log(req.file);
+      req.body.profile = process.env.PROFILE_PATH + "/" + req.file.filename;
+      if (userData.profile) {
+        fs.unlinkSync(path.join(__dirname, "../..", userData.profile));
+      }
+    } else {
+      req.body.profile = userData.profile;
+    }
+    let updateData = await MQ.findByIdAndUpdate(MODAL.USER_MODAL, userData._id, req.body);
+    console.log('updateData', updateData)
 
-export { UserRegister, UserLogin, UserAddContact,UploadImage };
+
+    res.status(200).json({user:updateData,message:"user updated successfully"})
+  } catch (error) {
+    logger.error(`CATCH ERROR : IN : user : editProfile : 🐞🐞🐞 : \n `, error);
+  }
+};
+
+export { UserRegister, UserLogin, UserAddContact, editProfile };

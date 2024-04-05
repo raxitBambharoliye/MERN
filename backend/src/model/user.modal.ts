@@ -6,6 +6,8 @@ interface User extends Document {
   password: string;
   email: string;
   role: string;
+  phone: string;
+  profile: string;
 }
 
 const userSchema = new Schema<User>(
@@ -24,8 +26,14 @@ const userSchema = new Schema<User>(
     },
     role: {
       type: String,
-      // required: true,
+      required: true,
     },
+    phone: {
+      type: String,
+    },
+    profile: {
+      type:String
+    }
   },
   { timestamps: true }
 );

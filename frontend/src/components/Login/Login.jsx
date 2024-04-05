@@ -8,7 +8,7 @@ import { getUser, setToken, setUser } from '../../utility/common'
 
 function Login() {
     const inputRef = useRef();
-    const id = useId();
+
     const { register, formState: { errors, isSubmitting }, handleSubmit, setError } = useForm({
         defaultValues: {
             email: 'r@gmail.com',
@@ -18,10 +18,8 @@ function Login() {
 
     const submitHan = async (data) => {
         try {
-            console.log("submit run ")
-            console.log(data);
+
             const response = await axiosClient.post('/user/login', data);
-            console.log(response.data.token)
             if (response.status == 200 && response.data.token !='' && response.data.user) {
                 setToken(response.data.token);
                 setUser(response.data.user); 
@@ -29,13 +27,13 @@ function Login() {
             }
         } catch (error) {
             console.log(error)
-            if (error && error.response.status == 400 && error.response.data.message.length>0) {
-                error.response.data.message.forEach(element => { 
-                    setError(element.path, {
-                        message: element.msg
-                    })
-                });
-            }
+            // if (error && error.response.status && error.response.status == 400 && error.response.data.error.length>0) {
+            //     error.response.data.error.forEach(element => { 
+            //         setError(element.path, {
+            //             message: element.msg
+            //         })
+            //     });
+            // }
             console.log("CATCH ERROR IN : Login : ")
         }
     }

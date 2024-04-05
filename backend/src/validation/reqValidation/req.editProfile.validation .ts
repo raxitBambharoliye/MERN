@@ -1,27 +1,24 @@
 import { body, validationResult } from "express-validator";
 import { UserModal } from "../../model/user.modal";
-export const reqRegisterValidation = [
+export const reqEditProfileValidation = [
+    body('userId')
+        .notEmpty().withMessage("user Id not specified"),
     body('userName')
-        .notEmpty().withMessage('userName required')
         .isString().withMessage("invalid user name data type")
-        .custom(async (value) => {
+        .custom(async (value, { req }) => {
             const user = await UserModal.findOne({ userName: value });
-            if (user) {
+            if (user && user.id != req.body.userId ) {
               throw new Error("User name is already taken");
             }
           })
     ,
-    body('password')
-        .notEmpty().withMessage('password required')
-        .isString().withMessage("invalid password data type")
-        .isLength({min:6}).withMessage("password must be at least 6 characters"),
     body('email')
         .notEmpty().withMessage('email required')
         .isString().withMessage("invalid email data type")
         .isEmail().withMessage("invalid email type")
-        .custom(async (value) => {
+        .custom(async (value,{req}) => {
             const user = await UserModal.findOne({ email: value });
-            if (user) {
+            if (user && user.id != req.body.userId ) {
                 throw new Error('Email is already taken');
             }
     }),

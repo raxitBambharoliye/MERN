@@ -10,8 +10,7 @@ function Header() {
   const dispatch= useDispatch();
   const logOutHandler=()=>{
     dispatch(logOut());
-
-  }
+  } 
 
   return (
     <>
@@ -53,7 +52,7 @@ function Header() {
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/profile">
-                        <i className="fa-solid fa-user-pen m-0 me-2"/>
+                          <i className="fa-solid fa-user m-0 me-2" />
                           Edit Profile
                         </Link>
                       </li>
