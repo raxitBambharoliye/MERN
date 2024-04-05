@@ -79,9 +79,9 @@ const editProfile = async (req: any, res: any) => {
     } else {
       req.body.profile = userData.profile;
     }
-    let updateData = await MQ.findByIdAndUpdate(MODAL.USER_MODAL, userData._id, req.body);
+    let updateData = await MQ.findByIdAndUpdate<UserIn>(MODAL.USER_MODAL, userData._id, req.body,true);
     console.log('updateData', updateData)
-
+    
 
     res.status(200).json({user:updateData,message:"user updated successfully"})
   } catch (error) {

@@ -9,8 +9,8 @@ import { setLogin } from '../../store/auth.slice';
 function EditProfile() {
     const auth = useSelector((state) => state);
     const [user, setUserData] = useState(auth.userData);
-    const [image, setImage] = useState(user.profile&&'./image/userPro.png');
-    const dispatch = useDispatch();    
+    const [image, setImage] = useState(user.profile && './image/userPro.png');
+    const dispatch = useDispatch();
     useEffect(() => {
         setUserData(auth.userData);
     }, [auth]);
@@ -19,8 +19,8 @@ function EditProfile() {
     const { register, handleSubmit, formState: { errors }, setError } = useForm({
         defaultValues: {
             userName: user.userName,
-            email:  user.email,
-            phone:  user.phone 
+            email: user.email,
+            phone: user.phone
         }
     });
     const editProfileSubmit = async (data) => {
@@ -33,7 +33,7 @@ function EditProfile() {
             fromData.append("userName", data.userName);
             fromData.append("userId", auth.userData._id);
             if (data.phone) { fromData.append("phone", data.phone); }
-            
+
             let resData = await axiosClient.post('/user/editProfile', fromData)
             console.log('resData.data.user :: RRR ', resData.data.user)
             if (resData.status === 200 && resData.data.user) {
@@ -81,7 +81,12 @@ function EditProfile() {
                         <div className="row">
                             <div className="col-2">
                                 <label className="editProfileImg" htmlFor='proImg'>
-                                    <img src={image} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
+                                    {auth.userData.profile ? (
+                                        <img src={auth.userData.profile} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
+                                    ) : (
+                                        <img src={'./image/userPro.png'} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
+                                    )}
+
                                     <p className='position-absolute top-50 start-50 translate-middle text-white '><i className="fa-solid fa-pen-nib" /></p>
                                 </label>
                                 <Input type='file' id="proImg" className="visually-hidden" {...register("image")} accept='jpg jpeg png' onChange={previewHandle} />

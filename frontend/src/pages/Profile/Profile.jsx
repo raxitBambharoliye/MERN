@@ -1,13 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, EditProfile, Input } from '../../components';
+import { EditProfile } from '../../components';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import axiosClient from '../../utility/api/axiosClient';
 import { logOut } from '../../store/auth.slice';
 
 function Profile() {
-    const [image,setImage] = useState('./image/userPro.png')
+    const [image, setImage] = useState('./image/userPro.png')
     const dispatch = useDispatch();
     const auth = useSelector((state) => state);
 
@@ -25,7 +23,11 @@ function Profile() {
                     <div className="row align-items-center">
                         <div className="col-4">
                             <div className="profileLeft d-flex flex-column align-items-center justify-content-around">
-                                <img src={auth.userData.profile } className='profilePic' alt="" />
+                                {auth.userData.profile ? (
+                                    <img src={auth.userData.profile} className='profilePic' alt="" />
+                                ) : (
+                                    <img src={'./image/userPro.png'} className='profilePic' alt="" />
+                                )}
                                 <h3 className='mt-2'>{auth.userData.userName}</h3>
                                 <ul className='profileDataList w-100'>
                                     <li title={auth.userData.email}><i className="fa-solid fa-envelope" /> {truncateString(auth.userData.email, 28)}</li>
@@ -33,9 +35,9 @@ function Profile() {
                                     <li><i className="fa-solid fa-phone" /> {auth.userData.phone && auth.userData.phone.length > 0 ? auth.userData.phone : "----"}</li>
                                 </ul>
                                 <ul className="profileMenu w-100">
-                                    <li className="profileLinks"><Link className=" d-block  mt-1" data-bs-toggle="modal" data-bs-target="#EditProfile"   ><i className="fa-solid fa-user-pen m-0 me-2"/> Edit Profile</Link></li>
+                                    <li className="profileLinks"><Link className=" d-block  mt-1" data-bs-toggle="modal" data-bs-target="#EditProfile"   ><i className="fa-solid fa-user-pen m-0 me-2" /> Edit Profile</Link></li>
                                     <li className="profileLinks"><Link className=" d-block  mt-1" ><i className="fa-solid fa-truck-fast"></i> Your Order</Link></li>
-                                    <li className="profileLinks"><Link className=" d-block  mt-1" onClick={ logOutHandler } ><i className="fa-solid fa-right-from-bracket"></i> Sign Out </Link></li>
+                                    <li className="profileLinks"><Link className=" d-block  mt-1" onClick={logOutHandler} ><i className="fa-solid fa-right-from-bracket"></i> Sign Out </Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -132,7 +134,7 @@ function Profile() {
                     </div>
                 </div>
             </section>
-            <EditProfile/>
+            <EditProfile />
 
         </>
     )

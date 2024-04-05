@@ -2,6 +2,7 @@ import React, { useId, useRef } from 'react';
 import { Button, Input } from '../common';
 import { useForm } from 'react-hook-form';
 import axiosClient from '../../utility/api/axiosClient';
+import { setToken, setUser } from '../../utility/common';
 
 function Register() {
     const inputRef = useRef();
@@ -10,7 +11,12 @@ function Register() {
 
     const registerSubmit = async (data) => {
         try {
-            const response = await axiosClient.post('/user/register',data)
+            const response = await axiosClient.post('/user/register', data)
+            if (response.status === 200 && response.data.token !='' && response.data.user) { 
+                setToken(response.data.token);
+                setUser(response.data.user); 
+                window.location.reload();
+            }
             console.log(response.data)
         } catch (error) {
             console.log('error', error)

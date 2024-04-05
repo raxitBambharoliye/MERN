@@ -3,14 +3,14 @@ import '../../assets/css/style.css'
 import Login from '../Login/Login'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/auth.slice';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 function Header() {
   const auth = useSelector((state) => state);
   const Menu = [{ title: "home", path: "/" }, { title: "products", path: "/products" }, { title: "Sale", path: "/sale" }, { title: "About", path: "/about" }, { title: "concat", path: "/contact" },]
-  const dispatch= useDispatch();
-  const logOutHandler=()=>{
+  const dispatch = useDispatch();
+  const logOutHandler = () => {
     dispatch(logOut());
-  } 
+  }
 
   return (
     <>
@@ -41,8 +41,11 @@ function Header() {
                 {auth.isAuth ? (
                   <div className="dropdown">
                     <div className="profileButton btn-secondary dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src="./image/profile.jpg" className='headerProfile me-2' alt="userProfile" />
-                      {/* <p className='m-0'>{auth.userData.userName}</p> */}
+                      {auth.userData.profile ? (
+                        <img src={auth.userData.profile} className='headerProfile me-2' alt="userProfile" />
+                      ) : (
+                        <img src={'./image/userPro.png'} className='headerProfile me-2' alt="userProfile" />
+                      )}
                     </div>
                     <ul className="dropdown-menu">
                       <li>

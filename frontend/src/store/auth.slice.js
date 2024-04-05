@@ -19,8 +19,10 @@ const AuthSlice = createSlice({
 })
 
 function setLoginFan(state, action) {
-    console.log('action 🙌🤷‍♂️', action)
     state.isAuth = true;
+    if (action.payload.profile) {
+        action.payload.profile=`${import.meta.env.VITE_BASE_URL}${action.payload.profile}`;
+    }
     state.userData = action.payload;
 }
 function logOutFan(state,action) {

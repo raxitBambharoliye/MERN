@@ -1,6 +1,6 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import { Logout, Private, Root } from "../components/";
-import { About, ContactUs, Home, Products, Profile, Sale } from "../pages";
+import { About, ContactUs, Home, Products, Profile, Sale, SingleProduct } from "../pages";
 
 
 const router = createBrowserRouter(
@@ -13,7 +13,8 @@ const router = createBrowserRouter(
             <Route path="" element={<Private />}>
                 <Route path="profile" element={<Profile />}></Route>
             </Route>
-                <Route path="sale" element={<Sale />}></Route>
+            <Route path="sale" element={<Sale />}></Route>
+            <Route path="singleProduct" element={<SingleProduct />}></Route>
         </Route>
     )
 )

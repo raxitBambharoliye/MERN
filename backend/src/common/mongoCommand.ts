@@ -36,10 +36,10 @@ class MongoQ {
       return null;
     }
   }
-  async findByIdAndUpdate<T>(modal: string, id: any, data: any): Promise<T | null> {
+  async findByIdAndUpdate<T>(modal: string, id: any, data: any,newReturn=false): Promise<T | null> {
     try {
       this.selectModal(modal);
-      let upData: any = await this.collection.findByIdAndUpdate(id, data);
+      let upData: any = await this.collection.findByIdAndUpdate(id, data,{new:newReturn});
       return upData;
     } catch (error) {
       logger.error(`CATCH ERROR IN :: findByIdAndUpdate :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
