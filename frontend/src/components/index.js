@@ -14,7 +14,11 @@ import { Button, Input, TextArea } from './common'
 import Logout from './Logout/Logout'
 import Private from './Private/Private'
 import EditProfile from './EditProfile/EditProfile'
+import Category from './Product/Category'
+import ProductItem from './Product/ProductItem'
 export {
+    ProductItem,
+    Category,
     EditProfile,
     Private,
     Logout,

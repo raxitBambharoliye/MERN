@@ -76,31 +76,31 @@ function SingleProduct() {
               <div className="customerReviewRate">
                 <div className="customerReviewRateItem d-flex  align-items-center">
                   <div className="customerRateProgressBar" >
-                    <div className="ratProgress" style={{width:"90%"}} >5 start</div>
+                    <div className="ratProgress" style={{ width: "90%" }} >5 start</div>
                   </div>
                   <p className='m-0 ms-1'>100%</p>
                 </div>
                 <div className="customerReviewRateItem d-flex  align-items-center">
                   <div className="customerRateProgressBar">
-                    <div className="ratProgress" style={{width:"70%"}}>4 start</div>
+                    <div className="ratProgress" style={{ width: "70%" }}>4 start</div>
                   </div>
                   <p className='m-0 ms-1'>100%</p>
                 </div>
                 <div className="customerReviewRateItem d-flex  align-items-center">
                   <div className="customerRateProgressBar">
-                    <div className="ratProgress" style={{width:"60%"}}>3 start</div>
+                    <div className="ratProgress" style={{ width: "60%" }}>3 start</div>
                   </div>
                   <p className='m-0 ms-1'>100%</p>
                 </div>
                 <div className="customerReviewRateItem d-flex  align-items-center">
                   <div className="customerRateProgressBar">
-                    <div className="ratProgress" style={{width:"40%"}}>2 start</div>
+                    <div className="ratProgress" style={{ width: "40%" }}>2 start</div>
                   </div>
                   <p className='m-0 ms-1'>100%</p>
                 </div>
                 <div className="customerReviewRateItem d-flex  align-items-center">
                   <div className="customerRateProgressBar">
-                    <div className="ratProgress" style={{width:"20%"}}>1 start</div>
+                    <div className="ratProgress" style={{ width: "20%" }}>1 start</div>
                   </div>
                   <p className='m-0 ms-1'>100%</p>
                 </div>
@@ -108,8 +108,26 @@ function SingleProduct() {
               </div>
             </div>
             <div className="col-9">
-        
+              <div className="customerReviewInner ps-4">
+                <div className="customerReviewItem">
+                  <div className="customerReviewProfile">
+                    <div className="customerProfile d-flex align-items-center">
+                      <img src="./image/userPro.png" alt="customer profile" />
+                      <h3 className='m-0'>Raxit Patel</h3>
+                    </div>
+                    <div className="customerRate star">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div className="customerReviewMessage">
+                      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat odio aut assumenda voluptas deserunt ratione alias veniam perspiciatis, ea aliquid.</p>
+                    </div>
+                  </div>
 
+                </div>
+              </div>
             </div>
           </div>
         </div>

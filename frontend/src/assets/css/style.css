@@ -2,7 +2,7 @@
     --black: rgb(0, 0, 0);
     --text-black: rgb(15, 15, 15);
     --white: rgb(255, 255, 255);
-    --gry: rgb(132, 131, 131);
+    --gry: #848383;
     --d-gry: rgb(78, 78, 78);
     --hover: 0.4s all ease-in-out;
     --poppins: 'poppins'
