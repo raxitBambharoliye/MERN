@@ -7,13 +7,9 @@ export default function Root() {
   return (
     <>
 
-      <div className="row px-lg-5 px-2">
-        <div className="aside col-lg-2">
-          <Aside></Aside>
-        </div>
-        <div className="  col-lg-2 ">
-        </div>
-        <div className=" col-lg-9">
+      <div className="d-flex px-lg-5 py-lg-3">
+         <Aside></Aside>
+        <div id='main' className="px-4 main" >
           <Header />
           <main>
           <Outlet></Outlet>

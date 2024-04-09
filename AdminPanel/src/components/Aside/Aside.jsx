@@ -6,7 +6,6 @@ export default function Aside() {
 
     const toggleMenu = () => {
         const aside = document.getElementById("aside");
-        //   console.log('aside', aside)
         aside.classList.toggle('hide');
     }
     useEffect(() => {
@@ -19,36 +18,43 @@ export default function Aside() {
 
     return (
         <>
-            <aside id='aside  '   >
-                <div className="closeIcon iconButton position-absolute top-0 end-0 mt-2" onClick={toggleMenu}>
-                    <i className="fa-solid fa-xmark" />
-                </div>
-                <nav>
-                    <div className='asideLogo text-lg-center d-lg-none  ms-2 ms-lg-0 my-3'>
-                        <Logo />
+            <aside id='aside' >
+                <div className=" aside-inner d-flex flex-column ">
+                    <div className="closeIcon iconButton position-absolute top-0 end-0 mt-2 d-lg-none" onClick={toggleMenu}>
+                        <i className="fa-solid fa-xmark" />
                     </div>
-                    <ul className='sideMenuList p-0 mt-lg-4'>
-                        <li className='sideMenu' >
-                        
-                            <Link>
-                                Admin
-                            </Link>
-                            <ul className='subMenuList '>
-                                <li className='subMenu'>test 1 </li>
-                                <li className='subMenu'>test 2 </li>
-                                <li className='subMenu'>test 3 </li>
-                            </ul>
-                        </li>
-                        <li className='sideMenu'>
-                            test
-                            <ul className='subMenuList '>
-                                <li className='subMenu'>test 1 </li>
-                                <li className='subMenu'>test 2 </li>
-                                <li className='subMenu'>test 3 </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+                    <nav>
+                        <div className='asideLogo text-lg-center d-lg-none  ms-2 ms-lg-0 my-3'>
+                            <Logo />
+                        </div>
+                        <ul className='sideMenuList p-0 mt-lg-4'>
+                            <li className='sideMenu' >
+
+                                <Link to='#'>
+                                    <i class="fa-solid fa-user menuIcon" /> Admin
+                                </Link>
+                                <ul className='subMenuList p-0'>
+                                    <li className='subMenu'><Link to='/addAdminPage'><i class="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>
+                                    <li className='subMenu'><Link><i class="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
+                                </ul>
+                            </li>
+                            <li className='sideMenu' >
+                                <Link>
+                                    Admin
+                                </Link>
+                                <ul className='subMenuList p-0'>
+                                    <li className='subMenu'><Link>test 1</Link> </li>
+                                    <li className='subMenu'><Link>test 2</Link> </li>
+                                    <li className='subMenu'><Link>test 3</Link> </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div className="copyRight">
+                        <p>Copyright © 2024 RADHE </p>
+                    </div>
+                </div>
+
             </aside>
 
         </>

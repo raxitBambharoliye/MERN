@@ -1,5 +1,6 @@
 import { MODAL } from "../constant";
 import { UserIn } from "../interface/User.intereface";
+import AdminModal from "../model/admin.modal";
 import ContactModal from "../model/constact.model";
 import { UserModal } from "../model/user.modal";
 import logger from "../utility/log";
@@ -10,6 +11,9 @@ class MongoQ {
     switch (modal) {
       case MODAL.USER_MODAL:
         this.collection = UserModal;
+        break;
+      case MODAL.ADMIN_MODAL:
+        this.collection = AdminModal;
         break;
       case MODAL.CONTACT_MODAL:
         this.collection = ContactModal;
@@ -43,6 +47,18 @@ class MongoQ {
       return upData;
     } catch (error) {
       logger.error(`CATCH ERROR IN :: findByIdAndUpdate :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
+      return null;
+
+    }
+  }
+  async addData<T>(modal: string,  data: any): Promise<T | null> {
+    try {
+      this.selectModal(modal);
+      let upData: any = await this.collection.create(data);
+ 
+      return upData;
+    } catch (error) {
+      logger.error(`CATCH ERROR IN :: addData :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
       return null;
 
     }

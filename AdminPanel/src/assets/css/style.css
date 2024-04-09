@@ -1,47 +1,122 @@
-:root{
-    --light-gray:#eceaf3;
-    --light-black:#464255;
+:root {
+    --light-gray: #eceaf3;
+    --gray: #7d8182;
+    --light-black: #464255;
     --bg-white: #ffffff;
-    --bg-dul-white:#f3f2f7;
+    --bg-dul-white: #f3f2f7;
+    --black: #0d0d0d;
+    --light-black: #404040;
+    --light-black-tra: #404040ac;
+    --light-blue:#9da1cc;
+    --light-blue-tra:#bcbfe7db;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{
+
+body {
     background-color: var(--bg-dul-white);
+    font-family: "Poppins", sans-serif;
+    font-family: 16px;
 }
-.logo{
+
+.logoCom{
+    font-family: "Lobster", sans-serif;
+}
+
+.logo {
     font-size: 20px;
     font-weight: bold;
 }
-.iconButton{
+
+.validationError{
+    color: #cb2525;
+}
+
+.iconButton {
     margin-right: 1rem;
     width: 2.5rem;
     height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--light-gray);
-    color:var(--light-black) ;
+    background-color: var(--light-blue-tra);
+    color: var(--light-black);
     border-radius: 6px;
 }
-aside{
+
+.aside {
+    width: 25%;
+    position: relative;
+    transition: all .4s linear
+}
+
+aside {
+    background-color: #eceaf3;
+}
+
+aside {
+    padding: 20px;
     transition: all .2s linear;
     position: fixed;
     top: 0;
     left: 0;
     right: 50%;
     z-index: 9999;
-    background-color:var(--bg-white);
+    background-color: var(--bg-white);
     height: 100vh;
 }
-.show{
+
+.show {
     transform: translateX(0);
 }
-.hide{
-    transform: translateX(-100%);
 
+.hide {
+    transform: translateX(-200%);
+}
+/* button class */
+.themButtonFill{
+    background-color: var(--black);
+    color: var(--bg-white);
+    border: 2px solid var(--black);
+    transition: all .2s linear;
+}
+.themButtonFill:hover{
+    border: 2px solid var(--black);
+    background-color: transparent ;
+    color: var(--black) ;
+}
+.themButtonBorder{
+    background-color: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+    transition: all .2s linear;
+}
+.themButtonBorder:hover{
+    border: 2px solid var(--black);
+    background-color: var(--black) ;
+    color: var(--bg-white) ;
+}
+/* input type password eye icon  */
+.PasswordEyeButton {
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    color: var(--gray);
+    transform: translateY(-50%);
+}
+
+input.themInput {
+    color: black !important;
+
+}
+
+input.themInput:focus {
+    box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 25%);
+    border-color: #0d0d0d;
 }
