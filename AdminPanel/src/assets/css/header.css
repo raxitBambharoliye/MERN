@@ -8,3 +8,33 @@ header .profileImage img{
     overflow: hidden;
     margin: 0 auto;
 }   
+.sideMenuList,.subMenuList{
+    list-style: none;
+}
+
+.sideMenu a{
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: var(--light-black);
+    padding: 10px 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: aquamarine;
+}
+.subMenuList{
+    border-radius: 10px;
+}
+.subMenuList {
+    display: none;
+    transform-origin: top center;
+}
+
+@keyframes scaleUp {
+    0%{
+        scale: 0;
+    }
+    100%{
+        scale: 1;
+    }
+}
