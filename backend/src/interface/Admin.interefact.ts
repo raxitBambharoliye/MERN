@@ -6,6 +6,7 @@ export interface AdminIn{
     phone?: string;
     profile?: string;
     _id: string;
+    id: string;
     __v: number;
     createdAt: Date;
     updatedAt: Date;

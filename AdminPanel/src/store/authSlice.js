@@ -9,7 +9,10 @@ const authSlice= createSlice({
     reducers:{
         login(state,action){
             console.log('action', action)
-            state.isAuthenticated=true;
+            state.isAuthenticated = true;
+            if (action.payload.profile) {
+                action.payload.profile = `${import.meta.env.VITE_BASE_URL}${action.payload.profile}`;
+            }
             state.admin= action.payload;
         },
         logOut(state,action){

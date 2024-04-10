@@ -5,6 +5,7 @@ export interface UserIn{
     role?: string;
     phone?: string;
     profile?: string;
+    companyName: string;
     _id: string;
     __v: number;
     createdAt: Date;

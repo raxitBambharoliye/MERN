@@ -3,10 +3,11 @@ import React from 'react'
 function Button({
     type = 'button',
     children = 'click me ',
-    buttonClass=''
+  buttonClass = '',
+    ...props
 },ref) {
   return (
-      <button type={type} className={`btn ${buttonClass}`} ref={ref}>{children}</button>
+      <button type={type} className={`btn ${buttonClass}`} ref={ref} {...props}>{children}</button>
   )
 }
 

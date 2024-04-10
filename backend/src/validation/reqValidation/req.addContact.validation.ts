@@ -13,7 +13,7 @@ export const reqAddContactValidation = [
         if (!error.isEmpty()) {
             return res.status(400).json({
                 success: false,
-                message: error.array()
+                error: error.array()
             });
         }
         next();

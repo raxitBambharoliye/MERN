@@ -5,13 +5,13 @@ import '../../assets/css/header.css'
 import { Link } from 'react-router-dom'
 import $ from 'jquery'
 import { getAdmin, logOutHandler } from '../../common'
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux' 
 export default function Header() {
-  const testAdmin= useSelector((state)=>state.authReducer.admin);
-  console.log('testAdmin', testAdmin)
-  const adminData= getAdmin();
+  const adminData= useSelector((state)=>state.authReducer.admin);
   const [admin, setAdminData]=useState(adminData);
-
+  useEffect(() => {
+    setAdminData(adminData)
+  },[adminData])
 
   const toggleMenu = () => {
     const aside = document.getElementById("aside");
@@ -35,7 +35,7 @@ export default function Header() {
         <div className="userProfile position-relative" id='userProfile'>
           <div className="d-flex align-items-center">
             <div className="profileImage me-3">
-              <img src="./image/userPro.png" alt="" />
+              <img src={admin.profile??'./image/profile.jpg'} alt="" />
             </div>
             <h3 className='username m-0 d-none d-lg-block'>{admin.userName}</h3>
           </div>
@@ -43,7 +43,7 @@ export default function Header() {
           <div className="userProfileDropDown ">
             <ul>
               <li><Link>Setting</Link> </li>
-              <li><Link>Profile</Link> </li>
+              <li><Link to={'/profile'} >Profile</Link> </li>
               <li><Link onClick={logOutHandler} >LogOut</Link> </li>
             </ul>
           </div>

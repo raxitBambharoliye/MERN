@@ -34,7 +34,7 @@ export default function Aside() {
                                 </Link>
                                 <ul className='subMenuList p-0'>
                                     <li className='subMenu'><Link to='/addAdminPage'><i className="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>
-                                    <li className='subMenu'><Link><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
+                                    <li className='subMenu'><Link to={'/viewAdminPage'}><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
                                 </ul>
                             </li>
                             <li className='sideMenu' >

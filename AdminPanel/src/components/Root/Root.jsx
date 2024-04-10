@@ -11,7 +11,7 @@ export default function Root() {
          <Aside></Aside>
         <div id='main' className="px-4 main" >
           <Header />
-          <main>
+          <main className='flex-grow-md-1'>
           <Outlet></Outlet>
           </main>
         </div>

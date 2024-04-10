@@ -22,7 +22,12 @@ body {
     font-family: "Poppins", sans-serif;
     font-family: 16px;
 }
-
+.pageTitle{
+    text-transform: capitalize;
+    margin: 12px 0;
+    margin-left: 12px;
+    color: var(--light-black);
+}
 .logoCom{
     font-family: "Lobster", sans-serif;
 }
@@ -35,7 +40,9 @@ body {
 .validationError{
     color: #cb2525;
 }
-
+#main{
+    flex-grow: 1;
+}
 .iconButton {
     margin-right: 1rem;
     width: 2.5rem;
@@ -77,6 +84,44 @@ aside {
 .hide {
     transform: translateX(-200%);
 }
+/* previewImage */
+.previewImageLabel{
+position: relative;
+overflow: hidden;
+}
+.previewImageLabel i {
+    color: transparent;
+    font-size: 23px;
+    transition: all .2s linear;
+
+}
+.previewImageLabel::before{
+    content: '';
+    width: 100%;
+    height:  100%;
+    position: absolute;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+.previewImageLabel:hover::before{
+    background-color: #11111197;
+}
+.previewImageLabel:hover i{
+    color: var(--bg-white);
+}
+.removeImgBtn{
+    position: absolute;
+    z-index: 999;
+    right:5px;
+    top: 5px  ;
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--bg-white);
+    border: none;
+}
 /* button class */
 .themButtonFill{
     background-color: var(--black);
@@ -112,11 +157,17 @@ aside {
 }
 
 input.themInput {
-    color: black !important;
-
+    color: rgb(40, 39, 39) !important;
+    border: none;
+    background-color: var(--light-gray);
 }
 
 input.themInput:focus {
     box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 25%);
     border-color: #0d0d0d;
+}
+.addDataFrom{
+    background-color: var(--bg-white);
+    padding: 30px ;
+    border-radius: 12px;
 }

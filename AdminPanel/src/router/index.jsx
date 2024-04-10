@@ -4,6 +4,8 @@ import Dashboard from "../pages/DashBoard/Dashboard";
 import AddAdmin from "../pages/Admin/AddAdmin";
 import Login from "../pages/Login/Login";
 import Private from "../components/Private/Private";
+import Profile from "../pages/Profile/Profile";
+import { ViewAdmin } from "../pages";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -13,6 +15,9 @@ const router = createBrowserRouter(
                 <Route path="/" element={<Root />}>
                     <Route path="" element={<Dashboard />} />
                     <Route path="/addAdminPage" element={<AddAdmin />} />
+                    <Route path="/viewAdminPage" element={<ViewAdmin />} />
+                    <Route path="/profile" element={<Profile />} />
+
                 </Route>
             </Route>
         </Route>
