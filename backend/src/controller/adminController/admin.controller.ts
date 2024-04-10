@@ -9,7 +9,7 @@ const AdminLogin =async (req: any, res: any) => {
   try {
     console.log("req", req.body);
     const { email, password } = req.body;
-    const admin =await MQ.findOne<AdminIn>(MODAL.ADMIN_MODAL, { email: email });
+    const admin =await MQ.findOne<AdminIn>(MODAL.ADMIN_MODAL, { email });
     if (!admin) {
       return res.status(400).json({
         error: [{ path: "root", msg: "Invalid password or email " }],

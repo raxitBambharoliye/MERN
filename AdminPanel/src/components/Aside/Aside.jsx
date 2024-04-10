@@ -9,7 +9,6 @@ export default function Aside() {
         aside.classList.toggle('hide');
     }
     useEffect(() => {
-
         $('.sideMenu').on('click', function () {
             $(this).siblings().children('.subMenuList').slideUp();
             $(this).children('.subMenuList').slideToggle();
@@ -31,11 +30,11 @@ export default function Aside() {
                             <li className='sideMenu' >
 
                                 <Link to='#'>
-                                    <i class="fa-solid fa-user menuIcon" /> Admin
+                                    <i className="fa-solid fa-user menuIcon" /> Admin
                                 </Link>
                                 <ul className='subMenuList p-0'>
-                                    <li className='subMenu'><Link to='/addAdminPage'><i class="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>
-                                    <li className='subMenu'><Link><i class="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
+                                    <li className='subMenu'><Link to='/addAdminPage'><i className="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>
+                                    <li className='subMenu'><Link><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
                                 </ul>
                             </li>
                             <li className='sideMenu' >

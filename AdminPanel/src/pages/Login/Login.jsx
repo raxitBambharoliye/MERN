@@ -6,15 +6,34 @@ import Logo from '../../components/Logo/Logo'
 import { Input, PasswordInput } from '../../components/form'
 import { useForm } from 'react-hook-form'
 import axiosClient from '../../utility/axiosClient'
+import { getAdmin, getToken, setAdmin, setToken } from '../../common'
+import { Navigate } from 'react-router-dom'
 export default function Login() {
+
+    const token = getToken();
+    const AdminData = getAdmin();
+    if (token && AdminData) {
+        return <Navigate to='/' />
+    }
+
     const inputRef = useRef();
-    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm({
+        defaultValues: {
+            email: 'r@patel.com',
+            password: "123456"
+        }
+    });
 
     const loginSubmit = async (data) => {
         try {
             const responseData = await axiosClient.post('/login', data);
+            setToken(responseData.data.token);
+            setAdmin(responseData.data.admin);
+            window.location.reload();
+
         } catch (error) {
-                if (error && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {
+            console.log('error', error)
+            if (error && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {
                 error.response.data.error.forEach((element) => {
                     setError(element.path, {
                         message: element.msg

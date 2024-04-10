@@ -20,7 +20,7 @@ function PasswordInput({
             <label htmlFor={Id} className={`form-label ${labelClass}`}>{label}</label>
             <div className="position-relative">
                 <input type={type} className={`form-control  ${inputClass} pe-2`} id={Id} {...pros} ref={ref} />
-                <button className="PasswordEyeButton " onClick={changeInput}>
+                <button type='button' className="PasswordEyeButton " onClick={changeInput}>
                     <i className={icon} />
                 </button>
             </div>
