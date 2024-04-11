@@ -1,5 +1,6 @@
 import axios from "axios";
 import cookies from 'js-cookies'
+import { getToken } from "../common";
 
 
 
@@ -10,9 +11,9 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('userToken')
+        const token = getToken();
         if (token) {
-            config.headers.Authorization = token
+            config.headers["x-auth-token"] = token||'';
         }
         return config;
     }

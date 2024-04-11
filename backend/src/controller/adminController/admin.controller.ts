@@ -47,7 +47,7 @@ const AdminAdd = async (req: any, res: any) => {
 
 const AdminEditProfile = async (req: any, res: any) => {
   try {
-    console.log('req', req.body)
+    
     if (!req.body.adminId) {
       return res.status(400).json({
         error:[{path:'root',msg:"invalid data "}]
@@ -78,5 +78,53 @@ const AdminEditProfile = async (req: any, res: any) => {
     logger.error(`CATCH ERROR : IN : admin : AdminEditProfile : 🐞🐞🐞 : \n ${error}`);
   }
 }
+const AdminAllAdminData= async(rea:any, res:any)=>{
+  try {
+    const adminData= await MQ.find<AdminIn>(MODAL.ADMIN_MODAL,{})
+    if(adminData && adminData.length > 0){
+      res.status(200).json({allAdmin:adminData});
+    }
+  } catch (error) {
+    logger.error(`CATCH ERROR : IN : admin : AdminAllAdminData : 🐞🐞🐞 : \n ${error}`);
+    
+  }
+}
+const AdminDelete=async (req:any,res:any)=>{
+  try {
+    const adminData= await MQ.findById<AdminIn>(MODAL.ADMIN_MODAL,req.params.id);
+    if(!adminData){
+      return res.status(400).json({message:'something was wrong try after some time '})
+    }
+    if(adminData.profile){
+      fs.unlinkSync(path.join(__dirname,'../..',adminData.profile))
+    }
+    await MQ.findByIdAndDelete(MODAL.ADMIN_MODAL,adminData.id);
+    const allAdminData = await MQ.find(MODAL.ADMIN_MODAL,{});
+    if(allAdminData && allAdminData.length > 0){
+      res.status(200).json({allAdmin:allAdminData});
+    }
+  } catch (error) {
+    logger.error(`CATCH ERROR : IN : admin : AdminDelete : 🐞🐞🐞 : \n ${error}`);
+    
+  }
+}
 
-export { AdminLogin, AdminAdd ,AdminEditProfile};
+const AdminActive =async (req:any,res:any, next:any)=>{
+  try {
+    const adminData= await MQ.findById<AdminIn>(MODAL.ADMIN_MODAL,req.params.id);
+    if(!adminData){
+      return res.status(400).json({message:'something was wrong try after some time '})
+    }
+    let active= adminData.isActive? false: true;
+
+     await MQ.findByIdAndUpdate(MODAL.ADMIN_MODAL, adminData.id, {isActive:active});
+     const allAdminData = await MQ.find(MODAL.ADMIN_MODAL,{});
+     if(allAdminData && allAdminData.length > 0){
+       res.status(200).json({allAdmin:allAdminData});
+     }
+  } catch (error) {
+    logger.error(`CATCH ERROR : IN : admin : AdminActive : 🐞🐞🐞 : \n ${error}`);
+    
+  }
+}
+export { AdminLogin, AdminAdd ,AdminEditProfile,AdminAllAdminData,AdminDelete,AdminActive};

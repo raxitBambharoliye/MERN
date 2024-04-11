@@ -45,8 +45,7 @@ export default function Profile() {
             formData.append("adminId", userData._id)
 
             const response = await axiosClient.post('/editAdminProfile', formData);
-            if (response.status == 200) {
-                console.log('response.data.admin', response.data.admin)
+            if (response.status == 200 ) {
                 setAdmin(response.data.admin);
                 setToken(response.data.token);
                 dispatch(login(response.data.admin));
@@ -215,7 +214,7 @@ export default function Profile() {
                                     <ul  >  
                                         <li className='profileDetailItem row'><p className='title col-md-3'>user name : </p><p className='data col-md-9'>{userData.userName}</p></li>
                                         <li className='profileDetailItem row'><p className='title col-md-3'>Company name : </p><p className='data col-md-9'>{userData.companyName}</p></li>
-                                        <li className='profileDetailItem row'><p className='title col-md-3'>Emil : </p><p className='data col-md-9'>{userData.email}</p></li>
+                                        <li className='profileDetailItem row'><p className='title col-md-3'>Email : </p><p className='data col-md-9'>{userData.email}</p></li>
                                         <li className='profileDetailItem row'><p className='title col-md-3'>Phone : </p><p className='data col-md-9'>{userData.phone}</p></li>
                                         <li className='profileDetailItem row'><p className='title col-md-3'>Active : </p><p className='data col-md-9'>{userData.isActive ? "Active" : "deActive"}</p></li>
                                         <li className='profileDetailItem row'><p className='title col-md-3'>Post : </p><p className='data col-md-9'>{userData.role}</p></li>

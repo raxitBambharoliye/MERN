@@ -7,7 +7,7 @@ export default function Root() {
   return (
     <>
 
-      <div className="d-flex px-lg-5 py-lg-3">
+      <div className="d-md-flex px-lg-5 py-lg-3">
          <Aside></Aside>
         <div id='main' className="px-4 main" >
           <Header />
@@ -16,6 +16,7 @@ export default function Root() {
           </main>
         </div>
       </div>
+
 
     </>
   )

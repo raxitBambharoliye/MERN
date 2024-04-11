@@ -12,7 +12,7 @@ export default function AddAdmin() {
     try {
       console.log('data', data)
       const formData = new FormData();
-      if (data.profile) {
+      if (data.profile[0]) {
         formData.append("profile", data.profile[0]);
       }
       formData.append("userName", data.userName);

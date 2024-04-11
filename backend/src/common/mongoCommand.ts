@@ -6,7 +6,7 @@ import { UserModal } from "../model/user.modal";
 import logger from "../utility/log";
 
 class MongoQ {
-  private collection:any;
+  private collection: any;
   selectModal(modal: string) {
     switch (modal) {
       case MODAL.USER_MODAL:
@@ -40,30 +40,63 @@ class MongoQ {
       return null;
     }
   }
-  async findByIdAndUpdate<T>(modal: string, id: any, data: any,newReturn=false): Promise<T | null> {
+  async findByIdAndUpdate<T>(
+    modal: string,
+    id: any,
+    data: any,
+    newReturn = false
+  ): Promise<T | null> {
     try {
       this.selectModal(modal);
-      let upData: any = await this.collection.findByIdAndUpdate(id, data,{new:newReturn});
+      let upData: any = await this.collection.findByIdAndUpdate(id, data, {
+        new: newReturn,
+      });
       return upData;
     } catch (error) {
-      logger.error(`CATCH ERROR IN :: findByIdAndUpdate :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
+      logger.error(
+        `CATCH ERROR IN :: findByIdAndUpdate :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`
+      );
       return null;
-
     }
   }
-  async addData<T>(modal: string,  data: any): Promise<T | null> {
+  async addData<T>(modal: string, data: any): Promise<T | null> {
     try {
       this.selectModal(modal);
       let upData: any = await this.collection.create(data);
- 
+
       return upData;
     } catch (error) {
       logger.error(`CATCH ERROR IN :: addData :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
       return null;
+    }
+  }
+  async find<T>(modal: string, data: any): Promise<[T] | null> {
+    try {
+      this.selectModal(modal);
+      let upData: any = await this.collection.find(data);
 
+      return upData;
+    } catch (error) {
+      logger.error(`CATCH ERROR IN :: find :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
+      return null;
+    }
+  }
+  async findByIdAndDelete<T>(
+    modal: string,
+    id: any,
+  ): Promise<T | null> {
+    try {
+      this.selectModal(modal);
+      let upData: any = await this.collection.findByIdAndDelete(id);
+      return upData;
+    } catch (error) {
+      logger.error(
+        `CATCH ERROR IN :: findByIdAndDelete :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`
+      );
+      return null;
     }
   }
 }
- 
+
 const MQ = new MongoQ();
 export default MQ;

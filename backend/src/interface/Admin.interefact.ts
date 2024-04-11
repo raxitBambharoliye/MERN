@@ -10,4 +10,5 @@ export interface AdminIn{
     __v: number;
     createdAt: Date;
     updatedAt: Date;
+    isActive:boolean;
 }
