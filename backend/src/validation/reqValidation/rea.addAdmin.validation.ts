@@ -32,6 +32,7 @@ const reqAddAdminVAlidation = [
     .withMessage("password must be at least 6 characters"),
   body("companyName").notEmpty().withMessage("company name is required"),
   body("phone").notEmpty().withMessage("phone number is required"),
+  body("editor").notEmpty().withMessage("editor is required"),
   (req: any, res: any, next: any) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {

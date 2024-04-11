@@ -5,7 +5,7 @@ import AddAdmin from "../pages/Admin/AddAdmin";
 import Login from "../pages/Login/Login";
 import Private from "../components/Private/Private";
 import Profile from "../pages/Profile/Profile";
-import { ViewAdmin } from "../pages";
+import { AddCategory, ViewAdmin, ViewCategory } from "../pages";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -17,7 +17,10 @@ const router = createBrowserRouter(
                     <Route path="/addAdminPage" element={<AddAdmin />} />
                     <Route path="/viewAdminPage" element={<ViewAdmin />} />
                     <Route path="/profile" element={<Profile />} />
-
+                    {/* category */}
+                    <Route path="/addCategoryPage" element={<AddCategory />} />
+                    <Route path="/viewCategoryPage" element={<ViewCategory />} />
+                    
                 </Route>
             </Route>
         </Route>

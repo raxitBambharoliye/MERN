@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import $ from 'jquery'
 import Logo from '../Logo/Logo'
 import { Link } from 'react-router-dom';
+import {useSelector} from 'react-redux'
 export default function Aside() {
-
+    const adminData = useSelector((state) => state.authReducer.admin);
     const toggleMenu = () => {
         const aside = document.getElementById("aside");
         aside.classList.toggle('hide');
@@ -33,7 +34,7 @@ export default function Aside() {
                                     <i className="fa-solid fa-user menuIcon" /> Admin
                                 </Link>
                                 <ul className='subMenuList p-0'>
-                                    <li className='subMenu'><Link to='/addAdminPage'><i className="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>
+                                    {adminData.role == 'admin' && <li className='subMenu'><Link to='/addAdminPage'><i className="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>}
                                     <li className='subMenu'><Link to={'/viewAdminPage'}><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
                                 </ul>
                             </li>

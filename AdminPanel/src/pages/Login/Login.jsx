@@ -7,9 +7,11 @@ import { Input, PasswordInput } from '../../components/form'
 import { useForm } from 'react-hook-form'
 import axiosClient from '../../utility/axiosClient'
 import { getAdmin, getToken, setAdmin, setToken } from '../../common'
-import { Navigate } from 'react-router-dom'
-export default function Login() {
+import { Navigate, useNavigate } from 'react-router-dom'
+import {APP_URL} from '../../constant/'
 
+export default function Login() {
+    const navigate=useNavigate()
     const token = getToken();
     const AdminData = getAdmin();
     if (token && AdminData) {
@@ -26,10 +28,10 @@ export default function Login() {
 
     const loginSubmit = async (data) => {
         try {
-            const responseData = await axiosClient.post('/login', data);
+            const responseData = await axiosClient.post(APP_URL.BE_LOGIN_ADMIN, data);
             setToken(responseData.data.token);
             setAdmin(responseData.data.admin);
-            window.location.reload();
+            navigate("/")
 
         } catch (error) {
             console.log('error', error)

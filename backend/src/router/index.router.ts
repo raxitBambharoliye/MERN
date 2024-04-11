@@ -16,8 +16,7 @@ router.post("/login", reqLoginValidation, AdminLogin)
 
 router.post('/addAdmin', authToken,upLoadImage.single("profile"),reqAddAdminVAlidation, AdminAdd)
 router.post('/editAdminProfile',authToken,upLoadImage.single("profile"),reqEditAdminProfileValidation,AdminEditProfile)
-
-router.get('/allAdmin', authToken, AdminAllAdminData);
+router.get('/allAdmin/:page/:limit', authToken, AdminAllAdminData);
 
 
 router.delete('/deleteAdmin/:id',authToken,AdminDelete)

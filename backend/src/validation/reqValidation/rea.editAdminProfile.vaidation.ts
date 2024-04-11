@@ -28,8 +28,6 @@ const reqEditAdminProfileValidation = [
         .notEmpty().withMessage("companyName is required"),
     body("phone")
         .notEmpty().withMessage("phone is required"),
-    body("role")
-        .notEmpty().withMessage("role is required"),
     (req: any, res: any, next: any) => {
         const error = validationResult(req);
         console.log(req.file)

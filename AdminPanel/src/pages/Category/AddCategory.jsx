@@ -4,17 +4,17 @@ import Button from '../../components/Button/Button'
 import { useForm } from 'react-hook-form'
 import PreviewImage from '../../components/PreviewImage/PreviewImage'
 import axiosClient from '../../utility/axiosClient'
-import {useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import {APP_URL} from '../../constant/'
-export default function AddAdmin() {
-  const navigate =useNavigate()
+
+export default function AddCategory() {
 
   const adminData = useSelector((state) => state.authReducer.admin);
   const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
   const inputRef = useRef();
   const addAdminSub = async (data) => {
     try {
+      console.log('data', data)
       const formData = new FormData();
       if (data.profile[0]) {
         formData.append("profile", data.profile[0]);
@@ -26,10 +26,9 @@ export default function AddAdmin() {
       formData.append("role", data.role);
       formData.append("password", data.password);
       formData.append("editor",adminData._id)
-      let response = await axiosClient.post(APP_URL.BE_ADD_ADMIN , formData)
-      if (response.stats === 200) {
-        navigate('/viewAdminPage')
-      }
+      let response = await axiosClient.post('/addAdmin', formData)
+      console.log('response', response.data)
+
     } catch (error) {
       console.log('error', error)
       if (error && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {

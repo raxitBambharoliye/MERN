@@ -81,10 +81,7 @@ class MongoQ {
       return null;
     }
   }
-  async findByIdAndDelete<T>(
-    modal: string,
-    id: any,
-  ): Promise<T | null> {
+  async findByIdAndDelete<T>(modal: string, id: any): Promise<T | null> {
     try {
       this.selectModal(modal);
       let upData: any = await this.collection.findByIdAndDelete(id);
@@ -92,6 +89,25 @@ class MongoQ {
     } catch (error) {
       logger.error(
         `CATCH ERROR IN :: findByIdAndDelete :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`
+      );
+      return null;
+    }
+  }
+  async pagination<T>(
+    modal: any,
+    query: any,
+    option: any
+  ): Promise<[T] | null> {
+    try {
+      this.selectModal(modal);
+      let data: any = await this.collection.find(query)
+        .skip(option?.skip)
+        .limit(option?.limit)
+        .exec();
+      return data;
+    } catch (error) {
+      logger.error(
+        `CATCH ERROR IN :: pagination :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`
       );
       return null;
     }

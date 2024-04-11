@@ -9,6 +9,8 @@ import axiosClient from '../../utility/axiosClient'
 import { setAdmin, setToken } from '../../common'
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/authSlice'
+import {APP_URL} from '../../constant/'
+
 export default function Profile() {
     const admin = useSelector((state) => state.authReducer.admin);
     const [userData, setUserData] = useState(admin);
@@ -41,10 +43,9 @@ export default function Profile() {
             formData.append("email", data.email)
             formData.append("companyName", data.companyName)
             formData.append("phone", data.phone)
-            formData.append("role", data.role)
             formData.append("adminId", userData._id)
 
-            const response = await axiosClient.post('/editAdminProfile', formData);
+            const response = await axiosClient.post(APP_URL.BE_EDIT_ADMIN_PROFILE, formData);
             if (response.status == 200 ) {
                 setAdmin(response.data.admin);
                 setToken(response.data.token);
@@ -187,21 +188,6 @@ export default function Profile() {
                                             </div>
                                         </div>
                                         {errors.phone && <p className='validationError'>{errors.phone.message}</p>}
-                                        {/* post */}
-                                        <div className="editProfileItem ">
-                                            <div className="row">
-                                                <div className="col-md-3">
-                                                    <label htmlFor={"profileEditPost"} className={`form-label`}>Post : </label>
-                                                </div>
-                                                <div className="col-md-9">
-                                                    <Input type="text" id={"profileEditPost"} inputClass="themInput " placeholder="Enter your Post..."
-                                                        {...register("role", {
-                                                            required: "post is required"
-                                                        })}></Input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {errors.role && <p className='validationError'>{errors.role.message}</p>}
                                         <div className="text-end">
 
                                             <Button type="button" buttonClass="themButtonBorder me-2 " onClick={(e) => { setIsEdit(!isEdit) }}>Discard</Button>

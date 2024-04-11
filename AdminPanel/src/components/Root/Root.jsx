@@ -16,8 +16,6 @@ export default function Root() {
           </main>
         </div>
       </div>
-
-
     </>
   )
 }
