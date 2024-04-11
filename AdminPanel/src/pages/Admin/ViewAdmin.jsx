@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import EditAdmin from './EditAdmin';
 import { getAllAdmin } from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
-import { Link } from 'react-router-dom';
-import $ from 'jquery'
+ 
 export default function ViewAdmin() {
   const adminData = useSelector((state) => state.authReducer.admin);
   const [maxLimit, setMaxLimit] = useState(0);
@@ -44,7 +43,6 @@ export default function ViewAdmin() {
 
   }, [allAdminDataSt])
 
-
   const deleteHandler = async (id) => {
     try {
       const response = await axiosClient.delete(`${APP_URL.BE_DELETE_ADMIN}/${id}`)
@@ -62,10 +60,6 @@ export default function ViewAdmin() {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
     }
 
-  }
-  const pagination = (e) => {
-    console.log("th ")
-    $(this).addClass('active')
   }
   useEffect(() => {
     document.getElementById(`p${page}`).classList.add('active')
@@ -132,8 +126,10 @@ export default function ViewAdmin() {
               <li>...</li>
             }
             <li id={`p${page}`} onClick={(e) => { setPage() }}>{page}</li>
-            <li id={`p${page + 1}`} onClick={(e) => { setPage(page + 1 < maxLimit ? page + 1 : maxLimit) }}>{page + 1}</li>
+            
+            <li id={`p${page + 1}`} onClick={(e) => { setPage(page + 1 < maxLimit ? page + 1 : maxLimit) }}>{(page + 1)}</li>
             <li id={`p${page + 2}`} onClick={(e) => { setPage(page + 2 < maxLimit ? page + 2 : maxLimit) }}>{page + 2}</li>
+
             {(maxLimit > 3 && page + 2 < maxLimit) && <li >...</li>}
             {page + 2 < maxLimit && <li id={`p${page}`} onClick={(e) => { setPage(maxLimit) }}>{maxLimit}</li>}
             {maxLimit > 3 && page + 2 < maxLimit ? <li onClick={(e) => { setPage(page + 1 < maxLimit ? page + 1 : maxLimit) }}><i className="fa-solid fa-angles-right" /></li> : ""}
