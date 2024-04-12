@@ -11,8 +11,21 @@ export default function AddAdmin() {
   const navigate =useNavigate()
 
   const adminData = useSelector((state) => state.authReducer.admin);
-  const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
+  const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm(
+    {
+      defaultValues:{
+        userName:'t',
+        email:"t@gmail.com",
+        companyName:"RADHE TEST",
+        phone:"1234567890",
+        role:"manager",
+        password:"123456",
+        CPassword:"123456"
+      }
+    }
+  );
   const inputRef = useRef();
+
   const addAdminSub = async (data) => {
     try {
       const formData = new FormData();
@@ -27,7 +40,7 @@ export default function AddAdmin() {
       formData.append("password", data.password);
       formData.append("editor",adminData._id)
       let response = await axiosClient.post(APP_URL.BE_ADD_ADMIN , formData)
-      if (response.stats === 200) {
+      if (response.status === 200) {
         navigate('/viewAdminPage')
       }
     } catch (error) {

@@ -6,6 +6,8 @@ import { AdminIn } from "../../interface/Admin.interefact";
 import { generateToken } from "../../common/generateToken";
 import fs from "fs";
 import path from "path";
+
+
 const AdminLogin = async (req: any, res: any) => {
   try {
     const { email, password } = req.body;
@@ -119,11 +121,17 @@ const AdminEditProfile = async (req: any, res: any) => {
 };
 const AdminAllAdminData = async (req: any, res: any) => {
   try {
+    let limit= req.params.limit;
+    console.log('limit', limit)
+    let page= req.params.page;
+    console.log('page', page)
+    console.log('(page*limit)-1', (page*limit)-1)
+
     const adminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
-    const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:req.params.page*req.params.limit,limit:req.params.limit})
+    const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
     console.log('pageData RRR ', pageData);
     if (adminData && adminData.length > 0) {
-      res.status(200).json({ allAdmin: pageData , maxLimit: adminData.length/req.params.limit});
+      res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(adminData.length/req.params.limit)});
     }
   } catch (error) {
     logger.error(
@@ -180,51 +188,6 @@ const AdminActive = async (req: any, res: any, next: any) => {
   } catch (error) {
     logger.error(
       `CATCH ERROR : IN : admin : AdminActive : 🐞🐞🐞 : \n ${error}`
-    );
-  }
-};
-
-const AdminEdit = async (req: any, res: any) => {
-  try {
-    if (!req.body.adminId) {
-      return res.status(400).json({
-        error: [{ path: "root", msg: "invalid data " }],
-      });
-    }
-    const admin = await MQ.findById<AdminIn>(
-      MODAL.ADMIN_MODAL,
-      req.body.adminId
-    );
-    console.log("admin", admin);
-    if (!admin) {
-      return res.status(401).json({
-        error: [{ path: "root", msg: "unauthenticated user " }],
-      });
-    }
-    console.log("req.file", req.file);
-    if (typeof req.file != "undefined") {
-      if (admin.profile) {
-        fs.unlinkSync(path.join(__dirname, "../..", admin.profile));
-      }
-      req.body.profile = process.env.PROFILE_PATH + "/" + req.file.filename;
-    }
-    const upAdmin = await MQ.findByIdAndUpdate(
-      MODAL.ADMIN_MODAL,
-      admin.id,
-      req.body,
-      true
-    );
-    if (upAdmin) {
-      const token = await generateToken(admin.id, admin.email);
-      return res.status(200).json({ admin: upAdmin, token });
-    } else {
-      return res
-        .status(1001)
-        .json({ message: "something was wrong try after some time " });
-    }
-  } catch (error) {
-    logger.error(
-      `CATCH ERROR : IN : admin : AdminEditProfile : 🐞🐞🐞 : \n ${error}`
     );
   }
 };
