@@ -9,6 +9,7 @@ function PreviewImage({
   ...props
 }, ref) {
   const [preImage, setPreImage] = useState(src);
+  console.log(preImage)
   const Id = useId();
   const [removeImg, setRemoveImg] = useState(false);
   const imageOnChangeHandler = (e) => {

@@ -1,81 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import axiosClient from '../../utility/axiosClient';
-import { useSelector, useDispatch } from 'react-redux'
-import EditAdmin from './EditAdmin';
-import { getAllAdmin } from '../../store/dataSlice';
-import { APP_URL } from '../../constant/'
-
-export default function ViewAdmin() {
-  const adminData = useSelector((state) => state.authReducer.admin);
-  let allAdminDataSt = useSelector((state) => state.dataReducer.allAdmin);
-
-  const dispatch = useDispatch();
-
-  const [allAdmin, setAllAdmin] = useState([]);
-  const [admin, setAdmin] = useState(adminData);
-  const [page, setPage] = useState(1);
-  const [maxLimit, setMaxLimit] = useState(0);
-  const [limit, setLimit] = useState(2);
-
-  useEffect(() => {
-    (async () => {
-      const response = await axiosClient.get(`${APP_URL.BE_ALL_ADMIN}/${page}/2`);
-      setMaxLimit(response.data.maxLimit);
-      dispatch(getAllAdmin(response.data.allAdmin));
-      setAllAdmin(response.data.allAdmin)
-      if (page != maxLimit) {
-        $(`#p${maxLimit}`).removeClass('active');
-      }
-      if (page != 1) {
-        $(`#p1`).removeClass('active');
-      }
-      $(`#p${page}`).addClass('active');
-    })()
-    
-  }, [page])
-  
-  
-  useEffect(() => {
-    (async () => {
-      try {
-        let allAdminData = JSON.parse(JSON.stringify(allAdminDataSt));
-        let currentAdminIndex = allAdminData.findIndex((element) => element._id == admin._id);
-        if (currentAdminIndex > -1) {
-          let currentAdmin = allAdminData.splice(currentAdminIndex, 1);
-          allAdminData.unshift(currentAdmin[0]);
-        }
-        setAllAdmin([])
-        setAllAdmin(allAdminData)
-      } catch (error) {
-        console.log(`CATCH ERROR :: IN :: allAdmin :: get :: API :: 💀💀💀 :: \n ${error} `)
-      }
-    })()
-
-  }, [allAdminDataSt])  
-
-  const deleteHandler = async (id) => {
-    try {
-      const response = await axiosClient.delete(`${APP_URL.BE_DELETE_ADMIN}/${id}/${page}/${limit}`)
-      setAllAdmin(response.data.allAdmin);
-      setMaxLimit(response.data.maxLimit);
-    } catch (error) {
-      console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
-    }
-
-  }
-  const activeHandler = async (id) => {
-    try {
-      const response = await axiosClient.get(`${APP_URL.BE_ACTIVE_ADMIN}/${id}/${page}/${limit}`)
-      setAllAdmin(response.data.allAdmin);
-    } catch (error) {
-      console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
-    }
-
-  }
-
-  return (
-    <>
-      <div className="container">
+<div className="container">
         <h2 className='pageTitle'>Add Admin</h2>
 
         <div className=" dataViewTable addDataFrom">
@@ -93,8 +16,8 @@ export default function ViewAdmin() {
                 </tr>
               </thead>
               <tbody>
-                {/* {console.log(allAdmin)} */}
-                {allAdminDataSt.map((element, index) => (
+                {console.log("check all admin 95",allAdmin)}
+                {allAdmin.map((element, index) => (
                   <tr key={index} className={`${element._id == admin._id ? 'active' : ''}`}>
                     <th >{index + 1}</th>
                     <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.profile ? `${import.meta.env.VITE_BASE_URL}${element.profile}` : './image/profile.jpg'} /></div><p className='m-0'>{element.userName}</p></div></td>
@@ -188,6 +111,3 @@ export default function ViewAdmin() {
           </div>
         }
       </div>
-    </>
-  )
-}

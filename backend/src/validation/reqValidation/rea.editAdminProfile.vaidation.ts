@@ -10,7 +10,7 @@ const reqEditAdminProfileValidation = [
         .notEmpty().withMessage("user name is required")
         .custom(async(value,{req}) => {
             const data = await MQ.findOne<AdminIn>(MODAL.ADMIN_MODAL, { userName: value });
-            console.log('req.body:: RRR ', req.body)
+            console.log('req.body:: RRR ', JSON.stringify(req.body))
             if (data && data.id != req.body.adminId) {
                 throw new Error("user name is already in use")
             }

@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import axiosClient from '../utility/axiosClient';
 
 const initialState = {
-    allAdmin: []
+    allAdmin: [],
+    Admin:{}
 };
 
 const dataSlice = createSlice({

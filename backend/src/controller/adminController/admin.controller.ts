@@ -43,7 +43,6 @@ const AdminAdd = async (req: any, res: any) => {
         });
       }
     }
-    // req.body.role = "admin";
     req.body.password = await bcrypt.hash(req.body.password, 10);
     req.body.isActive = false;
     let adminData = await MQ.addData<AdminIn>(MODAL.ADMIN_MODAL, req.body);
@@ -100,9 +99,12 @@ const AdminEditProfile = async (req: any, res: any) => {
       true
     );
     if (req.body.editor) {
-      const adminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
-      if (adminData && adminData.length > 0) {
-        return res.status(200).json({ allAdmin: adminData });
+      let page = req.body.page;
+      let limit =req.body.limit;
+      const allAdminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
+      const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
+      if (allAdminData && allAdminData.length > 0) {
+        res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(allAdminData.length/limit)});
       }
     }
     if (upAdmin) {
@@ -122,14 +124,10 @@ const AdminEditProfile = async (req: any, res: any) => {
 const AdminAllAdminData = async (req: any, res: any) => {
   try {
     let limit= req.params.limit;
-    console.log('limit', limit)
     let page= req.params.page;
-    console.log('page', page)
-    console.log('(page*limit)-1', (page*limit)-1)
 
     const adminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
     const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
-    console.log('pageData RRR ', pageData);
     if (adminData && adminData.length > 0) {
       res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(adminData.length/req.params.limit)});
     }
@@ -154,9 +152,14 @@ const AdminDelete = async (req: any, res: any) => {
       fs.unlinkSync(path.join(__dirname, "../..", adminData.profile));
     }
     await MQ.findByIdAndDelete(MODAL.ADMIN_MODAL, adminData.id);
-    const allAdminData = await MQ.find(MODAL.ADMIN_MODAL, {});
+
+
+    let page = req.params.page;
+    let limit = req.params.limit;
+    const allAdminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
+    const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
     if (allAdminData && allAdminData.length > 0) {
-      res.status(200).json({ allAdmin: allAdminData });
+      res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(allAdminData.length/req.params.limit)});
     }
   } catch (error) {
     logger.error(
@@ -181,10 +184,16 @@ const AdminActive = async (req: any, res: any, next: any) => {
     await MQ.findByIdAndUpdate(MODAL.ADMIN_MODAL, adminData.id, {
       isActive: active,
     });
-    const allAdminData = await MQ.find(MODAL.ADMIN_MODAL, {});
+    
+
+    let page = req.params.page;
+    let limit = req.params.limit;
+    const allAdminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
+    const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
     if (allAdminData && allAdminData.length > 0) {
-      res.status(200).json({ allAdmin: allAdminData });
+      res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(allAdminData.length/req.params.limit)});
     }
+
   } catch (error) {
     logger.error(
       `CATCH ERROR : IN : admin : AdminActive : 🐞🐞🐞 : \n ${error}`

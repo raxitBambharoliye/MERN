@@ -19,8 +19,8 @@ router.post('/editAdminProfile',authToken,upLoadImage.single("profile"),reqEditA
 router.get('/allAdmin/:page/:limit', authToken, AdminAllAdminData);
 
 
-router.delete('/deleteAdmin/:id',authToken,AdminDelete)
-router.get('/activeAdmin/:id',authToken,AdminActive)
+router.delete('/deleteAdmin/:id/:page/:limit',authToken,AdminDelete)
+router.get('/activeAdmin/:id/:page/:limit',authToken,AdminActive)
 
 router.use('/user', userRouter);
 export default router;

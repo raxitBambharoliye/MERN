@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Input } from '../../components/form'
 import { useForm } from 'react-hook-form';
 import PreviewImage from '../../components/PreviewImage/PreviewImage';
@@ -11,20 +11,23 @@ import {APP_URL} from '../../constant/'
 export default function EditAdmin({
     id,
     admin,
+    page,totalLimit
 }) {
+    const [demoAdmin,setDemoAdmin] = useState(admin.email);
     const editorAdmin = useSelector((state) => state.authReducer.admin)
     const dispatch = useDispatch();
     const buttonRef = useRef();
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-            userName: admin.userName,
-            email: admin.email,
-            companyName: admin.companyName,
-            phone: admin.phone,
-            role: admin.role
-        }
-    });
+    const { register, reset, handleSubmit, formState: { errors } } = useForm();  
+    useEffect(() => {
+        
+        reset({})
+        if (admin) {
+          reset({...admin});
+      }
+    }, [admin])
+    
     const editAdminSub = async (data) => {
+
         try {
             const formData = new FormData();
             if (data.profile[0]) {
@@ -37,7 +40,9 @@ export default function EditAdmin({
             formData.append("role", data.role)
             formData.append("adminId", admin._id)
             formData.append("editor", editorAdmin._id)
-            const response = await axiosClient.post( APP_URL.BE_EDIT_ADMIN_PROFILE, formData);
+            formData.append("page", page)
+            formData.append("limit", totalLimit)
+            const response = await axiosClient.post( `${APP_URL.BE_EDIT_ADMIN_PROFILE}`, formData);
             dispatch(getAllAdmin(response.data.allAdmin))
             buttonRef.current.click();
         } catch (error) {
@@ -69,7 +74,7 @@ export default function EditAdmin({
                     </div>
                     <div className="modal-body">
                         <div className="card-body px-4">
-                            <PreviewImage ref={inputRef} src={admin.profile ?? './image/profile.jpg'}    {...register("profile")} />
+                            <PreviewImage ref={inputRef} src={`${import.meta.env.VITE_BASE_URL}${admin.profile}` ?? './image/profile.jpg'}    {...register("profile")} />
                             {/* email */}
                             <div className="editProfileItem ">
                                 <div className="row">
@@ -78,6 +83,8 @@ export default function EditAdmin({
                                     </div>
                                     <div className="col-md-9">
                                         <Input type="email" id={"profileEditEmail"} inputClass="themInput " placeholder="Enter your email id ..."
+                                            // value={admin.email}
+                                            // onChange={(e) => {setDemoAdmin(e.target.value)  }}
                                             {...register("email", {
                                                 required: "Please enter your email",
                                                 email: "Please enter valid email"
