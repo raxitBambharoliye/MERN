@@ -10,6 +10,11 @@ const categorySchema = new mongoose.Schema({
     categoryImage:{
         type:String,
         require:true,
+    },
+    creator:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:MODAL.ADMIN_MODAL,
+        require:true,
     }
 },{timestamps:true})
 

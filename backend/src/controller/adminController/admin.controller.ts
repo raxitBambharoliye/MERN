@@ -189,7 +189,6 @@ const AdminDelete = async (req: any, res: any) => {
     );
   }
 };
-
 const AdminActive = async (req: any, res: any, next: any) => {
   try {
     const adminData = await MQ.findById<AdminIn>(

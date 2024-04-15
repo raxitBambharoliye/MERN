@@ -10,7 +10,7 @@ import {APP_URL} from '../../constant/'
 export default function AddCategory() {
 
   const adminData = useSelector((state) => state.authReducer.admin);
-  const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
+  const { register, handleSubmit, formState: { errors },  setError } = useForm();
   const inputRef = useRef();
   const addSub = async (data) => {
     try {
