@@ -12,20 +12,14 @@ export default function AddCategory() {
   const adminData = useSelector((state) => state.authReducer.admin);
   const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
   const inputRef = useRef();
-  const addAdminSub = async (data) => {
+  const addSub = async (data) => {
     try {
       console.log('data', data)
       const formData = new FormData();
-      if (data.profile[0]) {
-        formData.append("profile", data.profile[0]);
+      if (data.categoryImage[0]) {
+        formData.append("categoryImage", data.categoryImage[0]);
       }
-      formData.append("userName", data.userName);
-      formData.append("email", data.email);
-      formData.append("companyName", data.companyName);
-      formData.append("phone", data.phone);
-      formData.append("role", data.role);
-      formData.append("password", data.password);
-      formData.append("editor",adminData._id)
+      formData.append("categoryName", data.categoryName);
       let response = await axiosClient.post('/addAdmin', formData)
       console.log('response', response.data)
 
@@ -42,52 +36,18 @@ export default function AddCategory() {
   }
   return (
     <div className="container ">
-      <h2 className='pageTitle'>Add Admin</h2>
+      <h2 className='pageTitle'>Add Category</h2>
       <div className="addDataFrom">
-        <form onSubmit={handleSubmit(addAdminSub)}>
-          <PreviewImage labelClass='mb-4' {...register("profile")} />
-          <AddDataInput type='text' label={"User Name : "} placeholder='Enter admin user name ... ' ref={inputRef} inputClass='themInput'{...register("userName", {
-            required: "user name is required"
-          })} />
-          {errors.userName && <p className='validationError text-center'>{errors.userName.message}</p>}
+        <form onSubmit={handleSubmit(addSub)}>
+          <PreviewImage labelClass='mb-4' {...register("categoryImage")} />
 
-          <AddDataInput type='email' label={"Email : "} placeholder='Enter admin Email ID ... ' ref={inputRef} inputClass='themInput' {...register("email", {
-            required: "email is required"
-          })} />
-          {errors.email && <p className='validationError text-center'>{errors.email.message}</p>}
-
-          <AddDataInput type="text" label={"Company Name : "} placeholder='Enter admin company name ... ' ref={inputRef} inputClass='themInput'{...register("companyName", {
+          <AddDataInput type="text" label={"Category Name : "} placeholder='Enter category name ... ' ref={inputRef} inputClass='themInput'{...register("categoryName", {
             required: "company name is required"
           })} />
           {errors.companyName && <p className='validationError text-center'>{errors.companyName.message}</p>}
 
-          <AddDataInput type="text" label={"Phone Number : "} placeholder='Enter admin phone number ... ' ref={inputRef} inputClass='themInput'{...register("phone", {
-            required: "phone number is required"
-          })} />
-          {errors.phone && <p className='validationError text-center'>{errors.phone.message}</p>}
-
-          <AddDataInput type="text" label={"Post : "} placeholder='Enter admin post / Role in company... ' ref={inputRef} inputClass='themInput' {...register("role", {
-            required: "post is required"
-          })} />
-          {errors.role && <p className='validationError text-center'>{errors.role.message}</p>}
-
-          <AddDataInput type="password" label={"Password : "} placeholder='Enter admin password ... ' ref={inputRef} inputClass='themInput' {...register("password", {
-            required: "password is required",
-            minLength: {
-              value: 6,
-              message: "password must be at least 6 characters long"
-            }
-          })} />
-          {errors.password && <p className='validationError text-center'>{errors.password.message}</p>}
-
-          <AddDataInput type="password" label={"Conform Password : "} placeholder='Conform admin password ... ' ref={inputRef} inputClass='themInput' {...register("CPassword", {
-            required: "conform password is required",
-            validate: value => value == getValues("password") || "Password not match"
-          })} />
-          {errors.CPassword && <p className='validationError text-center'>{errors.CPassword.message}</p>}
-
           <div className="text-end">
-            <Button buttonClass="themButtonFill" type='submit' ref={inputRef} >Add Admin</Button>
+            <Button buttonClass="themButtonFill" type='submit' ref={inputRef} >Add Category</Button>
           </div>
         </form>
       </div>

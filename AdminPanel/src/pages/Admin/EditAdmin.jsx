@@ -5,27 +5,45 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllAdmin } from '../../store/dataSlice';
-import {APP_URL} from '../../constant/'
+import { getAllAdmin, setEditAdmin } from '../../store/dataSlice';
+import { APP_URL } from '../../constant/'
 
 export default function EditAdmin({
     id,
-    admin,
-    page,totalLimit
+    page, totalLimit
 }) {
-    const [demoAdmin,setDemoAdmin] = useState(admin.email);
+    const adminSt = useSelector((state) => state.dataReducer.editData);
     const editorAdmin = useSelector((state) => state.authReducer.admin)
+
+    const [admin, setAdmin] = useState(adminSt);
     const dispatch = useDispatch();
     const buttonRef = useRef();
-    const { register, reset, handleSubmit, formState: { errors } } = useForm();  
+
+
+    const { register, reset, handleSubmit, formState: { errors }, getValues } = useForm({
+        defaultValues: {
+            userName: admin.userName || '',
+            email: admin.email || '',
+            companyName: admin.companyName || '',
+            phone: admin.phone || '',
+            role: admin.role || '',
+        }
+    });
+
     useEffect(() => {
-        
-        reset({})
-        if (admin) {
-          reset({...admin});
-      }
-    }, [admin])
-    
+        setAdmin(adminSt);
+        console.log('adminSt.profile', adminSt.profile)
+        $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${adminSt.profile}`)
+        reset({
+            userName: adminSt.userName || '',
+            email: adminSt.email || '',
+            companyName: adminSt.companyName || '',
+            phone: adminSt.phone || '',
+            role: adminSt.role || '',
+            profileImg: `${import.meta.env.VITE_BASE_URL}${adminSt.profile}`
+        })
+    }, [adminSt])
+
     const editAdminSub = async (data) => {
 
         try {
@@ -42,14 +60,19 @@ export default function EditAdmin({
             formData.append("editor", editorAdmin._id)
             formData.append("page", page)
             formData.append("limit", totalLimit)
-            const response = await axiosClient.post( `${APP_URL.BE_EDIT_ADMIN_PROFILE}`, formData);
+            const response = await axiosClient.post(`${APP_URL.BE_EDIT_ADMIN_PROFILE}`, formData);
             dispatch(getAllAdmin(response.data.allAdmin))
             buttonRef.current.click();
+            dispatch(setEditAdmin({}))
+            setProfileImg('./image/profile.jpg');
         } catch (error) {
             console.log(`CATCH ERROR :: IN :: editAdminSub :: submitHandler :: API :: 💀💀💀 :: \n ${error} `)
         }
     }
     const inputRef = useRef();
+
+
+
     return (
         <div
             className="modal fade"
@@ -74,7 +97,8 @@ export default function EditAdmin({
                     </div>
                     <div className="modal-body">
                         <div className="card-body px-4">
-                            <PreviewImage ref={inputRef} src={`${import.meta.env.VITE_BASE_URL}${admin.profile}` ?? './image/profile.jpg'}    {...register("profile")} />
+
+                            <PreviewImage ref={inputRef} src={getValues('profileImg')}    {...register("profile")} />
                             {/* email */}
                             <div className="editProfileItem ">
                                 <div className="row">
@@ -83,8 +107,6 @@ export default function EditAdmin({
                                     </div>
                                     <div className="col-md-9">
                                         <Input type="email" id={"profileEditEmail"} inputClass="themInput " placeholder="Enter your email id ..."
-                                            // value={admin.email}
-                                            // onChange={(e) => {setDemoAdmin(e.target.value)  }}
                                             {...register("email", {
                                                 required: "Please enter your email",
                                                 email: "Please enter valid email"

@@ -9,6 +9,7 @@ function PreviewImage({
   ...props
 }, ref) {
   const [preImage, setPreImage] = useState(src);
+  console.log('preImage', preImage)
   console.log(preImage)
   const Id = useId();
   const [removeImg, setRemoveImg] = useState(false);
@@ -18,12 +19,12 @@ function PreviewImage({
   }
   const removeImage = () => {
      document.getElementById(Id).value='';
-    setPreImage(src);
+    setPreImage('./image/profile.jpg');
     setRemoveImg(true)
   }
   return (
     <div className='position-relative'>
-      <label htmlFor={Id} className={`previewImageLabel ${labelClass}`} style={{ borderRadius: "8px" }}>
+      <label htmlFor={Id} id='previewImgLabel' className={`previewImageLabel ${labelClass}`} style={{ borderRadius: "8px" }}>
         <img src={preImage} alt={alt} style={{ width: imageWidth, height: imageHeight, }} />
         <i className="fa-solid fa-pen position-absolute top-50 start-50 translate-middle " />
         <button type='button' className="removeImgBtn" onClick={removeImage}><i className="fa-solid fa-xmark" /></button>

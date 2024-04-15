@@ -1,6 +1,7 @@
 import { MODAL } from "../constant";
 import { UserIn } from "../interface/User.intereface";
 import AdminModal from "../model/admin.modal";
+import CategoryModal from "../model/category.modal";
 import ContactModal from "../model/constact.model";
 import { UserModal } from "../model/user.modal";
 import logger from "../utility/log";
@@ -17,6 +18,9 @@ class MongoQ {
         break;
       case MODAL.CONTACT_MODAL:
         this.collection = ContactModal;
+        break;
+      case MODAL.CATEGORY_MODAL:
+        this.collection = CategoryModal;
         break;
     }
   }
@@ -100,15 +104,14 @@ class MongoQ {
   ): Promise<[T] | null> {
     try {
       this.selectModal(modal);
-      let data: any = await this.collection.find(query)
+      let data: any = await this.collection
+        .find(query)
         .skip(option?.skip)
         .limit(option?.limit)
         .exec();
       return data;
     } catch (error) {
-      logger.error(
-        `CATCH ERROR IN :: pagination :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`
-      );
+      logger.error(`CATCH ERROR IN :: pagination :: 🤷‍♂️🤷‍♂️🤷‍♂️ :: \n :: ${error}`);
       return null;
     }
   }

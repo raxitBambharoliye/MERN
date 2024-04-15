@@ -3,7 +3,7 @@ import axiosClient from '../utility/axiosClient';
 
 const initialState = {
     allAdmin: [],
-    Admin:{}
+    editData:{}
 };
 
 const dataSlice = createSlice({
@@ -12,9 +12,12 @@ const dataSlice = createSlice({
     reducers: {
         getAllAdmin(state, action) {
             state.allAdmin = action.payload;
+        },
+        setEditAdmin(state,action){
+            state.editData = action.payload;
         }
     }
 });
 
-export const { getAllAdmin } = dataSlice.actions;
+export const { getAllAdmin,setEditAdmin } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

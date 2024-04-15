@@ -41,7 +41,7 @@ export default function AddAdmin() {
       formData.append("editor",adminData._id)
       let response = await axiosClient.post(APP_URL.BE_ADD_ADMIN , formData)
       if (response.status === 200) {
-        // navigate('/viewAdminPage')   
+        navigate('/viewAdminPage')   
       }
     } catch (error) {
       console.log('error', error)

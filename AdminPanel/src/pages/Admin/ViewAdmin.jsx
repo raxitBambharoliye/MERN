@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
 import EditAdmin from './EditAdmin';
-import { getAllAdmin } from '../../store/dataSlice';
+import { getAllAdmin, setEditAdmin } from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
+import Active from '../../components/Active/Active';
+import Delete from '../../components/Delete/Delete';
+import Search from '../../components/Search/Search';
 
 export default function ViewAdmin() {
   const adminData = useSelector((state) => state.authReducer.admin);
@@ -14,12 +17,17 @@ export default function ViewAdmin() {
   const [allAdmin, setAllAdmin] = useState([]);
   const [admin, setAdmin] = useState(adminData);
   const [page, setPage] = useState(1);
-  const [maxLimit, setMaxLimit] = useState(0);
-  const [limit, setLimit] = useState(2);
+  const [maxLimit, setMaxLimit] = useState();
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState(" ");
 
+
+  const activeCloseRef= useRef();
+  const deleteCloseRef= useRef();
   useEffect(() => {
     (async () => {
-      const response = await axiosClient.get(`${APP_URL.BE_ALL_ADMIN}/${page}/2`);
+
+      const response = await axiosClient.get(`${APP_URL.BE_ALL_ADMIN}/${page}/${limit}/?search=${search}`);
       setMaxLimit(response.data.maxLimit);
       dispatch(getAllAdmin(response.data.allAdmin));
       setAllAdmin(response.data.allAdmin)
@@ -31,10 +39,10 @@ export default function ViewAdmin() {
       }
       $(`#p${page}`).addClass('active');
     })()
-    
-  }, [page])
-  
-  
+
+  }, [page, limit,search])
+
+
   useEffect(() => {
     (async () => {
       try {
@@ -51,13 +59,15 @@ export default function ViewAdmin() {
       }
     })()
 
-  }, [allAdminDataSt])  
+  }, [allAdminDataSt])
 
   const deleteHandler = async (id) => {
     try {
       const response = await axiosClient.delete(`${APP_URL.BE_DELETE_ADMIN}/${id}/${page}/${limit}`)
       setAllAdmin(response.data.allAdmin);
       setMaxLimit(response.data.maxLimit);
+      deleteCloseRef.current.click();
+
     } catch (error) {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
     }
@@ -67,17 +77,23 @@ export default function ViewAdmin() {
     try {
       const response = await axiosClient.get(`${APP_URL.BE_ACTIVE_ADMIN}/${id}/${page}/${limit}`)
       setAllAdmin(response.data.allAdmin);
+      activeCloseRef.current.click();
     } catch (error) {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
     }
 
+  }
+  const searchHandler= (e)=>{
+    
   }
 
   return (
     <>
       <div className="container">
         <h2 className='pageTitle'>Add Admin</h2>
-
+        <Search placeholder='Search Admin here ...'
+        onChange={(e)=>{setSearch(e.target.value)}}
+        />
         <div className=" dataViewTable addDataFrom">
           <div className=" table-responsive">
             <table className=' table align-middle table-hover'>
@@ -94,7 +110,7 @@ export default function ViewAdmin() {
               </thead>
               <tbody>
                 {/* {console.log(allAdmin)} */}
-                {allAdminDataSt.map((element, index) => (
+                {allAdmin.map((element, index) => (
                   <tr key={index} className={`${element._id == admin._id ? 'active' : ''}`}>
                     <th >{index + 1}</th>
                     <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.profile ? `${import.meta.env.VITE_BASE_URL}${element.profile}` : './image/profile.jpg'} /></div><p className='m-0'>{element.userName}</p></div></td>
@@ -104,16 +120,15 @@ export default function ViewAdmin() {
                     <td>
                       {
                         admin._id != element._id && admin.role == 'admin' ?
-                          (<button className='tableViewActionButton active' onClick={(e) => { activeHandler(element._id) }}><i className={element.isActive ? "fa-solid fa-circle-check text-success" : "fa-regular fa-circle-check text-danger"} /></button>) :
+                          (<button className='tableViewActionButton active'  data-bs-toggle="modal" data-bs-target="#activeModal" onClick={(e) => { dispatch(setEditAdmin(element)) }} ><i className={element.isActive ? "fa-solid fa-circle-check text-success" : "fa-regular fa-circle-check text-danger"} /></button>) :
                           (<p className='m-0 text-center'> -</p>)
                       }
                     </td>
                     <td >
-                      {(admin._id != element._id && admin.role == 'admin' )? (<div className="d-flex">
-                        <button className='tableViewActionButton delete' onClick={(e) => { deleteHandler(element._id) }}><i className="fa-solid fa-trash" /></button>
-                        <button className='tableViewActionButton edit' data-bs-toggle="modal" data-bs-target={`#editProfile-${index+(page*limit)}`} ><i className="fa-solid fa-user-pen" /></button>
-                        <EditAdmin id={`editProfile-${index+(page*limit)}`} admin={element} test={allAdmin} page={page} totalLimit={limit} />
-                     
+                      {(admin._id != element._id && admin.role == 'admin') ? (<div className="d-flex">
+                        <button className='tableViewActionButton delete' data-bs-toggle="modal" data-bs-target="#deleteModal" onClick={(e) => { dispatch(setEditAdmin(element)) }}><i className="fa-solid fa-trash" /></button>
+                        <button className='tableViewActionButton edit' data-bs-toggle="modal" data-bs-target="#editAdmin" onClick={(e) => { dispatch(setEditAdmin(element)) }} ><i className="fa-solid fa-user-pen" /></button>
+
                       </div>) : (
                         <p className='text-center m-0'> - </p>
                       )}
@@ -127,8 +142,22 @@ export default function ViewAdmin() {
 
         </div>
         {/* pagination */}
-        {maxLimit > 0 &&
-          <div className="cuPagination ">
+
+        <div className="cuPagination d-flex justify-content-between">
+          <div className="limit">
+            <select
+              className="form-select form-select-sm"
+              aria-label="Small select example"
+              value={limit}
+              onChange={(e) => { setLimit(parseInt(e.target.value)) }}
+            >
+              <option  value={10}>10</option>
+              <option  value={20}>20  </option>
+              <option  value={50}>50</option>
+              <option   value={100}>100</option>
+            </select>
+          </div>
+          {maxLimit > 0 &&
             <ul className=" d-flex align-items-center justify-content-end">
               {/* pre button */}
               {(page > 1 && maxLimit > 4) && <li onClick={(e) => { setPage(page - 1 > 1 ? page - 1 : 1) }} ><i className="fa-solid fa-angles-left " /></li>}
@@ -139,8 +168,8 @@ export default function ViewAdmin() {
               {(maxLimit > 4 && page > 2) && <li className='first3d'>...</li>}
 
               {/* n-1 */}
-              {(page + 1 == maxLimit && page - 1 != 1) &&
-                <li id={`p${page - 1}`} onClick={(e) => { setPage(page - 1) }}>{page - 1}</li>
+              {(page + 1 == maxLimit && page - 1 != 1 && page - 1 > 0) &&
+                <li className='n-1' id={`p${page - 1}`} onClick={(e) => { setPage(page - 1) }}>{page - 1}</li>
               }
 
               {/*current */}
@@ -173,7 +202,6 @@ export default function ViewAdmin() {
 
               {(maxLimit == 3 && page == maxLimit) &&
                 <li id={`p${page - 1}`} onClick={(e) => { setPage(page - 1) }}>{page - 1}</li>
-
               }
               {/* last page  */}
               {(maxLimit > 1) &&
@@ -185,9 +213,13 @@ export default function ViewAdmin() {
               }
 
             </ul>
-          </div>
-        }
+          }
+        </div>
+        <EditAdmin id="editAdmin" page={page} totalLimit={limit} />
+        <Active type={'admin'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
+        <Delete type={'admin'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
       </div>
+
     </>
   )
 }

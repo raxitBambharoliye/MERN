@@ -31,6 +31,8 @@ const AdminLogin = async (req: any, res: any) => {
 };
 
 const AdminAdd = async (req: any, res: any) => {
+  console.log("req.file add admin :: RRR ",req.file)
+
   try {
     if (req.body.editor) {
       const editorAdmin = await MQ.findById<AdminIn>(
@@ -42,6 +44,9 @@ const AdminAdd = async (req: any, res: any) => {
           error: [{ path: "root", msg: "unauthenticated user " }],
         });
       }
+    }
+    if(req.file){
+      req.body.profile = process.env.PROFILE_PATH + "/" + req.file.filename;
     }
     req.body.password = await bcrypt.hash(req.body.password, 10);
     req.body.isActive = false;
@@ -104,7 +109,7 @@ const AdminEditProfile = async (req: any, res: any) => {
       const allAdminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
       const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
       if (allAdminData && allAdminData.length > 0) {
-        res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(allAdminData.length/limit)});
+       return res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(allAdminData.length/limit)});
       }
     }
     if (upAdmin) {
@@ -125,9 +130,26 @@ const AdminAllAdminData = async (req: any, res: any) => {
   try {
     let limit= req.params.limit;
     let page= req.params.page;
-
-    const adminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {});
-    const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {},{skip:((page-1)*limit),limit})
+    let search= req.query.search ?? '';
+    console.log('search', search)
+    const adminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {
+      $or: [
+        { useName: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { phone: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { role: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { companyName: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+    ]
+    });
+    const pageData = await MQ.pagination<AdminIn>(MODAL.ADMIN_MODAL, {
+      $or: [
+         { useName: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { phone: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { role: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { companyName: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+    ]
+    },{skip:((page-1)*limit),limit})
     if (adminData && adminData.length > 0) {
       res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(adminData.length/req.params.limit)});
     }

@@ -45,6 +45,25 @@ body {
 .validationError{
     color: #cb2525;
 }
+
+.activeModalTitle{
+    color: var(--black);
+    /* font-weight: 400; */
+    font-size: 18px;
+}
+.activeModalTitle span{
+    font-weight: 600;
+}
+.searchInput label{
+    color: var(--gray);
+    margin-left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.searchInput input{
+    background-color: var(--bg-white) !important;
+    padding-left: 35px;
+}
 #main{
     flex-grow: 1;
 }

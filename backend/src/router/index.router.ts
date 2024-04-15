@@ -16,11 +16,11 @@ router.post("/login", reqLoginValidation, AdminLogin)
 
 router.post('/addAdmin', authToken,upLoadImage.single("profile"),reqAddAdminVAlidation, AdminAdd)
 router.post('/editAdminProfile',authToken,upLoadImage.single("profile"),reqEditAdminProfileValidation,AdminEditProfile)
-router.get('/allAdmin/:page/:limit', authToken, AdminAllAdminData);
+router.get('/allAdmin/:page/:limit/', authToken, AdminAllAdminData);
 
 
-router.delete('/deleteAdmin/:id/:page/:limit',authToken,AdminDelete)
-router.get('/activeAdmin/:id/:page/:limit',authToken,AdminActive)
+router.delete('/deleteAdmin/:id/:page/:limit/:search',authToken,AdminDelete)
+router.get('/activeAdmin/:id/:page/:limit/:search',authToken,AdminActive)
 
 router.use('/user', userRouter);
 export default router;

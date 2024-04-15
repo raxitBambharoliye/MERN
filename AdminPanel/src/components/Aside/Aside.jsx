@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import $ from 'jquery'
 import Logo from '../Logo/Logo'
 import { Link } from 'react-router-dom';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 export default function Aside() {
     const adminData = useSelector((state) => state.authReducer.admin);
     const toggleMenu = () => {
@@ -38,16 +38,18 @@ export default function Aside() {
                                     <li className='subMenu'><Link to={'/viewAdminPage'}><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
                                 </ul>
                             </li>
+
                             <li className='sideMenu' >
-                                <Link>
-                                    Admin
+
+                                <Link to='#'>
+                                    <i className="fa-solid fa-layer-group menuIcon" /> Category
                                 </Link>
                                 <ul className='subMenuList p-0'>
-                                    <li className='subMenu'><Link>test 1</Link> </li>
-                                    <li className='subMenu'><Link>test 2</Link> </li>
-                                    <li className='subMenu'><Link>test 3</Link> </li>
+                                    {adminData.role == 'admin' && <li className='subMenu'><Link to='/addCategoryPage'><i className="fa-solid fa-plus-minus subMenuIcon" />Add Category</Link> </li>}
+                                    <li className='subMenu'><Link to={'/viewCategoryPage'}><i className="fa-solid fa-list subMenuIcon" /> Category List</Link> </li>
                                 </ul>
                             </li>
+
                         </ul>
                     </nav>
                     <div className="copyRight">

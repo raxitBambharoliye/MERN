@@ -71,7 +71,6 @@ const editProfile = async (req: any, res: any) => {
       return res.status(401).json({ message: "user unauthenticated" });
     }
     if (req.file) {
-      console.log(req.file);
       req.body.profile = process.env.PROFILE_PATH + "/" + req.file.filename;
       if (userData.profile) {
         fs.unlinkSync(path.join(__dirname, "../..", userData.profile));
@@ -80,7 +79,6 @@ const editProfile = async (req: any, res: any) => {
       req.body.profile = userData.profile;
     }
     let updateData = await MQ.findByIdAndUpdate<UserIn>(MODAL.USER_MODAL, userData._id, req.body,true);
-    console.log('updateData', updateData)
     
 
     res.status(200).json({user:updateData,message:"user updated successfully"})

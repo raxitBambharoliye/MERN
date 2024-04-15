@@ -10,7 +10,6 @@ const reqEditAdminProfileValidation = [
         .notEmpty().withMessage("user name is required")
         .custom(async(value,{req}) => {
             const data = await MQ.findOne<AdminIn>(MODAL.ADMIN_MODAL, { userName: value });
-            console.log('req.body:: RRR ', JSON.stringify(req.body))
             if (data && data.id != req.body.adminId) {
                 throw new Error("user name is already in use")
             }
@@ -30,7 +29,6 @@ const reqEditAdminProfileValidation = [
         .notEmpty().withMessage("phone is required"),
     (req: any, res: any, next: any) => {
         const error = validationResult(req);
-        console.log(req.file)
         if (!error.isEmpty()) {
             return res.status(400).json({
                 success: false,
