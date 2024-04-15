@@ -10,14 +10,14 @@ const dataSlice = createSlice({
     name: "data",
     initialState,
     reducers: {
-        getAllAdmin(state, action) {
+        setViewData(state, action) {
             state.allAdmin = action.payload;
         },
-        setEditAdmin(state,action){
+        setEditData(state,action){
             state.editData = action.payload;
         }
     }
 });
 
-export const { getAllAdmin,setEditAdmin } = dataSlice.actions;
+export const { setViewData,setEditData } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

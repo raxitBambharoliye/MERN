@@ -2,7 +2,8 @@ import { body, validationResult } from "express-validator";
 import { MQ } from "../../common";
 import { MODAL } from "../../constant";
 import { AdminIn } from "../../interface/Admin.interefact";
-
+import path from 'path';
+import fs from 'fs'
 const reqEditAdminProfileValidation = [
     body("adminId")
         .notEmpty().withMessage("adminId is required"),
@@ -30,6 +31,13 @@ const reqEditAdminProfileValidation = [
     (req: any, res: any, next: any) => {
         const error = validationResult(req);
         if (!error.isEmpty()) {
+            if (req.file) {   
+                const imagePath = process.env.PROFILE_PATH ||'/upload/profile';
+                let img = path.join(__dirname, '../..', imagePath, req.file.filename);
+                if (img) {
+                    fs.unlinkSync(img)
+                }
+            }
             return res.status(400).json({
                 success: false,
                 error: error.array()

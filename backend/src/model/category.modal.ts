@@ -15,6 +15,10 @@ const categorySchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:MODAL.ADMIN_MODAL,
         require:true,
+    },
+    isActive: {
+        type: Boolean,
+    require: true,
     }
 },{timestamps:true})
 

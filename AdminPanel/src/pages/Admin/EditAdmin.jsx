@@ -5,7 +5,7 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllAdmin, setEditAdmin } from '../../store/dataSlice';
+import { setViewData, setEditData} from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 
 export default function EditAdmin({
@@ -33,14 +33,19 @@ export default function EditAdmin({
     useEffect(() => {
         setAdmin(adminSt);
         console.log('adminSt.profile', adminSt.profile)
-        $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${adminSt.profile}`)
+        if (adminSt.profile) {
+            
+            $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${adminSt.profile}`)
+        } else {
+            $('#previewImgLabel img').attr('src', `./image/dummy.jpg`)
+        }
         reset({
             userName: adminSt.userName || '',
             email: adminSt.email || '',
             companyName: adminSt.companyName || '',
             phone: adminSt.phone || '',
             role: adminSt.role || '',
-            profileImg: `${import.meta.env.VITE_BASE_URL}${adminSt.profile}`
+            profileImg: `${import.meta.env.VITE_BASE_URL}${adminSt.profile}` || './image/dummy.jpg'
         })
     }, [adminSt])
 
@@ -61,10 +66,10 @@ export default function EditAdmin({
             formData.append("page", page)
             formData.append("limit", totalLimit)
             const response = await axiosClient.post(`${APP_URL.BE_EDIT_ADMIN_PROFILE}`, formData);
-            dispatch(getAllAdmin(response.data.allAdmin))
+            dispatch(setViewData(response.data.allAdmin))
             buttonRef.current.click();
-            dispatch(setEditAdmin({}))
-            setProfileImg('./image/profile.jpg');
+            dispatch(setEditData({}))
+            // setProfileImg('./image/profile.jpg');
         } catch (error) {
             console.log(`CATCH ERROR :: IN :: editAdminSub :: submitHandler :: API :: 💀💀💀 :: \n ${error} `)
         }

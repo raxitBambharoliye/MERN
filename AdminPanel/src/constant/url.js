@@ -14,4 +14,8 @@ export default Object.freeze({
     BE_DELETE_ADMIN: '/deleteAdmin',
     BE_ACTIVE_ADMIN: '/activeAdmin',
     BE_LOGIN_ADMIN: '/login',
+    BE_ADD_CATEGORY: '/addCategory',  
+    BE_ALL_CATEGORY: '/allCategory',
+    BE_ACTIVE_CATEGORY: '/activeCategory',
+    BE_DELETE_CATEGORY:'/deleteCategory'
 })

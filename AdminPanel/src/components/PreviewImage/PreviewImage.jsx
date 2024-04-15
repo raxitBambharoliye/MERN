@@ -3,7 +3,7 @@ import React, { useId, useState } from 'react'
 function PreviewImage({
   imageWidth = "150px",
   imageHeight = "150px",
-  src = "./image/profile.jpg",
+  src = "./image/dummy.jpg",
   alt = "profilePic",
   labelClass,
   ...props

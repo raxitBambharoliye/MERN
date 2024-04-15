@@ -6,7 +6,8 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage'
 import axiosClient from '../../utility/axiosClient'
 import {useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import {APP_URL} from '../../constant/'
+import { APP_URL } from '../../constant/'
+
 export default function AddAdmin() {
   const navigate =useNavigate()
 

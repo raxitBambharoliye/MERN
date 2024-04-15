@@ -150,8 +150,9 @@ const AdminAllAdminData = async (req: any, res: any) => {
         { email: { $regex: '.*' + search + '.*', $options: 'i' } },
     ]
     },{skip:((page-1)*limit),limit})
-    if (adminData && adminData.length > 0) {
-      res.status(200).json({ allAdmin: pageData , maxLimit: Math.round(adminData.length/req.params.limit)});
+    if (adminData && adminData.length > 0 && pageData && pageData.length > 0) {
+
+      res.status(200).json({ allAdmin: pageData , maxLimit: Math.ceil(adminData.length/req.params.limit)});
     }
   } catch (error) {
     logger.error(

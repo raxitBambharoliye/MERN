@@ -12,7 +12,16 @@ function Delete({
     const [activeData,setActiveData]=useState(dataSt);
     useEffect(()=>{
         setActiveData(dataSt);
-    },[dataSt])
+    }, [dataSt])
+    let titleData;
+    switch (type) {
+        case 'admin':
+            titleData = activeData.userName
+            break;
+        case 'category':
+            titleData = activeData.categoryName;
+            break;
+    }
     return (
         <>
 
@@ -27,8 +36,7 @@ function Delete({
                     <div className="modal-content">
 
                         <div className="modal-body ">
-                            <p className='text-center  mt-3 activeModalTitle'>are you Sure to Delete <span>{type==
-                            'admin'?activeData.userName:''}</span> </p>
+                            <p className='text-center  mt-3 activeModalTitle'>are you Sure to Delete <span>{titleData}</span> </p>
                         </div>
                         <div className="modal-footer d-flex justify-content-center">
                         <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={closeBtnRef}  >Discard</Button>
