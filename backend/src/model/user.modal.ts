@@ -8,6 +8,8 @@ interface User extends Document {
   role: string;
   phone: string;
   profile: string;
+  isActive: boolean;
+  editor?: string;
 }
 
 const userSchema = new Schema<User>(
@@ -33,6 +35,13 @@ const userSchema = new Schema<User>(
     },
     profile: {
       type:String
+    },
+    isActive: {
+      type: Boolean,
+      required: true
+    },
+    editor: {
+      type:String,
     }
   },
   { timestamps: true }

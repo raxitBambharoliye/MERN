@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-// import EditAdmin from './EditAdmin';
 import { setViewData, setEditData} from '../../store/dataSlice';
-import { APP_URL } from '../../constant/'
+import { APP_URL } from '../../constant'
 import Active from '../../components/Active/Active';
 import Delete from '../../components/Delete/Delete';
 import Search from '../../components/Search/Search';
 import Pagination from '../../components/Pagination/Pagination';
 import Limit from '../../components/Limit/Limit';
-import EditCategory from './EditCategory';
+import EditUser from './EditUser';
+// import EditCategory from './EditCategory';
 
-export default function ViewAdmin() {
+export default function ViewUser() {
   const adminData = useSelector((state) => state.authReducer.admin);
   let viewSt = useSelector((state) => state.dataReducer.allAdmin);
 
@@ -27,17 +27,13 @@ export default function ViewAdmin() {
 
   const activeCloseRef= useRef();
   const deleteCloseRef = useRef();
-  useEffect(() => {
-    console.log('check ')
-  },[search])
+
   useEffect(() => {
     (async () => {
-      console.log("hello ",search)
-      const response = await axiosClient.get(`${APP_URL.BE_ALL_CATEGORY}/${page}/${limit}/?search=${search}`);
-      console.log('response', response)
+      const response = await axiosClient.get(`${APP_URL.BE_ALL_USER}/${page}/${limit}/?search=${search}`);
       setMaxLimit(response.data.maxLimit);
-      dispatch(setViewData(response.data.allCategory));
-      setViewDataLocal(response.data.allCategory)
+      dispatch(setViewData(response.data.allUser));
+      setViewDataLocal(response.data.allUser)
       if (page != maxLimit) {
         $(`#p${maxLimit}`).removeClass('active');
       }
@@ -50,15 +46,14 @@ export default function ViewAdmin() {
 
   }, [page, limit, search,])
   useEffect(() => {
-    console.log('viewSt', viewSt)
     setViewDataLocal(viewSt)
   },[viewSt])
 
 
   const deleteHandler = async (id) => {
     try {
-      const response = await axiosClient.delete(`${APP_URL.BE_DELETE_CATEGORY}/${id}/${page}/${limit}`)
-      setViewDataLocal(response.data.allCategory);
+      const response = await axiosClient.delete(`${APP_URL.BE_DELETE_USER}/${id}/${page}/${limit}/?search=${search}`)
+      setViewDataLocal(response.data.allUser);
       setMaxLimit(response.data.maxLimit);
       deleteCloseRef.current.click();
 
@@ -69,8 +64,8 @@ export default function ViewAdmin() {
   }
   const activeHandler = async (id) => {
     try {
-      const response = await axiosClient.get(`${APP_URL.BE_ACTIVE_CATEGORY}/${id}/${page}/${limit}`)
-      setViewDataLocal(response.data.allCategory);
+      const response = await axiosClient.get(`${APP_URL.BE_ACTIVE_USER}/${id}/${page}/${limit}`)
+      setViewDataLocal(response.data.allUser);
       activeCloseRef.current.click();
     } catch (error) {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
@@ -80,8 +75,8 @@ export default function ViewAdmin() {
   return (
     <>
       <div className="container">
-        <h2 className='pageTitle'>All Category</h2>
-        <Search placeholder='Search Category here ...'
+        <h2 className='pageTitle'>All User's</h2>
+        <Search placeholder='Search User here ...'
         onChange={(e)=>{setSearch(e.target.value)}}
         />
         <div className=" dataViewTable addDataFrom">
@@ -90,18 +85,23 @@ export default function ViewAdmin() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>CategoryName</th>
-                  <th>creator</th>
-                  <th>Active</th>
+                  <th>userName</th>
+                  <th>email</th>
+                  <th>phone</th>
+                  <th>editor</th>
+                  <th>active</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {viewData.map((element, index) => (
-                  <tr key={index} className={`${element.creator != admin._id ? 'active' : ''}`}>
+                  <tr key={index}>
                     <th >{index + 1}</th>
-                    <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.categoryImage ? `${import.meta.env.VITE_BASE_URL}${element.categoryImage}` : './image/dummy.jpg'} /></div><p className='m-0'>{element.categoryName}</p></div></td>
-                    <td>{element.creator}</td>  
+                    <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.profile ? `${import.meta.env.VITE_BASE_URL}${element.profile}` : './image/dummy.jpg'} /></div><p className='m-0'>{element.userName}</p></div></td>
+                    <td>{element.email}</td>  
+                    <td>{element.phone ?? "-"}</td>  
+                    <td>{element.editor ?? "-"}</td>  
+
                     <td>
                       {
                         (admin._id == element.creator || admin.role == 'admin') ?
@@ -112,7 +112,7 @@ export default function ViewAdmin() {
                     <td >
                       {(admin._id == element.creator || admin.role == 'admin') ? (<div className="d-flex">
                         <button className='tableViewActionButton delete' data-bs-toggle="modal" data-bs-target="#deleteModal" onClick={(e) => { dispatch(setEditData(element)) }}><i className="fa-solid fa-trash" /></button>
-                        <button className='tableViewActionButton edit' data-bs-toggle="modal" data-bs-target="#editCategory" onClick={(e) => { dispatch(setEditData(element)) }} ><i className="fa-solid fa-user-pen" /></button>
+                        <button className='tableViewActionButton edit' data-bs-toggle="modal" data-bs-target="#editUser" onClick={(e) => { dispatch(setEditData(element)) }} ><i className="fa-solid fa-user-pen" /></button>
 
                       </div>) : (
                         <p className='text-center m-0'> - </p>
@@ -134,10 +134,9 @@ export default function ViewAdmin() {
             <Pagination page={page} maxLimit={maxLimit} onClickHandler={setPage}/>
           }
         </div>
-        {/* <EditAdmin id="editAdmin" page={page} totalLimit={limit} /> */}
-        <EditCategory id="editCategory" page={ page} totalLimit={limit}  search={search}/>
-        <Active type={'category'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
-        <Delete type={'category'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
+        <EditUser id="editUser" page={ page} totalLimit={limit}  search={search}/>
+        <Active type={'admin'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
+        <Delete type={'admin'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
       </div>
 
     </>

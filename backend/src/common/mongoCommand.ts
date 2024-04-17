@@ -3,6 +3,7 @@ import { UserIn } from "../interface/User.intereface";
 import AdminModal from "../model/admin.modal";
 import CategoryModal from "../model/category.modal";
 import ContactModal from "../model/constact.model";
+import ProductModal from "../model/product.modal";
 import { UserModal } from "../model/user.modal";
 import logger from "../utility/log";
 
@@ -21,6 +22,9 @@ class MongoQ {
         break;
       case MODAL.CATEGORY_MODAL:
         this.collection = CategoryModal;
+        break;
+      case MODAL.PRODUCT_MODAL:
+        this.collection = ProductModal;
         break;
     }
   }

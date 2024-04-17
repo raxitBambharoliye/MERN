@@ -6,8 +6,10 @@ import logger from "../../utility/log";
 import fs from "fs";
 import path from "path";
 
-const getAllCategoryData = async (page: any, limit: any, search: any) => {
+const getAllCategoryData = async (page: any, limit: any, search:any) => {
+
   try {
+    search=search.trim()??""
     const totalDos = await MQ.find(MODAL.CATEGORY_MODAL, {
       categoryName: { $regex: ".*" + search + ".*", $options: "i" },
     });
@@ -16,7 +18,7 @@ const getAllCategoryData = async (page: any, limit: any, search: any) => {
       {
         categoryName: { $regex: ".*" + search + ".*", $options: "i" },
       },
-      { skip: (page - 1) * limit, limit: limit }
+      { skip: ((page - 1) * limit), limit: limit }
     );
     if (
       allCategoryData &&
@@ -42,8 +44,6 @@ const getAllCategoryData = async (page: any, limit: any, search: any) => {
 
 const addCategory = async (req: any, res: any) => {
   try {
-    console.log("req.body", req.body);
-    console.log("req.file", req.file);
     if (req.file) {
       req.body.categoryImage =
         process.env.CATEGORY_IMAGE_PATH + "/" + req.file.filename;
@@ -72,7 +72,6 @@ const allCategory = async (req: any, res: any) => {
     const page = req.params.page;
     const limit = req.params.limit;
     const search = req.query.search ?? "";
-    console.log("search", search);
     const totalDos = await MQ.find(MODAL.CATEGORY_MODAL, {
       categoryName: { $regex: ".*" + search + ".*", $options: "i" },
     });
@@ -83,7 +82,6 @@ const allCategory = async (req: any, res: any) => {
       },
       { skip: (page - 1) * limit, limit: limit }
     );
-    console.log("allCategoryData", allCategoryData);
     if (
       allCategoryData &&
       allCategoryData.length > 0 &&
@@ -113,7 +111,6 @@ const activeCategory = async (req: any, res: any) => {
     if (!categoryData) {
       res.send(400).json({ error: { message: "something was wrong" } });
     }
-    console.log("categoryData.isActive", categoryData.isActive);
     const updateData = await MQ.findByIdAndUpdate(MODAL.CATEGORY_MODAL, id, {
       isActive: !categoryData.isActive,
     });
@@ -154,7 +151,7 @@ const deleteCategory = async (req: any, res: any) => {
   }
 };
 const editCategory = async (req: any, res: any) => {
-    try {
+  try {
         const { categoryId, editor } = req.body;
         const editorData = await MQ.findById<AdminIn>(MODAL.ADMIN_MODAL, editor);
         const categoryData = await MQ.findById<CategoryIn>(MODAL.CATEGORY_MODAL, categoryId);
@@ -167,7 +164,8 @@ const editCategory = async (req: any, res: any) => {
             return res
                .status(400)
                .json({ message: "something was wrong try after some time " });
-        }
+    }
+    
         if (req.file) {
             fs.unlinkSync(path.join(__dirname, '../..', categoryData?.categoryImage));
             req.body.categoryImage= process.env.CATEGORY_IMAGE_PATH + "/"+req.file.filename;
@@ -176,7 +174,7 @@ const editCategory = async (req: any, res: any) => {
         }
         const updateData = await MQ.findByIdAndUpdate(MODAL.CATEGORY_MODAL, categoryData._id, req.body);
         if (updateData) {
-            let resData = getAllCategoryData(req.body.page, req.body.limit, req.body.search);
+            let resData =await getAllCategoryData(Number(req.body.page), Number(req.body.limit) , req.body.search );
             res.status(200).json(resData);
         }
 

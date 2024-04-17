@@ -13,6 +13,7 @@ const UserRegister = async (req: any, res: any) => {
     if (!req.body.role) {
       req.body.role = "user";
     }
+    req.body.isActive = true;
     const data = await UserModal.create(req.body);
     let token = await generateToken(data._id, data.email);
     res.status(200).json({ user: data, token });
@@ -71,7 +72,7 @@ const editProfile = async (req: any, res: any) => {
       return res.status(401).json({ message: "user unauthenticated" });
     }
     if (req.file) {
-      req.body.profile = process.env.PROFILE_PATH + "/" + req.file.filename;
+      req.body.profile = process.env.USER_PROFILE_PATH + "/" + req.file.filename;
       if (userData.profile) {
         fs.unlinkSync(path.join(__dirname, "../..", userData.profile));
       }

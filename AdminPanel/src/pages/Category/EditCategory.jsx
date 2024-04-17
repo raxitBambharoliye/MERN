@@ -10,7 +10,8 @@ import { APP_URL } from '../../constant/'
 import AddDataInput from '../../components/AddDataInput/AddDataInput'
 export default function EditCategory({
     id,
-    page, totalLimit
+    page, totalLimit,
+    search
 }) {
     const editData = useSelector((state) => state.dataReducer.editData);
     const editorAdmin = useSelector((state) => state.authReducer.admin)
@@ -20,14 +21,13 @@ export default function EditCategory({
     const buttonRef = useRef();
 
 
-    const { register, reset, handleSubmit, formState: { errors }, getValues } = useForm({
-        defaultValues: {
-
-        }
+    const { register, reset, handleSubmit, formState: { errors }, setError } = useForm({
+        defaultValues: {    
+        }   
     });
 
     useEffect(() => {
-        // setAdmin(editData);
+        // setAdmin(editData);  
         if (editData.categoryImage) {
 
             $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${editData.categoryImage}`)
@@ -40,7 +40,7 @@ export default function EditCategory({
         })
     }, [editData])
 
-    const editAdminSub = async (data) => {
+    const editCategorySub = async (data) => {
 
         try {
             const formData = new FormData();
@@ -50,13 +50,23 @@ export default function EditCategory({
             formData.append("categoryName", data.categoryName)
             formData.append("page", page)
             formData.append("limit", totalLimit)
+            formData.append('search',search)
             formData.append("editor", editorAdmin._id);
-            const response = await axiosClient.post(`${APP_URL.BE_EDIT_ADMIN_PROFILE}`, formData);
-            dispatch(setViewData(response.data.allAdmin))
+            formData.append("categoryId",editData._id)  
+            const response = await axiosClient.post(`${APP_URL.BE_EDIT_CATEGORY}`, formData);
+            console.log('response', response)
+            dispatch(setViewData(response.data.allCategory))
             buttonRef.current.click();
             dispatch(setEditData({}))
         } catch (error) {
-            console.log(`CATCH ERROR :: IN :: editAdminSub :: submitHandler :: API :: 💀💀💀 :: \n ${error} `)
+            console.log(`CATCH ERROR :: IN :: editCategorySub :: submitHandler :: API :: 💀💀💀 :: \n ${error} `);
+            if (error && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {
+                error.response.data.error.forEach((element) => {
+                  setError(element.path, {
+                    message: element.msg
+                  })
+                });
+              }
         }
     }
     const inputRef = useRef();
@@ -73,7 +83,7 @@ export default function EditCategory({
             data-bs-backdrop="static"
         >
             <div className="modal-dialog  modal-dialog-centered modal-lg">
-                <form className="modal-content" onSubmit={handleSubmit(editAdminSub)}>
+                <form className="modal-content" onSubmit={handleSubmit(editCategorySub)}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="exampleModalLabel">
                             Edit Category
@@ -87,9 +97,7 @@ export default function EditCategory({
                     </div>
                     <div className="modal-body">
                         <div className="card-body px-4">
-                            <PreviewImage src={editData.categoryImage} labelClass='mb-4' {...register("categoryImage", {
-                                required: "category image is required "
-                            })} />
+                            <PreviewImage src={editData.categoryImage} labelClass='mb-4' {...register("categoryImage",)} />
                             {errors.categoryImage && <p className='validationError text-left'>{errors.categoryImage.message}</p>}
 
                             <AddDataInput type="text" label={"Category Name : "} placeholder='Enter category name ... ' ref={inputRef} inputClass='themInput'{...register("categoryName", {

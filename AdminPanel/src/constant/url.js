@@ -5,8 +5,14 @@ export default Object.freeze({
     RE_LOGIN: '/login',
     RE_DASHBOARD: '',
     
-    RE_ADD_ADMIN_PAGE: '/addCategoryPage',
-    RE_VIEW_ADMIN_PAGE: '/viewCategoryPage',
+    RE_ADD_CATEGORY_PAGE: '/addCategoryPage',
+    RE_VIEW_CATEGORY_PAGE: '/viewCategoryPage',
+
+    RE_ADD_USER_PAGE: '/addUserPage',
+    RE_VIEW_USER_PAGE: "/viewUserPage",
+    
+    RE_ADD_PRODUCT_PAGE: '/addProductPage',
+    RE_VIEW_PRODUCT_PAGE: "/viewProductPage",
 
     BE_ADD_ADMIN: '/addAdmin',
     BE_EDIT_ADMIN_PROFILE: '/editAdminProfile',
@@ -14,8 +20,16 @@ export default Object.freeze({
     BE_DELETE_ADMIN: '/deleteAdmin',
     BE_ACTIVE_ADMIN: '/activeAdmin',
     BE_LOGIN_ADMIN: '/login',
+
     BE_ADD_CATEGORY: '/addCategory',  
     BE_ALL_CATEGORY: '/allCategory',
     BE_ACTIVE_CATEGORY: '/activeCategory',
-    BE_DELETE_CATEGORY:'/deleteCategory'
+    BE_DELETE_CATEGORY: '/deleteCategory',
+    BE_EDIT_CATEGORY: '/editCategory',
+    
+    BE_ALL_USER: '/allUser',
+    BE_ADD_USER: '/addUser',
+    BE_ACTIVE_USER: '/activeUser',
+    BE_DELETE_USER: '/deleteUser',
+    BE_EDIT_USER:'/editProfile'
 })

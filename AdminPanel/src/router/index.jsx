@@ -1,11 +1,20 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import Root from "../components/Root/Root";
-import Dashboard from "../pages/DashBoard/Dashboard";
-import AddAdmin from "../pages/Admin/AddAdmin";
-import Login from "../pages/Login/Login";
 import Private from "../components/Private/Private";
-import Profile from "../pages/Profile/Profile";
-import { AddCategory, ViewAdmin, ViewCategory } from "../pages";
+import { AddCategory, ViewAdmin, ViewCategory ,AddUser,ViewUser,Profile,Login,AddAdmin,Dashboard} from "../pages";
+import { APP_URL } from "../constant";
+
+
+const privateRoute = [
+    {path:"",element:<Dashboard />},
+    {path:APP_URL.RE_ADD_ADMIN_PAGE, element:<AddAdmin />}, 
+    {path:APP_URL.RE_VIEW_ADMIN_PAGE, element:<ViewAdmin />}, 
+    {path:APP_URL.RE_PROFILE, element:<Profile />}, 
+    {path:APP_URL.RE_ADD_CATEGORY_PAGE, element:<AddCategory />}, 
+    {path:APP_URL.RE_VIEW_CATEGORY_PAGE, element:<ViewCategory />}, 
+    {path:APP_URL.RE_VIEW_USER_PAGE, element:<ViewUser />}, 
+    {path:APP_URL.RE_ADD_USER_PAGE, element:<AddUser />}, 
+]
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -13,14 +22,9 @@ const router = createBrowserRouter(
             <Route path="/login" element={<Login />} />
             <Route path="" element={<Private/>}>
                 <Route path="/" element={<Root />}>
-                    <Route path="" element={<Dashboard />} />
-                    <Route path="/addAdminPage" element={<AddAdmin />} />
-                    <Route path="/viewAdminPage" element={<ViewAdmin />} />
-                    <Route path="/profile" element={<Profile />} />
-                    {/* category */}
-                    <Route path="/addCategoryPage" element={<AddCategory />} />
-                    <Route path="/viewCategoryPage" element={<ViewCategory />} />
-                    
+                    {privateRoute.map((el) => (
+                    <Route path={el.path} element={el.element} />
+                    ))}
                 </Route>
             </Route>
         </Route>

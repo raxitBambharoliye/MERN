@@ -9,7 +9,7 @@ import { setLogin } from '../../store/auth.slice';
 function EditProfile() {
     const auth = useSelector((state) => state);
     const [user, setUserData] = useState(auth.userData);
-    const [image, setImage] = useState(user.profile && './image/userPro.png');
+    const [image, setImage] = useState('./image/userPro.png');
     const dispatch = useDispatch();
     useEffect(() => {
         setUserData(auth.userData);
@@ -26,9 +26,9 @@ function EditProfile() {
     const editProfileSubmit = async (data) => {
         try {
             let fromData = new FormData();
-            if (data.image[0]) {
-                fromData.append("image", data.image[0]);
-            }
+            if (data.userProfile[0]) {
+                fromData.append("userProfile", data.userProfile[0]);
+                }
             fromData.append("email", data.email);
             fromData.append("userName", data.userName);
             fromData.append("userId", auth.userData._id);
@@ -43,7 +43,7 @@ function EditProfile() {
             }
         } catch (error) {
             console.log("catch error", error)
-            if (error && error.response.status == 400 && error.response.data.error.length > 0) {
+            if (error && error.response && error.response.status == 400 && error.response.data.error.length > 0) {
                 error.response.data.error.forEach(element => {
                     setError(element.path, {
                         message: element.msg
@@ -53,7 +53,11 @@ function EditProfile() {
             console.log("CATCH ERROR IN : Login : ")
         }
     }
-    const previewHandle = (e) => { setImage(URL.createObjectURL(e.target.files[0])) }
+    const previewHandle = (e) => {
+        console.log('check ')
+        console.log('e.target.files[0]', e.target.files[0])
+        setImage(URL.createObjectURL(e.target.files[0]))
+    }
     return (
         <div
             className="modal fade"
@@ -81,15 +85,15 @@ function EditProfile() {
                         <div className="row">
                             <div className="col-2">
                                 <label className="editProfileImg" htmlFor='proImg'>
-                                    {auth.userData.profile ? (
-                                        <img src={auth.userData.profile} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
+                                    {auth.userData.userProfile ? (
+                                        <img src={auth.userData.userProfile} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
                                     ) : (
-                                        <img src={'./image/userPro.png'} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
+                                        <img src={image} className='position-absolute top-50 start-50 translate-middle ' alt="profileImage" />
                                     )}
 
                                     <p className='position-absolute top-50 start-50 translate-middle text-white '><i className="fa-solid fa-pen-nib" /></p>
                                 </label>
-                                <Input type='file' id="proImg" className="visually-hidden" {...register("image")} accept='jpg jpeg png' onChange={previewHandle} />
+                                <Input type='file' id="proImg" className="visually-hidden" {...register("userProfile")} accept='jpg jpeg png' onChange={previewHandle} />
                             </div>
                             <div className="col-9">
                                 <Input label="Email : " type="email" className="input bd-bark " placeholder='Enter your Email Id... ' ref={inputRef}

@@ -1,3 +1,4 @@
+import { UserModal } from './../../model/user.modal';
 import bcrypt from "bcrypt";
 import logger from "../../utility/log";
 import { MQ } from "../../common";
@@ -6,7 +7,46 @@ import { AdminIn } from "../../interface/Admin.interefact";
 import { generateToken } from "../../common/generateToken";
 import fs from "fs";
 import path from "path";
+import { UserIn } from "../../interface/User.intereface";
 
+
+const getAllUsers=async(page: any, limit: any, search: any)=>{
+  try {
+    search=search.trim()??""
+    const totalDos = await MQ.find(MODAL.USER_MODAL, {
+      $or: [
+        { userName: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { phone: { $regex: '.*' + search + '.*', $options: 'i' } },
+      ]
+    });
+    const allData = await MQ.pagination(
+      MODAL.USER_MODAL,
+      {
+        $or: [
+          { userName: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { phone: { $regex: '.*' + search + '.*', $options: 'i' } },
+        ]
+      },
+      { skip: ((page - 1) * limit), limit: limit }
+    );
+    if (allData &&allData.length > 0 &&totalDos &&totalDos.length > 0) {
+      return {
+        allUser: allData,
+        maxLimit: Math.ceil(totalDos.length / limit),
+      };
+    }
+    return {
+      allUser: [],
+      maxLimit: 0,
+    };
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : category : getAllCategoryData : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+}
 
 const AdminLogin = async (req: any, res: any) => {
   try {
@@ -31,7 +71,6 @@ const AdminLogin = async (req: any, res: any) => {
 };
 
 const AdminAdd = async (req: any, res: any) => {
-  console.log("req.file add admin :: RRR ",req.file)
 
   try {
     if (req.body.editor) {
@@ -131,7 +170,6 @@ const AdminAllAdminData = async (req: any, res: any) => {
     let limit= req.params.limit;
     let page= req.params.page;
     let search= req.query.search ?? '';
-    console.log('search', search)
     const adminData = await MQ.find<AdminIn>(MODAL.ADMIN_MODAL, {
       $or: [
         { useName: { $regex: '.*' + search + '.*', $options: 'i' } },
@@ -190,7 +228,7 @@ const AdminDelete = async (req: any, res: any) => {
     );
   }
 };
-const AdminActive = async (req: any, res: any, next: any) => {
+const AdminActive = async (req: any, res: any) => {
   try {
     const adminData = await MQ.findById<AdminIn>(
       MODAL.ADMIN_MODAL,
@@ -222,6 +260,135 @@ const AdminActive = async (req: any, res: any, next: any) => {
     );
   }
 };
+
+// user functions
+const allUserData = async (req: any, res: any) => {
+  try {
+    const page = req.params.page;
+    const limit = req.params.limit;
+    const search = req.query.search || '';
+
+    const resData= await getAllUsers(page, limit, search);
+    if (resData) {
+     return res.status(200).json(resData);
+    } else {
+     return  res.status(400).json({message:"some thing went wrong"})
+    }
+    
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : admin : allUserData : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+}
+const addUser=async (req: any, res: any) => {
+  try {
+    if (req.file) {
+      req.body.profile= process.env.USER_PROFILE_PATH+'/'+req.file.filename
+    }
+    req.body.role = 'user';
+    req.body.isActive = true;
+    const userData = await MQ.addData(MODAL.USER_MODAL, req.body);
+    if (userData) {
+     return res.status(200).json({message:"user added successfully",userData});
+    } else {
+     return  res.status(400).json({message:"some thing went wrong"})
+    }
+    
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : admin : allUserData : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+}
+const activeUser= async (req: any, res: any) => {
+  try {
+    const userData = await MQ.findById<AdminIn>(
+      MODAL.USER_MODAL,
+      req.params.id
+    );
+    if (!userData) {
+      return res
+        .status(400)
+        .json({ message: "something was wrong try after some time " });
+    }
+    let active = userData.isActive ? false : true;
+
+    await MQ.findByIdAndUpdate(MODAL.USER_MODAL, userData.id, {
+      isActive: active,
+    });
+    
+
+    let page = req.params.page;
+    let limit = req.params.limit;
+    let search = req.query.search || '';
+    
+    let resData = await getAllUsers(page, limit, search);
+    
+    if (resData) {
+     return res.status(200).json(resData);
+    } else {
+     return  res.status(400).json({message:"some thing went wrong"})
+    }
+
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : admin : AdminActive : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+};
+const deleteUser = async (req: any, res: any) => {
+  try {
+    const userData = await MQ.findById<UserIn>(
+      MODAL.USER_MODAL,
+      req.params.id
+    );
+    if (!userData) {
+      return res
+        .status(400)
+        .json({ message: "something was wrong try after some time " });
+    }
+    if (userData && userData.profile) {
+      fs.unlinkSync(path.join(__dirname, "../..", userData?.profile));
+    }
+    await MQ.findByIdAndDelete(MODAL.USER_MODAL, userData._id);
+
+    let page = req.params.page;
+    let limit = req.params.limit;
+      let search = req.query.search || "";
+      const resData = await getAllUsers(page, limit, search);
+      res.status(200).json(resData);
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : admin : userDelete : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+};
+const editUser = async (req: any, res: any) => {
+  try {
+    let userData = await MQ.findById<UserIn>(MODAL.USER_MODAL, req.body.userId);
+    if (!userData) {
+      return res.status(401).json({ message: "user unauthenticated" });
+    }
+    if (req.file) {
+      req.body.profile = process.env.USER_PROFILE_PATH + "/" + req.file.filename;
+      if (userData.profile) {
+        fs.unlinkSync(path.join(__dirname, "../..", userData.profile));
+      }
+    } else {
+      req.body.profile = userData.profile;
+    }
+    await MQ.findByIdAndUpdate<UserIn>(MODAL.USER_MODAL, userData._id, req.body, true);
+    
+    let page = req.body.page;
+    let limit = req.body.limit;
+    let search = req.body.search || "";
+    const resData = await getAllUsers(page, limit, search);
+    res.status(200).json(resData);
+  } catch (error) {
+    logger.error(`CATCH ERROR : IN : user : editProfile : 🐞🐞🐞 : \n `, error);
+  }
+};
 export {
   AdminLogin,
   AdminAdd,
@@ -229,4 +396,9 @@ export {
   AdminAllAdminData,
   AdminDelete,
   AdminActive,
+  allUserData,
+  addUser,
+  activeUser,
+  deleteUser,
+  editUser
 };

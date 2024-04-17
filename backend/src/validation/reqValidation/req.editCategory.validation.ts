@@ -5,12 +5,12 @@ import fs from 'fs';
 import path from 'path';  
 import CategoryIn from "../../interface/Category.interface";
 const reqEditCategoryValidation = [
-
+    body("categoryId").notEmpty().withMessage("place enter categoryId"),
     body("categoryName")
         .notEmpty().withMessage("category name is required")
         .custom(async(value,{req}) => {
-            const categoryData:any = await MQ.find<[CategoryIn]>(MODAL.CATEGORY_MODAL, { categoryName: value });
-            if (categoryData && categoryData.length > 1 && categoryData[0]._id != req.body.categoryId) {
+            const categoryData:any = await MQ.findOne<CategoryIn>(MODAL.CATEGORY_MODAL, { categoryName: value });
+            if (categoryData && categoryData._id != req.body.categoryId) {
                 throw new Error("category name is already in use");
             }
         }),

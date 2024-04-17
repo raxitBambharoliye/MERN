@@ -1,7 +1,7 @@
 import { body, validationResult } from "express-validator";
 import { UserModal } from "../../model/user.modal";
 import logger from "../../utility/log";
-export const reqRegisterValidation = [
+export const reqAddUserValidation = [
     body('userName')
         .notEmpty().withMessage('userName required')
         .isString().withMessage("invalid user name data type")
@@ -25,11 +25,13 @@ export const reqRegisterValidation = [
             if (user) {
                 throw new Error('Email is already taken');
             }
-    }),
+        }),
+    body("editor")
+    .notEmpty().withMessage("editor is required "),
     (req: any, res: any, next: any) => {
         const error = validationResult(req);
         if (!error.isEmpty()) {
-            logger.error(`VALIDATION ERROR : IN : reqRegisterValidation :: ${JSON.stringify(error.array())}`)
+            logger.error(`VALIDATION ERROR : IN : reqAddUserValidation :: ${JSON.stringify(error.array())}`)
             return res.status(400).json({ error: error.array() });
         }
         next();

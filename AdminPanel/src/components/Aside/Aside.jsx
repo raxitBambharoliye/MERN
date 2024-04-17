@@ -3,6 +3,7 @@ import $ from 'jquery'
 import Logo from '../Logo/Logo'
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'
+import {  asideMenu } from '../../constant';
 export default function Aside() {
     const adminData = useSelector((state) => state.authReducer.admin);
     const toggleMenu = () => {
@@ -16,6 +17,8 @@ export default function Aside() {
         })
     }, [])
 
+
+
     return (
         <>
             <aside id='aside' >
@@ -28,28 +31,24 @@ export default function Aside() {
                             <Logo />
                         </div>
                         <ul className='sideMenuList p-0 mt-lg-4'>
-                            <li className='sideMenu' >
 
-                                <Link to='#'>
-                                    <i className="fa-solid fa-user menuIcon" /> Admin
-                                </Link>
-                                <ul className='subMenuList p-0'>
-                                    {adminData.role == 'admin' && <li className='subMenu'><Link to='/addAdminPage'><i className="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>}
-                                    <li className='subMenu'><Link to={'/viewAdminPage'}><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
-                                </ul>
-                            </li>
+                            {asideMenu.map((element,index) => (
+                                <li className='sideMenu' key={index} >
 
-                            <li className='sideMenu' >
+                                    <Link to={element.to}>
+                                        <i className={` ${element.icon} menuIcon`} /> {element.title}
+                                    </Link>
+                                    <ul className='subMenuList p-0' key={index}>
+                                        {element.subMenu.map((subM,indexSub) => (
+                                            <>
+                                                {(subM.title != "Admin List" || (adminData.role == 'admin')) && <li className='subMenu' key={indexSub}><Link to={subM.to}><i className={`${subM.icon} subMenuIcon`} />{subM.title}</Link> </li>}
+                                            </>
+                                        ))}
 
-                                <Link to='#'>
-                                    <i className="fa-solid fa-layer-group menuIcon" /> Category
-                                </Link>
-                                <ul className='subMenuList p-0'>
-                                    {adminData.role == 'admin' && <li className='subMenu'><Link to='/addCategoryPage'><i className="fa-solid fa-plus-minus subMenuIcon" />Add Category</Link> </li>}
-                                    <li className='subMenu'><Link to={'/viewCategoryPage'}><i className="fa-solid fa-list subMenuIcon" /> Category List</Link> </li>
-                                </ul>
-                            </li>
 
+                                    </ul>
+                                </li>
+                            ))}
                         </ul>
                     </nav>
                     <div className="copyRight">
@@ -62,3 +61,16 @@ export default function Aside() {
         </>
     )
 }
+/* 
+         <li className='sideMenu' >
+
+                                <Link to='#'>
+                                    <i className="fa-solid fa-user menuIcon" /> Admin
+                                </Link>
+                                <ul className='subMenuList p-0'>
+                                    {adminData.role == 'admin' && <li className='subMenu'><Link to={APP_URL.RE_ADD_ADMIN_PAGE}><i className="fa-solid fa-user-plus subMenuIcon" />Add Admin</Link> </li>}
+                                    <li className='subMenu'><Link to={APP_URL.RE_VIEW_ADMIN_PAGE}><i className="fa-solid fa-address-book subMenuIcon" /> Admin List</Link> </li>
+                                </ul>
+                            </li>
+                            
+*/
