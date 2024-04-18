@@ -6,10 +6,9 @@ import logger from "../../utility/log";
 import fs from "fs";
 import path from "path";
 
-const getAllCategoryData = async (page: any, limit: any, search:any) => {
-
+const getAllCategoryData = async (page: any, limit: any, search: any) => {
   try {
-    search=search.trim()??""
+    search = search.trim() ?? "";
     const totalDos = await MQ.find(MODAL.CATEGORY_MODAL, {
       categoryName: { $regex: ".*" + search + ".*", $options: "i" },
     });
@@ -18,7 +17,7 @@ const getAllCategoryData = async (page: any, limit: any, search:any) => {
       {
         categoryName: { $regex: ".*" + search + ".*", $options: "i" },
       },
-      { skip: ((page - 1) * limit), limit: limit }
+      { skip: (page - 1) * limit, limit: limit }
     );
     if (
       allCategoryData &&
@@ -75,13 +74,19 @@ const allCategory = async (req: any, res: any) => {
     const totalDos = await MQ.find(MODAL.CATEGORY_MODAL, {
       categoryName: { $regex: ".*" + search + ".*", $options: "i" },
     });
-    const allCategoryData = await MQ.pagination(
-      MODAL.CATEGORY_MODAL,
-      {
-        categoryName: { $regex: ".*" + search + ".*", $options: "i" },
-      },
-      { skip: (page - 1) * limit, limit: limit }
-    );
+    let allCategoryData;
+    if (page > 0 && limit > 0) {
+      allCategoryData = await MQ.pagination(
+        MODAL.CATEGORY_MODAL,
+        {
+          categoryName: { $regex: ".*" + search + ".*", $options: "i" },
+        },
+        { skip: (page - 1) * limit, limit: limit }
+      );
+    } else {
+      allCategoryData = totalDos;
+    }
+
     if (
       allCategoryData &&
       allCategoryData.length > 0 &&
@@ -141,9 +146,9 @@ const deleteCategory = async (req: any, res: any) => {
 
     let page = req.params.page;
     let limit = req.params.limit;
-      let search = req.query.search || "";
-      const resData = await getAllCategoryData(page, limit, search);
-      res.status(200).json(resData);
+    let search = req.query.search || "";
+    const resData = await getAllCategoryData(page, limit, search);
+    res.status(200).json(resData);
   } catch (error) {
     logger.error(
       `CATCH ERROR : IN : admin : AdminDelete : 🐞🐞🐞 : \n ${error}`
@@ -152,37 +157,57 @@ const deleteCategory = async (req: any, res: any) => {
 };
 const editCategory = async (req: any, res: any) => {
   try {
-        const { categoryId, editor } = req.body;
-        const editorData = await MQ.findById<AdminIn>(MODAL.ADMIN_MODAL, editor);
-        const categoryData = await MQ.findById<CategoryIn>(MODAL.CATEGORY_MODAL, categoryId);
-        if ((!editorData || editorData.role != 'admin' )&& categoryData?.creator!=editor._id) {
-            return res.status(401).json({
-                error: [{ path: "root", msg: "unauthenticated user " }],
-              });
-        }
-        if (!categoryData) {
-            return res
-               .status(400)
-               .json({ message: "something was wrong try after some time " });
+    const { categoryId, editor } = req.body;
+    const editorData = await MQ.findById<AdminIn>(MODAL.ADMIN_MODAL, editor);
+    const categoryData = await MQ.findById<CategoryIn>(
+      MODAL.CATEGORY_MODAL,
+      categoryId
+    );
+    if (
+      (!editorData || editorData.role != "admin") &&
+      categoryData?.creator != editor._id
+    ) {
+      return res.status(401).json({
+        error: [{ path: "root", msg: "unauthenticated user " }],
+      });
     }
-    
-        if (req.file) {
-            fs.unlinkSync(path.join(__dirname, '../..', categoryData?.categoryImage));
-            req.body.categoryImage= process.env.CATEGORY_IMAGE_PATH + "/"+req.file.filename;
-        } else {
-            req.body.categoryImage = categoryData.categoryImage;
-        }
-        const updateData = await MQ.findByIdAndUpdate(MODAL.CATEGORY_MODAL, categoryData._id, req.body);
-        if (updateData) {
-            let resData =await getAllCategoryData(Number(req.body.page), Number(req.body.limit) , req.body.search );
-            res.status(200).json(resData);
-        }
-
-    } catch (error) {
-        logger.error(
-            `CATCH ERROR : IN : category : editCategory : 🐞🐞🐞 : \n ${error}`
-          );  
+    if (!categoryData) {
+      return res
+        .status(400)
+        .json({ message: "something was wrong try after some time " });
     }
-}
 
-export { addCategory, allCategory, activeCategory ,deleteCategory , editCategory};
+    if (req.file) {
+      fs.unlinkSync(path.join(__dirname, "../..", categoryData?.categoryImage));
+      req.body.categoryImage =
+        process.env.CATEGORY_IMAGE_PATH + "/" + req.file.filename;
+    } else {
+      req.body.categoryImage = categoryData.categoryImage;
+    }
+    const updateData = await MQ.findByIdAndUpdate(
+      MODAL.CATEGORY_MODAL,
+      categoryData._id,
+      req.body
+    );
+    if (updateData) {
+      let resData = await getAllCategoryData(
+        Number(req.body.page),
+        Number(req.body.limit),
+        req.body.search
+      );
+      res.status(200).json(resData);
+    }
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : category : editCategory : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+};
+
+export {
+  addCategory,
+  allCategory,
+  activeCategory,
+  deleteCategory,
+  editCategory,
+};

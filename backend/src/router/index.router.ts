@@ -43,7 +43,7 @@ router.post("/editProfile",authToken,upLoadImage.single("userProfile"),editUser)
 router.post("/addProduct"/* ,authToken */,upLoadImage.fields([{name:"bannerImage",maxCount:1},{name:"mulImage",maxCount:3}]),reqAddProductValidation,addProduct)
 router.get('/activeProduct/:id/:page/:limit/',authToken, activeProduct)
 router.get('/inStockProduct/:id/:page/:limit/',authToken, inStockProduct)
-router.delete('/deleteProduct/:id/:page/:limit/',authToken, deleteProduct)
+router.delete('/deleteProduct/:id/:page/:limit/'/* ,authToken */, deleteProduct)
 router.get('/allProduct/:page/:limit/',authToken, allProduct)
 
 

@@ -27,8 +27,8 @@ const router = createBrowserRouter(
             <Route path="/login" element={<Login />} />
             <Route path="" element={<Private/>}>
                 <Route path="/" element={<Root />}>
-                    {privateRoute.map((el) => (
-                    <Route path={el.path} element={el.element} />
+                    {privateRoute.map((el,index) => (
+                    <Route key={index} path={el.path} element={el.element} />
                     ))}
                 </Route>
             </Route>

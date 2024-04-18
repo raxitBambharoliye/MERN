@@ -1,5 +1,5 @@
 import axios from "axios";
-import cookies from 'js-cookies'
+import cookie from 'js-cookies'
 import { getToken } from "../common";
 
 
@@ -25,8 +25,8 @@ axiosClient.interceptors.response.use(
     (error) => {
         console.log('error', error)
         if (error.response.status == 401) {
-            cookies.removeItem('userToken');
-            cookies.removeItem('user');
+            cookie.removeItem("adminData");
+            cookie.removeItem("adminToken")
             window.location.reload()
         }
         return Promise.reject(error);

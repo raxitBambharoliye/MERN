@@ -74,7 +74,15 @@ export default function ViewProduct() {
     } catch (error) {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
     }
-
+  }
+  const stockHandler = async (id) => {
+    try {
+      const response = await axiosClient.get(`${APP_URL.BE_IN_STOCK_PRODUCT}/${id}/${page}/${limit}`)
+      setViewDataLocal(response.data.allProduct);
+      activeCloseRef.current.click();
+    } catch (error) {
+      console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
+    }
   }
   return (
     <>
@@ -111,7 +119,7 @@ export default function ViewProduct() {
                     <td>
                       {
                         (admin._id == element.creator || admin.role == 'admin') ?
-                          (<button className='tableViewActionButton active'  data-bs-toggle="modal" data-bs-target="#activeModal" onClick={(e) => { dispatch(setEditData(element)) }} ><i className={element.inStock ? "fa-solid fa-circle-check text-success" : "fa-regular fa-circle-check text-danger"} /></button>) :
+                          (<button className='tableViewActionButton active'  data-bs-toggle="modal" data-bs-target="#stock" onClick={(e) => { dispatch(setEditData(element)) }} ><i className={element.inStock ? "fa-solid fa-circle-check text-success" : "fa-regular fa-circle-check text-danger"} /></button>) :
                           (<p className='m-0 text-center'> -</p>)
                       }
                     </td>
@@ -150,6 +158,7 @@ export default function ViewProduct() {
         {/* <EditAdmin id="editAdmin" page={page} totalLimit={limit} /> */}
         <EditProduct id="editCategory" page={ page} totalLimit={limit}  search={search}/>
         <Active type={'product'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
+        <Active InStock={true} type={'product'} onClickHandler={stockHandler} closeBtnRef={activeCloseRef}/>
         <Delete type={'product'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
       </div>
 

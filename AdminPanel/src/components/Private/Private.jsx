@@ -8,6 +8,7 @@ export default function Private() {
     const adminData = getAdmin();
     const adminToken = getToken();
     const dispatch = useDispatch();
+
     if (adminToken && adminData) {
         dispatch(login(adminData));
         return <Outlet />

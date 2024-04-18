@@ -31,18 +31,17 @@ export default function Aside() {
                             <Logo />
                         </div>
                         <ul className='sideMenuList p-0 mt-lg-4'>
-
                             {asideMenu.map((element,index) => (
                                 <li className='sideMenu' key={index} >
 
                                     <Link to={element.to}>
                                         <i className={` ${element.icon} menuIcon`} /> {element.title}
                                     </Link>
-                                    <ul className='subMenuList p-0' key={index}>
+                                    <ul className='subMenuList p-0' >
                                         {element.subMenu.map((subM,indexSub) => (
-                                            <>
-                                                {(subM.title != "Admin List" || (adminData.role == 'admin')) && <li className='subMenu' key={indexSub}><Link to={subM.to}><i className={`${subM.icon} subMenuIcon`} />{subM.title}</Link> </li>}
-                                            </>
+                                            <React.Fragment key={index+'-'+indexSub}>
+                                                {(subM.title != "Admin List" || (adminData.role == 'admin')) && <li className='subMenu' key={`${index}-${indexSub}`}><Link to={subM.to}><i className={`${subM.icon} subMenuIcon`} />{subM.title}</Link> </li>}
+                                            </React.Fragment>
                                         ))}
 
 
