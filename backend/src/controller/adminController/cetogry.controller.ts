@@ -184,4 +184,5 @@ const editCategory = async (req: any, res: any) => {
           );  
     }
 }
+
 export { addCategory, allCategory, activeCategory ,deleteCategory , editCategory};

@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-// import EditAdmin from './EditAdmin';
 import { setViewData, setEditData} from '../../store/dataSlice';
-import { APP_URL } from '../../constant/'
+import { APP_URL } from '../../constant'
 import Active from '../../components/Active/Active';
 import Delete from '../../components/Delete/Delete';
 import Search from '../../components/Search/Search';
 import Pagination from '../../components/Pagination/Pagination';
 import Limit from '../../components/Limit/Limit';
-import EditCategory from './EditCategory';
+import EditProduct from './EditProduct';
 
-export default function ViewCategory() {
+export default function ViewProduct() {
   const adminData = useSelector((state) => state.authReducer.admin);
   let viewSt = useSelector((state) => state.dataReducer.allAdmin);
 
@@ -33,11 +32,11 @@ export default function ViewCategory() {
   useEffect(() => {
     (async () => {
       console.log("hello ",search)
-      const response = await axiosClient.get(`${APP_URL.BE_ALL_CATEGORY}/${page}/${limit}/?search=${search}`);
+      const response = await axiosClient.get(`${APP_URL.BE_ALL_PRODUCTS}/${page}/${limit}/?search=${search}`);
       console.log('response', response)
       setMaxLimit(response.data.maxLimit);
-      dispatch(setViewData(response.data.allCategory));
-      setViewDataLocal(response.data.allCategory)
+      dispatch(setViewData(response.data.allProduct));
+      setViewDataLocal(response.data.allProduct)
       if (page != maxLimit) {
         $(`#p${maxLimit}`).removeClass('active');
       }
@@ -57,8 +56,8 @@ export default function ViewCategory() {
 
   const deleteHandler = async (id) => {
     try {
-      const response = await axiosClient.delete(`${APP_URL.BE_DELETE_CATEGORY}/${id}/${page}/${limit}`)
-      setViewDataLocal(response.data.allCategory);
+      const response = await axiosClient.delete(`${APP_URL.BE_DELETE_PRODUCT}/${id}/${page}/${limit}`)
+      setViewDataLocal(response.data.allProduct);
       setMaxLimit(response.data.maxLimit);
       deleteCloseRef.current.click();
 
@@ -69,8 +68,8 @@ export default function ViewCategory() {
   }
   const activeHandler = async (id) => {
     try {
-      const response = await axiosClient.get(`${APP_URL.BE_ACTIVE_CATEGORY}/${id}/${page}/${limit}`)
-      setViewDataLocal(response.data.allCategory);
+      const response = await axiosClient.get(`${APP_URL.BE_ACTIVE_PRODUCT}/${id}/${page}/${limit}`)
+      setViewDataLocal(response.data.allProduct);
       activeCloseRef.current.click();
     } catch (error) {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
@@ -90,18 +89,32 @@ export default function ViewCategory() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>CategoryName</th>
-                  <th>creator</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Stock </th>
+                  <th>price</th>
+                  <th>discount</th>
+                  <th>In Stock</th>
                   <th>Active</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {viewData.map((element, index) => (
-                  <tr key={index} className={`${element.creator != admin._id ? 'active' : ''}`}>
+                  <tr key={index} >
                     <th >{index + 1}</th>
-                    <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.categoryImage ? `${import.meta.env.VITE_BASE_URL}${element.categoryImage}` : './image/dummy.jpg'} /></div><p className='m-0'>{element.categoryName}</p></div></td>
-                    <td>{element.creator}</td>  
+                    <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.bannerImage ? `${import.meta.env.VITE_BASE_URL}${element.bannerImage}` : './image/dummy.jpg'} /></div><p className='m-0'>{element.name}</p></div></td>
+                    <td>{element.categoryId}</td>  
+                    <td>{element.stock}</td>  
+                    <td>{element.price}</td>  
+                    <td>{element.discount}%</td>  
+                    <td>
+                      {
+                        (admin._id == element.creator || admin.role == 'admin') ?
+                          (<button className='tableViewActionButton active'  data-bs-toggle="modal" data-bs-target="#activeModal" onClick={(e) => { dispatch(setEditData(element)) }} ><i className={element.inStock ? "fa-solid fa-circle-check text-success" : "fa-regular fa-circle-check text-danger"} /></button>) :
+                          (<p className='m-0 text-center'> -</p>)
+                      }
+                    </td>
                     <td>
                       {
                         (admin._id == element.creator || admin.role == 'admin') ?
@@ -135,9 +148,9 @@ export default function ViewCategory() {
           }
         </div>
         {/* <EditAdmin id="editAdmin" page={page} totalLimit={limit} /> */}
-        <EditCategory id="editCategory" page={ page} totalLimit={limit}  search={search}/>
-        <Active type={'category'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
-        <Delete type={'category'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
+        <EditProduct id="editCategory" page={ page} totalLimit={limit}  search={search}/>
+        <Active type={'product'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
+        <Delete type={'product'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
       </div>
 
     </>

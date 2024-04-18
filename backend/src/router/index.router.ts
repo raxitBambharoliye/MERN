@@ -7,7 +7,7 @@ import reqEditAdminProfileValidation from "../validation/reqValidation/rea.editA
 import authToken from "../common/authToken";
 import { activeCategory, addCategory, allCategory, deleteCategory, editCategory } from "../controller/adminController/cetogry.controller";
 import { reqAddUserValidation } from "../validation/reqValidation/req.addUser.validation";
-import { activeProduct, addProduct, deleteProduct, inStockProduct } from "../controller/adminController/Product.controller";
+import { activeProduct, addProduct, allProduct, deleteProduct, inStockProduct } from "../controller/adminController/Product.controller";
 
 const router = Router();
 
@@ -41,9 +41,10 @@ router.post("/editProfile",authToken,upLoadImage.single("userProfile"),editUser)
 
 
 router.post("/addProduct"/* ,authToken */,upLoadImage.fields([{name:"bannerImage",maxCount:1},{name:"mulImage",maxCount:3}]),reqAddProductValidation,addProduct)
-router.get('/activeProduct/:id/:page/:limit/'/* ,authToken */, activeProduct)
-router.get('/inStockProduct/:id/:page/:limit/'/* ,authToken */, inStockProduct)
-router.delete('/deleteProduct/:id/:page/:limit/'/* ,authToken */, deleteProduct)
+router.get('/activeProduct/:id/:page/:limit/',authToken, activeProduct)
+router.get('/inStockProduct/:id/:page/:limit/',authToken, inStockProduct)
+router.delete('/deleteProduct/:id/:page/:limit/',authToken, deleteProduct)
+router.get('/allProduct/:page/:limit/',authToken, allProduct)
 
 
 router.use('/user', userRouter);

@@ -154,14 +154,14 @@ const deleteProduct = async (req: any, res: any) => {
     if (product) {
       if (product.bannerImage) {
         let img = path.join(__dirname, '../..', product.bannerImage);
-        if (img) {
+        if (img/*  fs.existsSync(img) */) {
           fs.unlinkSync(img);
         }
       }
       if (product.mulImage && product.mulImage.length > 0) {
         product.mulImage.forEach((element:string) => {
           let img = path.join(__dirname, '../..', element);
-          if (img) {
+          if (img/* fs.existsSync(img) */) {
             fs.unlinkSync(img);
           }
         });
@@ -190,4 +190,26 @@ const deleteProduct = async (req: any, res: any) => {
     );
   }
 };
-export { addProduct, activeProduct,deleteProduct ,inStockProduct};
+
+const allProduct = async( req:any , res:any)=>{
+  try {
+    let page = req.params.page;
+      let limit = req.params.limit;
+      let search = req.query.search || "";
+  
+      let resData = await getAllProduct(page, limit, search);
+      console.log('resData', resData)
+  
+      if (resData) {
+        return res.status(200).json(resData);
+      } else {
+        return res.status(400).json({ message: "some thing went wrong" });
+      }
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : product : allProduct : 🐞🐞🐞 : \n ${error}`
+    );  
+  }
+}
+
+export { addProduct, activeProduct,deleteProduct ,inStockProduct,allProduct};

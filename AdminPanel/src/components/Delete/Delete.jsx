@@ -7,10 +7,10 @@ function Delete({
     closeBtnRef,
     onClickHandler,
 }) {
-    const dataSt= useSelector((state)=> state.dataReducer.editData);
+    const dataSt = useSelector((state) => state.dataReducer.editData);
 
-    const [activeData,setActiveData]=useState(dataSt);
-    useEffect(()=>{
+    const [activeData, setActiveData] = useState(dataSt);
+    useEffect(() => {
         setActiveData(dataSt);
     }, [dataSt])
     let titleData;
@@ -20,6 +20,9 @@ function Delete({
             break;
         case 'category':
             titleData = activeData.categoryName;
+            break;
+        case 'product':
+            titleData = activeData.name;
             break;
     }
     return (
@@ -39,8 +42,8 @@ function Delete({
                             <p className='text-center  mt-3 activeModalTitle'>are you Sure to Delete <span>{titleData}</span> </p>
                         </div>
                         <div className="modal-footer d-flex justify-content-center">
-                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={closeBtnRef}  >Discard</Button>
-                        <Button type="submit" buttonClass="themButtonFill " onClick={(e)=>{onClickHandler(activeData._id)}} >Delete</Button>
+                            <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={closeBtnRef}  >Discard</Button>
+                            <Button type="submit" buttonClass="themButtonFill " onClick={(e) => { onClickHandler(activeData._id) }} >Delete</Button>
                         </div>
                     </div>
                 </div>

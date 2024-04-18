@@ -22,6 +22,9 @@ function Active({
         case 'category':
             titleData = activeData.categoryName;
             break;
+        case 'product':
+            titleData = activeData.name;
+            break;
     }
     return (
         <>
