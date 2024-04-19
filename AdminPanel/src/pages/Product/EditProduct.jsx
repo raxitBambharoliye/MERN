@@ -8,12 +8,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setViewData, setEditData} from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 import AddDataInput from '../../components/AddDataInput/AddDataInput'
+import MultiPreviewImage from '../../components/PreviewImage/MultiPreviewImage';
 export default function EditProduct({
     id,
     page, totalLimit,
     search
 }) {
     const editData = useSelector((state) => state.dataReducer.editData);
+    console.log('editData', editData)
     const editorAdmin = useSelector((state) => state.authReducer.admin)
 
     const [admin, setAdmin] = useState(editData);
@@ -28,9 +30,9 @@ export default function EditProduct({
 
     useEffect(() => {
         // setAdmin(editData);  
-        if (editData.categoryImage) {
+        if (editData.bannerImage) {
 
-            $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${editData.categoryImage}`)
+            $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${editData.bannerImage}`)
         } else {
             $('#previewImgLabel img').attr('src', `./image/dummy.jpg`)
         }
@@ -86,7 +88,7 @@ export default function EditProduct({
                 <form className="modal-content" onSubmit={handleSubmit(editCategorySub)}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="exampleModalLabel">
-                            Edit Category
+                            Edit Product
                         </h1>
                         <button
                             type="button"
@@ -97,13 +99,14 @@ export default function EditProduct({
                     </div>
                     <div className="modal-body">
                         <div className="card-body px-4">
-                            <PreviewImage src={editData.categoryImage} labelClass='mb-4' {...register("categoryImage",)} />
+                            <PreviewImage src={editData.bannerImage} labelClass='mb-4' {...register("categoryImage",)} />
                             {errors.categoryImage && <p className='validationError text-left'>{errors.categoryImage.message}</p>}
 
                             <AddDataInput type="text" label={"Category Name : "} placeholder='Enter category name ... ' ref={inputRef} inputClass='themInput'{...register("categoryName", {
                                 required: "company name is required"
                             })} />
                             {errors.categoryName && <p className='validationError text-center'>{errors.categoryName.message}</p>}
+                            <MultiPreviewImage images={ editData.mulImage} />
                         </div>
                     </div>
                     <div className="modal-footer">

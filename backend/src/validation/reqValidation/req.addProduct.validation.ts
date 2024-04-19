@@ -16,12 +16,14 @@ const reqAddProductValidation = [
         .notEmpty().withMessage("stock is required"),
     body("inStock")
         .notEmpty().withMessage("inStock is required")
-        .isBoolean().withMessage("enter valid type of inStock"),
+       /*  .isBoolean().withMessage("enter valid type of inStock") */,
     body("isActive")
         .notEmpty().withMessage("isActive is required")
-        .isBoolean().withMessage("enter valid type of isActive"),
+       /*  .isBoolean().withMessage("enter valid type of isActive") */,
     body("categoryId")
         .notEmpty().withMessage("category is required"),
+    body("creator")
+        .notEmpty().withMessage("creator is required"),
     (req: any, res: any, next: any) => {
         const error = validationResult(req);
         if (!error.isEmpty()) {

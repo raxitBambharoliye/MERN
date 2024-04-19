@@ -133,7 +133,7 @@ export default function ViewProduct() {
                     <td >
                       {(admin._id == element.creator || admin.role == 'admin') ? (<div className="d-flex">
                         <button className='tableViewActionButton delete' data-bs-toggle="modal" data-bs-target="#deleteModal" onClick={(e) => { dispatch(setEditData(element)) }}><i className="fa-solid fa-trash" /></button>
-                        <button className='tableViewActionButton edit' data-bs-toggle="modal" data-bs-target="#editCategory" onClick={(e) => { dispatch(setEditData(element)) }} ><i className="fa-solid fa-user-pen" /></button>
+                        <button className='tableViewActionButton edit' data-bs-toggle="modal" data-bs-target="#editProduct" onClick={(e) => { dispatch(setEditData(element)) }} ><i className="fa-solid fa-user-pen" /></button>
 
                       </div>) : (
                         <p className='text-center m-0'> - </p>
@@ -155,13 +155,11 @@ export default function ViewProduct() {
             <Pagination page={page} maxLimit={maxLimit} onClickHandler={setPage}/>
           }
         </div>
-        {/* <EditAdmin id="editAdmin" page={page} totalLimit={limit} /> */}
-        <EditProduct id="editCategory" page={ page} totalLimit={limit}  search={search}/>
+        <EditProduct id="editProduct" page={ page} totalLimit={limit}  search={search}/>
         <Active type={'product'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
         <Active InStock={true} type={'product'} onClickHandler={stockHandler} closeBtnRef={activeCloseRef}/>
         <Delete type={'product'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>
       </div>
-
     </>
   )
 }

@@ -34,7 +34,7 @@ export default function AddProduct() {
       }
 
     })()
-  },[])
+  }, [])
 
   useEffect(() => {
     console.log('price', price)
@@ -49,24 +49,48 @@ export default function AddProduct() {
 
   const navigate = useNavigate();
 
-  const { register, handleSubmit, formState: { errors }, setError } = useForm();
+  const { register, handleSubmit, formState: { errors }, setError } = useForm({
+    defaultValues: {
+      name: "front test",
+      description: "front end test ",
+      price: 1000,
+      discount: 10,
+      stock: 100,
+    }
+  });
   const inputRef = useRef();
-  const options = [{ value: "", text: "--select category--" }]
   const addSub = async (data) => {
     try {
       const formData = new FormData();
       if (data.bannerImage[0]) {
         formData.append("bannerImage", data.bannerImage[0]);
       }
-      formData.append("categoryName", data.categoryName);
-      formData.append("creator", admin._id)
-      let response = await axiosClient.post(APP_URL.BE_ADD_CATEGORY, formData)
+      if (data.mulImage) {
+        const mulFile = Array.from(data.mulImage);
+        mulFile.forEach((image) => {
+          formData.append('mulImage', image);
+        });
+      }
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("price", data.price);
+      formData.append("discount", data.discount);
+      formData.append("stock", +data.stock);
+      formData.append("inStock", data.inStock);
+      formData.append("isActive", data.isActive);
+      formData.append("categoryId", data.categoryId);
+      formData.append("creator", admin._id);
+      formData.append("inStock", "true")
+      formData.append("isActive", "true")
+
+      let response = await axiosClient.post(APP_URL.BE_ADD_PRODUCT, formData)
       console.log('response', response.data)
       if (response.status == 200) {
         navigate(APP_URL.RE_VIEW_PRODUCT_PAGE)
       }
     } catch (error) {
       console.log('error', error)
+      debugger;
       if (error && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {
         error.response.data.error.forEach((element) => {
           setError(element.path, {
@@ -76,14 +100,14 @@ export default function AddProduct() {
       }
     }
   }
-  
+
   return (
     <div className="container ">
       <h2 className='pageTitle'>Add Product</h2>
       <div className="addDataFrom">
         <form onSubmit={handleSubmit(addSub)}>
           <PreviewImage labelClass='mb-4' {...register("bannerImage", {
-            required: "category image is required "
+            required: "banner image is required "
           })} />
           {errors.bannerImage && <p className='validationError text-left'>{errors.bannerImage.message}</p>}
           {/* name */}
@@ -125,14 +149,16 @@ export default function AddProduct() {
           {errors.stock && <p className='validationError text-center'>{errors.stock.message}</p>}
 
           {/*  categoryData */}
-          <AddDataInput type="select" options={category} label={"Product Category : "} placeholder='Enter Product Category ... ' ref={inputRef} inputClass='themInput'{...register("Category", {
+          <AddDataInput type="select" options={category} label={"Product Category : "} placeholder='Enter Product Category ... ' ref={inputRef} inputClass='themInput'{...register("categoryId", {
             required: "Product Category is required"
           })} />
           {errors.Category && <p className='validationError text-center'>{errors.Category.message}</p>}
           {/* mul Image */}
-          <MultiPreviewImage/>
+          <MultiPreviewImage labelClass='mb-4' {...register("mulImage", {
+            required: "banner image is required "
+          })} />
           <div className="text-end">
-            <Button buttonClass="themButtonFill" type='submit' ref={inputRef} >Add Category</Button>
+            <Button buttonClass="themButtonFill" type='submit' ref={inputRef} >Add Product</Button>
           </div>
         </form>
       </div>

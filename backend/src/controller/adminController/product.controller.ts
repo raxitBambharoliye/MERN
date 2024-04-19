@@ -2,8 +2,8 @@ import { MQ } from "../../common";
 import { MODAL } from "../../constant";
 import ProductIn from "../../interface/Product.intereface";
 import logger from "../../utility/log";
-import path from 'path'
-import fs from 'fs';  
+import path from "path";
+import fs from "fs";
 const getAllProduct = async (page: any, limit: any, search: any) => {
   try {
     search = search.trim() ?? "";
@@ -47,14 +47,18 @@ const getAllProduct = async (page: any, limit: any, search: any) => {
 const addProduct = async (req: any, res: any) => {
   try {
     if (req.files) {
-      req.body.bannerImage =process.env.PRODUCT_BANNER_IMAGE_PATH+'/'+ req.files.bannerImage[0].filename;
+      req.body.bannerImage = process.env.PRODUCT_BANNER_IMAGE_PATH +"/" +req.files.bannerImage[0].filename;
       let mulImg: any = [];
       if (req.files.mulImage && req.files.mulImage.length > 0) {
         req.files.mulImage.forEach((element: any) => {
-          mulImg.push(process.env.PRODUCT_MUL_IMAGE_PATH +'/'+ element.filename);
+          mulImg.push(
+            process.env.PRODUCT_MUL_IMAGE_PATH + "/" + element.filename
+          );
         });
         req.body.mulImage = mulImg;
       }
+      req.body.inStock = true;
+      req.body.isActive = true;
       let productData = await MQ.addData(MODAL.PRODUCT_MODAL, req.body);
       if (productData) {
         res.status(200).json({
@@ -112,7 +116,6 @@ const activeProduct = async (req: any, res: any) => {
   }
 };
 
-
 const inStockProduct = async (req: any, res: any) => {
   try {
     const productData = await MQ.findById<ProductIn>(
@@ -150,37 +153,38 @@ const inStockProduct = async (req: any, res: any) => {
 
 const deleteProduct = async (req: any, res: any) => {
   try {
-    const product = await MQ.findById<ProductIn>(MODAL.PRODUCT_MODAL, req.params.id);
+    const product = await MQ.findById<ProductIn>(
+      MODAL.PRODUCT_MODAL,
+      req.params.id
+    );
     if (product) {
       if (product.bannerImage) {
-        let img = path.join(__dirname, '../..', product.bannerImage);
-        if (img/*  fs.existsSync(img) */) {
+        let img = path.join(__dirname, "../..", product.bannerImage);
+        if (  fs.existsSync(img) ) {
           fs.unlinkSync(img);
         }
       }
       if (product.mulImage && product.mulImage.length > 0) {
-        product.mulImage.forEach((element:string) => {
-          let img = path.join(__dirname, '../..', element);
-          if (img/* fs.existsSync(img) */) {
+        product.mulImage.forEach((element: string) => {
+          let img = path.join(__dirname, "../..", element);
+          if (img /* fs.existsSync(img) */) {
             fs.unlinkSync(img);
           }
         });
       }
       await MQ.findByIdAndDelete(MODAL.PRODUCT_MODAL, req.params.id);
 
-
       let page = req.params.page;
       let limit = req.params.limit;
       let search = req.query.search || "";
-  
+
       let resData = await getAllProduct(page, limit, search);
-  
+
       if (resData) {
         return res.status(200).json(resData);
       } else {
         return res.status(400).json({ message: "some thing went wrong" });
       }
-
     } else {
       res.status(400).json({ message: "something went wrong" });
     }
@@ -191,25 +195,83 @@ const deleteProduct = async (req: any, res: any) => {
   }
 };
 
-const allProduct = async( req:any , res:any)=>{
+const allProduct = async (req: any, res: any) => {
   try {
     let page = req.params.page;
-      let limit = req.params.limit;
-      let search = req.query.search || "";
-  
-      let resData = await getAllProduct(page, limit, search);
-      console.log('resData', resData)
-  
-      if (resData) {
-        return res.status(200).json(resData);
-      } else {
-        return res.status(400).json({ message: "some thing went wrong" });
-      }
+    let limit = req.params.limit;
+    let search = req.query.search || "";
+
+    let resData = await getAllProduct(page, limit, search);
+    if (resData) {
+      return res.status(200).json(resData);
+    } else {
+      return res.status(400).json({ message: "some thing went wrong" });
+    }
   } catch (error) {
     logger.error(
       `CATCH ERROR : IN : product : allProduct : 🐞🐞🐞 : \n ${error}`
-    );  
+    );
   }
-}
+};
+const editProduct = async (req: any, res: any) => {
+  try {
+    const productData = await MQ.findById<ProductIn>(
+      MODAL.PRODUCT_MODAL,
+      req.body.product_id
+    );
+    if (!productData) {
+      return res
+        .status(400)
+        .json({ message: "something was wrong try after some time " });
+    }
+    if (req.body.removeImage && req.body.removeImage.length > 0) {
+      req.body.removeImage.forEach((element: any, index: any) => {
+        const img = path.join(__dirname, '../..', productData.mulImage[element - index]);
+        if (fs.existsSync(img)) {
+          fs.unlinkSync(img);
+        }
+        productData.mulImage.splice(element-index, 1);
+      });
+    }
+    if (req.files) {
+      if (req.files.bannerImage && req.files.bannerImage[0]) {
+        req.body.bannerImage = process.env.PRODUCT_BANNER_IMAGE_PATH + "/" + req.files.bannerImage[0].filename;
+        if (productData.bannerImage) {
+          let img = path.join(__dirname, '../..', productData.bannerImage);
+          if (fs.existsSync(img)) {
+            fs.unlinkSync(img);
+          }
+        }
+      } else {
+        req.body.bannerImage = productData.bannerImage;
+      }
+      if (req.files.mulImage && req.files.mulImage.length > 0) {
+        req.files.mulImage.forEach((element: any) => {
+          productData.mulImage.push(
+            process.env.PRODUCT_MUL_IMAGE_PATH + "/" + element.filename
+          );
+        });
+      }
+      req.body.mulImage = productData.mulImage;
+    } else {
+      req.body.bannerImage = productData.bannerImage;
+      req.body.mulImage = productData.mulImage;
+    }
 
-export { addProduct, activeProduct,deleteProduct ,inStockProduct,allProduct};
+    await MQ.findByIdAndUpdate(MODAL.PRODUCT_MODAL, productData.id, req.body);
+    let page = req.body.page;
+    let limit = req.body.limit;
+    let search = req.query.search || "";
+    let resData = await getAllProduct(page, limit, search);
+    if (resData) {
+      return res.status(200).json(resData);
+    } else {
+      return res.status(400).json({ message: "some thing went wrong" });
+    }
+  } catch (error) {
+    logger.error(
+      `CATCH ERROR : IN : product : editProduct : 🐞🐞🐞 : \n ${error}`
+    );
+  }
+};
+export { addProduct, activeProduct, deleteProduct, inStockProduct, allProduct ,editProduct};
