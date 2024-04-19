@@ -9,37 +9,38 @@ function MultiPreviewImage({
     ...props
 }, ref) {
     const [preImage, setPreImage] = useState([]);
-    console.log('preImage', preImage)
-    console.log(preImage)
+    const [inputValue, setInputValue] = useState([]);
     const Id = useId();
     const [removeImg, setRemoveImg] = useState(false);
     const imageOnChangeHandler = (e) => {
         let imgArray = [];
+
+        if(inputValue && inputValue.length > 0) {
+            let imageInput= document.getElementById(Id);
+            console.log('inputValue', inputValue)
+            const test= {...inputValue, ...e.target.files};
+            console.log('test', test)
+            setInputValue({...inputValue, ...e.target.files});
+            // imageInput.value=inputValue;
+            console.log('imageInput :: 2 ', inputValue)
+
+            console.log('change input value check ')
+        }else{
+            setInputValue(e.target.files)
+        }
         for (let image = 0; image < e.target.files.length; image++) {
-            console.log('image', image)
-            console.log('element', e.target.files[image])
             imgArray.push(URL.createObjectURL(e.target.files[image]));
         }
-
-        console.log('imgArray', imgArray)
-   
             setPreImage(preImage.concat(imgArray));
-     
-        console.log('preImage ::: ', preImage)
-    }
-    const removeImage = (index) => {
-        console.log('index', index)
-       
-        console.log('preImage', preImage)
-        
-        // document.getElementById(Id).value = '';
-        setPreImage( preImage.slice(index, 1));
+        }
+    const removeImage = (indexToRemove) => {     
+        setPreImage((preImage)=>preImage.filter((item, index) => index !== indexToRemove));
         setRemoveImg(true)
     }
     return (
         <div className='position-relative'>
             <div className="d-flex mb-3">   
-                {preImage.length>0 && preImage.map((image,index) => (
+                {preImage && preImage.length>0 && preImage.map((image,index) => (
                     <div htmlFor={Id} id='previewImgLabel' className={`previewImageLabel ${labelClass} mx-2`} style={{ borderRadius: "8px" }} key={index}>
                         <img src={image} alt={alt} style={{ width: imageWidth, height: imageHeight, }} />
                         <i className="fa-solid fa-pen position-absolute top-50 start-50 translate-middle " />
