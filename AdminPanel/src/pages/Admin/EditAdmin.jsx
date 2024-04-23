@@ -5,7 +5,7 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { setViewData, setEditData} from '../../store/dataSlice';
+import { setViewData, setEditData, setSinglePreviewImage} from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 
 export default function EditAdmin({
@@ -32,13 +32,9 @@ export default function EditAdmin({
 
     useEffect(() => {
         setAdmin(adminSt);
-        console.log('adminSt.profile', adminSt.profile)
-        if (adminSt.profile) {
-            
-            $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${adminSt.profile}`)
-        } else {
-            $('#previewImgLabel img').attr('src', `./image/dummy.jpg`)
-        }
+        if(admin.profile)
+            dispatch(setSinglePreviewImage(`${import.meta.env.VITE_BASE_URL}${admin.profile}`));
+        
         reset({
             userName: adminSt.userName || '',
             email: adminSt.email || '',

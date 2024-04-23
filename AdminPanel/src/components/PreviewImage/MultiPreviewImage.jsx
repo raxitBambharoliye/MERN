@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useState } from 'react'
+import { useSelector } from 'react-redux';
 
 function MultiPreviewImage({
     imageWidth = "150px",
@@ -6,17 +7,19 @@ function MultiPreviewImage({
     src = "./image/dummy.jpg",
     alt = "profilePic",
     labelClass,
-    images=[],
+    images = [],
+    removeHandler,
     ...props
 }, ref) {
-    const [preImage, setPreImage] = useState(images);
-    console.log('preImage', preImage)
+    const mulImage = useSelector((state) => state.dataReducer.multiPreviewImage);
+    const [preImage, setPreImage] = useState(mulImage);
+    useEffect(() => {
+        setPreImage(mulImage);
+     },[mulImage])
+
     const [inputValue, setInputValue] = useState([]);
     const Id = useId();
     const [removeImg, setRemoveImg] = useState(false);
-    // if (images && images.length > 0) {
-    //     setPreImage(images)
-    // }
     const imageOnChangeHandler = (e) => {
 
         let newFile = Array.from(e.target.files);
@@ -25,6 +28,7 @@ function MultiPreviewImage({
         for (let image = 0; image < e.target.files.length; image++) {
             imgArray.push(URL.createObjectURL(e.target.files[image]));
         }
+        console.log('imgArray', imgArray)
         setPreImage(preImage.concat(imgArray));
     }
     useEffect(() => {
@@ -43,37 +47,41 @@ function MultiPreviewImage({
     }, [inputValue])
 
     const removeImage = (indexToRemove) => {
+        removeHandler(indexToRemove);
+        console.log('indexToRemove', indexToRemove)
         setPreImage((preImage) => preImage.filter((item, index) => index !== indexToRemove));
-        setInputValue((preInput)=>preInput.filter((item, index) => index !== indexToRemove))
+        setInputValue((preInput) => preInput.filter((item, index) => index !== indexToRemove))
         setRemoveImg(true)
     }
     return (
         <div className='position-relative'>
             <div className="d-flex mb-3">
-                {console.log('preImage :: ', preImage)}
-                {preImage && preImage.length > 0 && preImage.map((image, index) => (
-                    <div htmlFor={Id} id='previewImgLabel' className={`previewImageLabel ${labelClass} mx-2`} style={{ borderRadius: "8px" }} key={index}>
-                        <img src={image} alt={alt} style={{ width: imageWidth, height: imageHeight, }} />
-                        <i className="fa-solid fa-pen position-absolute top-50 start-50 translate-middle " />
-                        <button type='button' className="removeImgBtn" onClick={(e) => { removeImage(index) }}><i className="fa-solid fa-xmark" /></button>
-                    </div>
-                ))}
-                <label htmlFor={Id} id='previewImgLabel' className={`previewImageLabel ${labelClass} mx-2`} style={{ borderRadius: "8px" }}>
+                <div className="d-flex mb-3" id='previewImgLabelMul'>
+                    {preImage && preImage.length > 0 && preImage.map((image, index) => (
+                        <div  className={`previewImageLabel ${labelClass} mx-2`} style={{ borderRadius: "8px" }} key={index}>
+                            <img src={image} alt={alt} style={{ width: imageWidth, height: imageHeight, }} />
+                            <i className="fa-solid fa-pen position-absolute top-50 start-50 translate-middle " />
+                            <button type='button' className="removeImgBtn" onClick={(e) => { removeImage(index) }}><i className="fa-solid fa-xmark" /></button>
+                        </div>
+                    ))}
+                </div>
+
+                <label htmlFor={Id} className={`previewImageLabel ${labelClass} mx-2`} style={{ borderRadius: "8px" }}>
                     <img src={'./image/dummy.jpg'} alt={alt} style={{ width: imageWidth, height: imageHeight, }} />
                     <i className="fa-solid fa-pen position-absolute top-50 start-50 translate-middle " />
                     <button type='button' className="removeImgBtn" onClick={removeImage}><i className="fa-solid fa-xmark" /></button>
                 </label>
             </div>
 
-            <input type="file" multiple id={Id} className='visually-hidden' {...props} ref={ref} onChange={imageOnChangeHandler} />
+            <input type="file" className='visually-hidden' multiple id={Id}  {...props} ref={ref} onChange={imageOnChangeHandler} />
         </div>
     )
 }
 export default React.forwardRef(MultiPreviewImage);
 /*  */
 
-
 /* 
+
 
 {
     0: File {name:'model-3.jpg', lastmodified: 1711944167147,},

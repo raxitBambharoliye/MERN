@@ -27,9 +27,6 @@ export default function ViewProduct() {
   const activeCloseRef= useRef();
   const deleteCloseRef = useRef();
   useEffect(() => {
-    console.log('check ')
-  },[search])
-  useEffect(() => {
     (async () => {
       console.log("hello ",search)
       const response = await axiosClient.get(`${APP_URL.BE_ALL_PRODUCTS}/${page}/${limit}/?search=${search}`);
@@ -41,7 +38,7 @@ export default function ViewProduct() {
         $(`#p${maxLimit}`).removeClass('active');
       }
       if (page != 1) {
-        $(`#p1`).removeClass('active');
+        $(`#p1`).removeClass('active'); 
       }
     
       $(`#p${page}`).addClass('active');
@@ -49,7 +46,6 @@ export default function ViewProduct() {
 
   }, [page, limit, search,])
   useEffect(() => {
-    console.log('viewSt', viewSt)
     setViewDataLocal(viewSt)
   },[viewSt])
 
@@ -84,6 +80,7 @@ export default function ViewProduct() {
       console.log(`CATCH ERROR :: IN :: deleteAdmin :: delete :: API :: 💀💀💀 :: \n ${error} `)
     }
   }
+
   return (
     <>
       <div className="container">
@@ -155,7 +152,7 @@ export default function ViewProduct() {
             <Pagination page={page} maxLimit={maxLimit} onClickHandler={setPage}/>
           }
         </div>
-        <EditProduct id="editProduct" page={ page} totalLimit={limit}  search={search}/>
+        <EditProduct id="editProduct" page={page} totalLimit={limit} search={search}  />
         <Active type={'product'} onClickHandler={activeHandler} closeBtnRef={activeCloseRef}/>
         <Active InStock={true} type={'product'} onClickHandler={stockHandler} closeBtnRef={activeCloseRef}/>
         <Delete type={'product'} onClickHandler={deleteHandler} closeBtnRef={deleteCloseRef}/>

@@ -11,7 +11,6 @@ function Active({
     const dataSt = useSelector((state) => state.dataReducer.editData);
 
     const [activeData, setActiveData] = useState(dataSt);
-    console.log('activeData', activeData)
     useEffect(() => {
         setActiveData(dataSt);
     }, [dataSt])

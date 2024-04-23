@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axiosClient from '../utility/axiosClient';
 
 const initialState = {
     allAdmin: [],
-    editData:{}
+    editData: {},
+    singlePreviewImage: "./image/dummy.jpg",
+    multiPreviewImage:[]
 };
 
 const dataSlice = createSlice({
@@ -15,9 +16,16 @@ const dataSlice = createSlice({
         },
         setEditData(state,action){
             state.editData = action.payload;
+        },
+        setSinglePreviewImage(state, action) {
+            state.singlePreviewImage = action.payload;
+            console.log('action.payload', action.payload)
+        },
+        setMultiPreviewImage(state, action) {
+            state.multiPreviewImage = action.payload;
         }
     }
 });
 
-export const { setViewData,setEditData } = dataSlice.actions;
+export const { setViewData, setEditData, setSinglePreviewImage, setMultiPreviewImage } = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

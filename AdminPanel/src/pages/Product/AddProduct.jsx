@@ -7,8 +7,6 @@ import axiosClient from '../../utility/axiosClient'
 import { useSelector } from 'react-redux'
 import { APP_URL } from '../../constant/'
 import { useNavigate } from 'react-router-dom'
-import Select from '../../components/form/Select'
-import { Input } from '../../components/form'
 import MultiPreviewImage from '../../components/PreviewImage/MultiPreviewImage'
 
 export default function AddProduct() {
@@ -37,14 +35,12 @@ export default function AddProduct() {
   }, [])
 
   useEffect(() => {
-    console.log('price', price)
-    console.log('discount', discount)
     setDiscountPrice((price * discount) / 100);
   }, [price, discount])
 
   const test = (e) => {
-    console.log("test")
-    console.log("test", e.target.value)
+    console.log("test");
+    console.log("test", e.target.value);
   }
 
   const navigate = useNavigate();

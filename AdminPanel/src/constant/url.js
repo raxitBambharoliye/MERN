@@ -38,5 +38,6 @@ export default Object.freeze({
     BE_ACTIVE_PRODUCT:'/activeProduct',
     BE_DELETE_PRODUCT:'/deleteProduct',
     BE_ALL_PRODUCTS:'/allProduct',
-    BE_IN_STOCK_PRODUCT:'/inStockProduct',
+    BE_IN_STOCK_PRODUCT: '/inStockProduct',
+    BE_EDIT_PRODUCT:'/editProduct'
 })

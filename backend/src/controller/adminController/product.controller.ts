@@ -212,9 +212,16 @@ const allProduct = async (req: any, res: any) => {
       `CATCH ERROR : IN : product : allProduct : 🐞🐞🐞 : \n ${error}`
     );
   }
-};
+};  
 const editProduct = async (req: any, res: any) => {
   try {
+    console.log(req.body.inStock);
+    console.log(req.body.isActive);
+
+    console.log(req.files)
+    console.log( req.body.removeImage)
+
+
     const productData = await MQ.findById<ProductIn>(
       MODAL.PRODUCT_MODAL,
       req.body.product_id
@@ -225,7 +232,7 @@ const editProduct = async (req: any, res: any) => {
         .json({ message: "something was wrong try after some time " });
     }
     if (req.body.removeImage && req.body.removeImage.length > 0) {
-      req.body.removeImage.forEach((element: any, index: any) => {
+      req.body.removeImage.split(",").forEach((element: any, index: any) => {
         const img = path.join(__dirname, '../..', productData.mulImage[element - index]);
         if (fs.existsSync(img)) {
           fs.unlinkSync(img);
@@ -257,11 +264,14 @@ const editProduct = async (req: any, res: any) => {
       req.body.bannerImage = productData.bannerImage;
       req.body.mulImage = productData.mulImage;
     }
+    req.body.isActive = productData.isActive;
+    req.body.inStock = productData.inStock;
 
     await MQ.findByIdAndUpdate(MODAL.PRODUCT_MODAL, productData.id, req.body);
     let page = req.body.page;
     let limit = req.body.limit;
     let search = req.query.search || "";
+
     let resData = await getAllProduct(page, limit, search);
     if (resData) {
       return res.status(200).json(resData);

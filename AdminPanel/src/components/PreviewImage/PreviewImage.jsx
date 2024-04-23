@@ -1,4 +1,5 @@
-import React, { useId, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
+import { useSelector } from 'react-redux';
 
 function PreviewImage({
   imageWidth = "150px",
@@ -8,11 +9,22 @@ function PreviewImage({
   labelClass,
   ...props
 }, ref) {
-  const [preImage, setPreImage] = useState(src);
-  console.log('preImage', preImage)
-  console.log(preImage)
+  const singleImage= useSelector((state)=>state.dataReducer.singlePreviewImage)
+  const [preImage, setPreImage] = useState(singleImage);
   const Id = useId();
   const [removeImg, setRemoveImg] = useState(false);
+
+  useEffect(() => {
+
+    if (singleImage) {
+      console.log('singleImage Preview ', singleImage)
+      setPreImage(singleImage);
+    } else {
+      setPreImage("./image/dummy.jpg");
+      
+    }
+  },[singleImage])
+
   const imageOnChangeHandler = (e) => {
     console.log(e.target.value)
     setPreImage(URL.createObjectURL(e.target.files[0]));

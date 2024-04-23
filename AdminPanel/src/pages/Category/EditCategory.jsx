@@ -5,7 +5,7 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { setViewData, setEditData} from '../../store/dataSlice';
+import { setViewData, setEditData, setSinglePreviewImage} from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 import AddDataInput from '../../components/AddDataInput/AddDataInput'
 export default function EditCategory({
@@ -27,13 +27,9 @@ export default function EditCategory({
     });
 
     useEffect(() => {
-        // setAdmin(editData);  
-        if (editData.categoryImage) {
+        if(editData.categoryImage)
+            dispatch(setSinglePreviewImage(`${import.meta.env.VITE_BASE_URL}${editData.categoryImage}`));
 
-            $('#previewImgLabel img').attr('src', `${import.meta.env.VITE_BASE_URL}${editData.categoryImage}`)
-        } else {
-            $('#previewImgLabel img').attr('src', `./image/dummy.jpg`)
-        }
         reset({
             categoryName: editData.categoryName || '',
             categoryImage: `${import.meta.env.VITE_BASE_URL}${editData.categoryImage}` || './image/dummy.jpg'
