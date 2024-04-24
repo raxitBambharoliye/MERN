@@ -5,7 +5,7 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { setViewData, setEditData, setSinglePreviewImage} from '../../store/dataSlice';
+import { setViewData, setEditData, setSinglePreviewImage, cleanAllData} from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 import AddDataInput from '../../components/AddDataInput/AddDataInput'
 export default function EditCategory({
@@ -53,7 +53,8 @@ export default function EditCategory({
             console.log('response', response)
             dispatch(setViewData(response.data.allCategory))
             buttonRef.current.click();
-            dispatch(setEditData({}))
+            // dispatch(setEditData({}))
+            dispatch(cleanAllData())
         } catch (error) {
             console.log(`CATCH ERROR :: IN :: editCategorySub :: submitHandler :: API :: 💀💀💀 :: \n ${error} `);
             if (error && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {
@@ -103,8 +104,8 @@ export default function EditCategory({
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} >Discard</Button>
-                        <Button type="submit" buttonClass="themButtonFill ">Save</Button>
+                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} onClick={(e)=>{dispatch(cleanAllData())}} >Discard</Button>
+                        <Button type="submit" buttonClass="themButtonFill " >Save</Button>
                     </div>
                 </form>
             </div>

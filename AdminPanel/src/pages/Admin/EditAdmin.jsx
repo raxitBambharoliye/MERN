@@ -5,7 +5,7 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { setViewData, setEditData, setSinglePreviewImage} from '../../store/dataSlice';
+import { setViewData, setEditData, setSinglePreviewImage, cleanAllData} from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 
 export default function EditAdmin({
@@ -64,7 +64,9 @@ export default function EditAdmin({
             const response = await axiosClient.post(`${APP_URL.BE_EDIT_ADMIN_PROFILE}`, formData);
             dispatch(setViewData(response.data.allAdmin))
             buttonRef.current.click();
-            dispatch(setEditData({}))
+            // dispatch(setEditData({}))
+            dispatch(cleanAllData())
+
             // setProfileImg('./image/profile.jpg');
         } catch (error) {
             console.log(`CATCH ERROR :: IN :: editAdminSub :: submitHandler :: API :: 💀💀💀 :: \n ${error} `)
@@ -185,7 +187,7 @@ export default function EditAdmin({
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} >Discard</Button>
+                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} onClick={(e)=>{dispatch(cleanAllData())}} >Discard</Button>
                         <Button type="submit" buttonClass="themButtonFill ">Save</Button>
                     </div>
                 </form>

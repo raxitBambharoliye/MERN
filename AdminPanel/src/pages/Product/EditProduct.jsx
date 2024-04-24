@@ -5,7 +5,7 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { setViewData, setEditData, setSinglePreviewImage, setMultiPreviewImage } from '../../store/dataSlice';
+import { setViewData, setEditData, setSinglePreviewImage, setMultiPreviewImage, cleanAllData } from '../../store/dataSlice';
 import { APP_URL } from '../../constant/'
 import AddDataInput from '../../components/AddDataInput/AddDataInput'
 import MultiPreviewImage from '../../components/PreviewImage/MultiPreviewImage';
@@ -97,9 +97,8 @@ export default function EditProduct({
             const response = await axiosClient.post(`${APP_URL.BE_EDIT_PRODUCT}`, formData);
             console.log('response', response)
             dispatch(setViewData(response.data.allProduct))
-            dispatch(setEditData({}))
-            dispatch(setSinglePreviewImage("./image/dummy.jpg"))
-            dispatch(setMultiPreviewImage([]))
+            // dispatch(setEditData({}))
+            dispatch(cleanAllData())            
         
             buttonRef.current.click();
         } catch (error) {
@@ -193,7 +192,7 @@ export default function EditProduct({
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} >Discard</Button>
+                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} onClick={(e)=>{dispatch(cleanAllData())}} >Discard</Button>
                         <Button type="submit" buttonClass="themButtonFill ">Save</Button>
                     </div>
                 </form>

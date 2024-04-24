@@ -5,12 +5,12 @@ import PreviewImage from '../../components/PreviewImage/PreviewImage';
 import Button from '../../components/Button/Button';
 import axiosClient from '../../utility/axiosClient';
 import { useSelector, useDispatch } from 'react-redux'
-import { setViewData, setEditData, setSinglePreviewImage } from '../../store/dataSlice';
+import { setViewData, setEditData, setSinglePreviewImage, cleanAllData } from '../../store/dataSlice';
 import { APP_URL } from '../../constant'
 
 export default function EditUser({
     id,
-    page, totalLimit,search
+    page, totalLimit, search
 }) {
     const editSt = useSelector((state) => state.dataReducer.editData);
     const editorAdmin = useSelector((state) => state.authReducer.admin)
@@ -33,8 +33,8 @@ export default function EditUser({
     useEffect(() => {
         setAdmin(editSt);
         console.log('editSt.profile', editSt.profile)
-        if(editSt.profile )
-        dispatch(setSinglePreviewImage(`${import.meta.env.VITE_BASE_URL}${editSt.profile}`));
+        if (editSt.profile)
+            dispatch(setSinglePreviewImage(`${import.meta.env.VITE_BASE_URL}${editSt.profile}`));
 
         reset({
             userName: editSt.userName || '',
@@ -49,7 +49,7 @@ export default function EditUser({
         try {
             const formData = new FormData();
             if (data.userProfile[0]) {
-              formData.append("userProfile", data.userProfile[0]);
+                formData.append("userProfile", data.userProfile[0]);
             }
             formData.append("userName", data.userName);
             formData.append("email", data.email);
@@ -61,22 +61,24 @@ export default function EditUser({
             formData.append("limit", totalLimit);
             formData.append("search", search);
 
-            let response = await axiosClient.post(APP_URL.BE_EDIT_USER , formData)
+            let response = await axiosClient.post(APP_URL.BE_EDIT_USER, formData)
             if (response.status === 200) {
                 dispatch(setViewData(response.data.allUser))
                 buttonRef.current.click();
-                dispatch(setEditData({}))
+                // dispatch(setEditData({}))
+                dispatch(cleanAllData())
+
             }
-          } catch (error) {
+        } catch (error) {
             console.log('error', error)
             if (error && error.response && error.response.status && error.response.status == 400 && error.response.data.error.length > 0) {
-              error.response.data.error.forEach((element) => {
-                setError(element.path, {
-                  message: element.msg
-                })
-              });
+                error.response.data.error.forEach((element) => {
+                    setError(element.path, {
+                        message: element.msg
+                    })
+                });
             }
-          }
+        }
     }
     const inputRef = useRef();
 
@@ -92,10 +94,10 @@ export default function EditUser({
             data-bs-backdrop="static"
         >
             <div className="modal-dialog  modal-dialog-centered modal-lg">
-            <form className="modal-content" onSubmit={handleSubmit(editUserSub)}>
+                <form className="modal-content" onSubmit={handleSubmit(editUserSub)}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="exampleModalLabel">
-                            Edit User 
+                            Edit User
                         </h1>
                         <button
                             type="button"
@@ -164,7 +166,7 @@ export default function EditUser({
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} >Discard</Button>
+                        <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={buttonRef} onClick={(e)=>{dispatch(cleanAllData())}} >Discard</Button>
                         <Button type="submit" buttonClass="themButtonFill ">Save</Button>
                     </div>
                 </form>

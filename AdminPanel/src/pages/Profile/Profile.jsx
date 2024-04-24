@@ -190,7 +190,7 @@ export default function Profile() {
                                         {errors.phone && <p className='validationError'>{errors.phone.message}</p>}
                                         <div className="text-end">
 
-                                            <Button type="button" buttonClass="themButtonBorder me-2 " onClick={(e) => { setIsEdit(!isEdit) }}>Discard</Button>
+                                            <Button type="button" buttonClass="themButtonBorder me-2 " onClick={(e) => { setIsEdit(!isEdit) }} >Discard</Button>
                                             <Button type="submit" buttonClass="themButtonFill ">Save</Button>
                                         </div>
                                     </form>

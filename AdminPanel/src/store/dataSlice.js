@@ -19,13 +19,19 @@ const dataSlice = createSlice({
         },
         setSinglePreviewImage(state, action) {
             state.singlePreviewImage = action.payload;
-            console.log('action.payload', action.payload)
         },
         setMultiPreviewImage(state, action) {
             state.multiPreviewImage = action.payload;
+        },
+        cleanAllData(state, action) {
+            console.log("check")
+            state.editData = {};
+            state.singlePreviewImage = "";
+            state.multiPreviewImage = [];
+
         }
     }
 });
 
-export const { setViewData, setEditData, setSinglePreviewImage, setMultiPreviewImage } = dataSlice.actions;
+export const { setViewData, setEditData, setSinglePreviewImage, setMultiPreviewImage ,cleanAllData} = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../Button/Button'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import '../../assets/css/style.css'
+import { cleanAllData } from '../../store/dataSlice';
 function Active({
     type,
     closeBtnRef,
@@ -9,7 +10,7 @@ function Active({
     InStock=false
 }) {
     const dataSt = useSelector((state) => state.dataReducer.editData);
-
+    const dispatch = useDispatch();
     const [activeData, setActiveData] = useState(dataSt);
     useEffect(() => {
         setActiveData(dataSt);
@@ -44,7 +45,7 @@ function Active({
                             <p className='text-center  mt-3 activeModalTitle'>are you Sure to {activeData.isActive ? 'deactivate' : 'active'} <span>{titleData}</span> </p>}
                         </div>
                         <div className="modal-footer d-flex justify-content-center">
-                            <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={closeBtnRef}  >Discard</Button>
+                            <Button type="button" buttonClass="themButtonBorder me-2 " data-bs-dismiss="modal" ref={closeBtnRef} onClick={(e)=>{dispatch(cleanAllData())}} >Discard</Button>
                             <Button type="submit" buttonClass="themButtonFill " onClick={(e) => { onClickHandler(activeData._id) }} >
                                 {InStock ? (activeData.inStock ? 'Out Of Stock' : 'In Stock') :(activeData.isActive ? 'deactivate' : 'active')}
                             </Button>
