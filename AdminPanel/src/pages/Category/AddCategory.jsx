@@ -25,7 +25,7 @@ export default function AddCategory() {
       let response = await axiosClient.post(APP_URL.BE_ADD_CATEGORY, formData)
       console.log('response', response.data)  
       if (response.status == 200) {
-        navigate(APP_URL.RE_VIEW_ADMIN_PAGE)
+        navigate(APP_URL.RE_VIEW_CATEGORY_PAGE)
       }
     } catch (error) {
       console.log('error', error)

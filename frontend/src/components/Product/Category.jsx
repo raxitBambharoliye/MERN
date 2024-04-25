@@ -1,6 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../assets/css/category.css'
+import axiosClient from '../../utility/api/axiosClient';
+import { APP_URL } from '../constant';
 function Category() {
+    const [category,setCategory]=useState();
+    useEffect(()=>{
+        (async()=>{
+            try {
+                const response= await axiosClient.get(APP_URL.BE_GET_ALL_CATEGORY)
+                
+                
+            } catch (error) {
+               console.log('CATCH ERROR : IN : get all category data:: ',error) 
+            }
+        })()
+    })
+
+
+
     return (
         <section className="category">
             <div className="container">

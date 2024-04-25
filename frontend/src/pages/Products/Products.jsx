@@ -19,9 +19,6 @@ function Products() {
               <ProductItem/>
               </div>
               ))}
-             
-
-
             </div>
           </div>
         </div>
