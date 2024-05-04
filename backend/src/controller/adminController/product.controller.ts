@@ -219,7 +219,7 @@ const editProduct = async (req: any, res: any) => {
     console.log(req.body.isActive);
 
     console.log(req.files)
-    console.log( req.body.removeImage)
+    console.log( req.body.removeImage)  
 
 
     const productData = await MQ.findById<ProductIn>(

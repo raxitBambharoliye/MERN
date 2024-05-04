@@ -50,7 +50,6 @@ router.post("/editProduct",authToken,upLoadImage.fields([{name:"bannerImage",max
 
 
 router.use('/user', userRouter);
-
 router.use('/frontend',frontRouter)
 
 export default router;

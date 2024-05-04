@@ -36,5 +36,7 @@ const logOutHandler = ()=>{
     cookie.removeItem("adminToken")
     window.location.reload();
 }
-
-export { getToken, setToken, setAdmin, getAdmin,logOutHandler }
+const shortString = (a,length) => {
+    return (a.slice(0, length))+"...";
+}
+export { getToken, setToken, setAdmin, getAdmin,logOutHandler,shortString }

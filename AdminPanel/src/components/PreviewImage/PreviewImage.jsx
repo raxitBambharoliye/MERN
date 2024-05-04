@@ -31,7 +31,7 @@ function PreviewImage({
   }
   const removeImage = () => {
      document.getElementById(Id).value='';
-    setPreImage('./image/profile.jpg');
+    setPreImage('./image/dummy.jpg');
     setRemoveImg(true)
   }
   return (

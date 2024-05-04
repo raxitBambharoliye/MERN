@@ -1,7 +1,27 @@
 import { Banner, Button, Category, ProductItem } from "../../components"
 import '../../assets/css/product.css'
+import { useEffect, useState } from "react"
+import axiosClient from "../../utility/api/axiosClient";
+import url from "../../components/constant/url";
+import { useDispatch, useSelector } from "react-redux";
 function Products() {
-  const productData=[1,2,3,4,5,6,7,8,9,10,11,12]
+
+  const [productData, setProductData] = useState([]);
+  useEffect(() => {
+    (async() => {
+      try {
+        console.log('check ')
+        let response = await axiosClient.get(url.BE_GET_ALL_PRODUCT);
+        console.log("response.data", response.data)
+        if (response.status == 200) {
+          
+          setProductData(response.data.allProducts);
+        }
+      } catch (error) {
+        console.log('CATCH ERROR: IN : get all product Data:: 💀💀💀 :: ',error)
+      }
+    })()
+  },[])
   return (
     <>
       {/* product offer slider gos here */}
@@ -15,8 +35,8 @@ function Products() {
           <div className="categoryProductsInner mt-5  ">
             <div className="row gx-3">
               {productData.map((element, index) => (
-                 <div className="col-lg-3">
-              <ProductItem/>
+                 <div className="col-lg-3" key={index}>
+                  <ProductItem product={element } />
               </div>
               ))}
             </div>

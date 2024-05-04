@@ -1,8 +1,8 @@
-import {configureStore} from '@reduxjs/toolkit'
+import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import { AuthReducer } from './auth.slice'
-
+import {dataReducer} from './data.slice'
 const store = configureStore({
-    reducer:AuthReducer   
+    reducer:combineReducers({AuthReducer,dataReducer})
 })
 
 export default store;

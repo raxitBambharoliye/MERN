@@ -1,8 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Input } from '../../components'
 import '../../assets/css/singleProduct.css'
+import axiosClient from '../../utility/api/axiosClient';
+import url from '../../components/constant/url';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 function SingleProduct() {
+
+  const navigate = useNavigate();
+  let stateData = useSelector((state)=>state.dataReducer);
+  if (!stateData.singleProductId) {
+    return navigate('/products')
+  }
+  const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1)
+  const [singleProduct, setSingleProduct] = useState({});
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true)
+        const response = await axiosClient(`${url.BE_GET_ALL_PRODUCT}/?singleId=${stateData.singleProductId}`)
+        if (response && response.status == 200) {
+          setSingleProduct(response.data.allProducts[0])
+        }
+        console.log('response', response)
+        console.log(response.data);
+        setLoading(false)
+      } catch (error) { 
+        console.log('CATCH ERROR : IN : get single product : API', error)
+      }
+    })()
+  }, [])
+  if (loading) {
+    return (<><h1>loading</h1></>)
+  }
   return (
     <>
       <section className='singleProductData'>
@@ -35,8 +66,8 @@ function SingleProduct() {
             </div>
             <div className="col-6">
               <div className=" singleProductRight">
-                <h2>LIGHT MODAL NAME ETC </h2>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur provident tenetur accus...</p>
+                <h2>{singleProduct.name} </h2>
+                {/* { eval(singleProduct.description) } */}
                 <h3>$ 44 <span>100$</span> </h3>
                 <p className='discount'>save up to <span>50%</span>  </p>
                 <div className="quantity d-flex align-items-center mb-3">
@@ -62,11 +93,11 @@ function SingleProduct() {
             <h2>Customer Reviews</h2>
             <div className="rate d-flex align-items-center">
               <div className="star">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-regular fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-solid fa-star"></i>
+                <i className="fa-regular fa-star"></i>
               </div>
               <p className='m-0 mt-1 ms-2'>5 Out Of 5</p>
             </div>
@@ -116,10 +147,10 @@ function SingleProduct() {
                       <h3 className='m-0'>Raxit Patel</h3>
                     </div>
                     <div className="customerRate star">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
                     </div>
                     <div className="customerReviewMessage">
                       <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat odio aut assumenda voluptas deserunt ratione alias veniam perspiciatis, ea aliquid.</p>

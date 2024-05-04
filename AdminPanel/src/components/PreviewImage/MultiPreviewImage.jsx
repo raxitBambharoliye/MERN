@@ -8,7 +8,7 @@ function MultiPreviewImage({
     alt = "profilePic",
     labelClass,
     images = [],
-    removeHandler,
+    removeHandler=()=>{},
     ...props
 }, ref) {
     const mulImage = useSelector((state) => state.dataReducer.multiPreviewImage);

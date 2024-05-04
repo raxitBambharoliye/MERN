@@ -9,6 +9,7 @@ import Search from '../../components/Search/Search';
 import Pagination from '../../components/Pagination/Pagination';
 import Limit from '../../components/Limit/Limit';
 import EditProduct from './EditProduct';
+import { shortString } from '../../common';
 
 export default function ViewProduct() {
   const adminData = useSelector((state) => state.authReducer.admin);
@@ -108,11 +109,11 @@ export default function ViewProduct() {
                 {viewData.map((element, index) => (
                   <tr key={index} >
                     <th >{index + 1}</th>
-                    <td><div className='d-flex align-items-center'><div className='tableViewImage'><img src={element.bannerImage ? `${import.meta.env.VITE_BASE_URL}${element.bannerImage}` : './image/dummy.jpg'} /></div><p className='m-0'>{element.name}</p></div></td>
+                    <td><div className='d-flex align-items-center' title={element.name}><div className='tableViewImage'><img src={element.bannerImage ? `${import.meta.env.VITE_BASE_URL}${element.bannerImage}` : './image/dummy.jpg'} /></div><p className='m-0'>{shortString(element.name,14)}</p></div></td>
                     <td>{element.categoryId}</td>  
                     <td>{element.stock}</td>  
                     <td>{element.price}</td>  
-                    <td>{element.discount}%</td>  
+                    <td>{element.discount}% <span className='text-body-tertiary'>({element.price*element.discount/100 })</span></td>  
                     <td>
                       {
                         (admin._id == element.creator || admin.role == 'admin') ?

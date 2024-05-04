@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { logOut } from '../../store/auth.slice';
 import { useDispatch } from 'react-redux'
 function Header() {
-  const auth = useSelector((state) => state);
+  const auth = useSelector((state) => state.AuthReducer);
   const Menu = [{ title: "home", path: "/" }, { title: "products", path: "/products" }, { title: "Sale", path: "/sale" }, { title: "About", path: "/about" }, { title: "concat", path: "/contact" },]
   const dispatch = useDispatch();
   const logOutHandler = () => {

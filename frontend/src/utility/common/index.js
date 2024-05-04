@@ -28,4 +28,7 @@ const getUser = () => {
     }
     return false;
 }
-export { setToken, getToken, setUser, getUser };
+const shortString = (a,length) => {
+    return (a.slice(0, length))+"...";
+}
+export { setToken, getToken, setUser, getUser,shortString };

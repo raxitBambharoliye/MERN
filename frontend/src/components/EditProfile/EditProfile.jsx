@@ -7,7 +7,7 @@ import { setUser } from '../../utility/common';
 import { setLogin } from '../../store/auth.slice';
 
 function EditProfile() {
-    const auth = useSelector((state) => state);
+    const auth = useSelector((state) => state.AuthReducer);
     const [user, setUserData] = useState(auth.userData);
     const [image, setImage] = useState('./image/userPro.png');
     const dispatch = useDispatch();

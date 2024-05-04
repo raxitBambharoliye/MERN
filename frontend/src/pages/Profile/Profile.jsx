@@ -7,7 +7,7 @@ import { logOut } from '../../store/auth.slice';
 function Profile() {
     const [image, setImage] = useState('./image/userPro.png')
     const dispatch = useDispatch();
-    const auth = useSelector((state) => state);
+    const auth = useSelector((state) => state.AuthReducer);
 
 
     const time = getTime();

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { APP_URL } from '../../constant/'
 import { useNavigate } from 'react-router-dom'
 import MultiPreviewImage from '../../components/PreviewImage/MultiPreviewImage'
+import TextEditor from '../../components/form/TextEditor'
 
 export default function AddProduct() {
   const admin = useSelector((state) => state.authReducer.admin);
@@ -45,10 +46,10 @@ export default function AddProduct() {
 
   const navigate = useNavigate();
 
-  const { register, handleSubmit, formState: { errors }, setError } = useForm({
+  const { register, handleSubmit, formState: { errors }, setError,control } = useForm({
     defaultValues: {
       name: "front test",
-      description: "front end test ",
+      
       price: 1000,
       discount: 10,
       stock: 100,
@@ -67,6 +68,8 @@ export default function AddProduct() {
           formData.append('mulImage', image);
         });
       }
+      console.log('data.description', data.description)
+
       formData.append("name", data.name);
       formData.append("description", data.description);
       formData.append("price", data.price);
@@ -80,7 +83,7 @@ export default function AddProduct() {
       formData.append("isActive", "true")
 
       let response = await axiosClient.post(APP_URL.BE_ADD_PRODUCT, formData)
-      console.log('response', response.data)
+      console.log('response', response.data)  
       if (response.status == 200) {
         navigate(APP_URL.RE_VIEW_PRODUCT_PAGE)
       }
@@ -112,9 +115,10 @@ export default function AddProduct() {
           })} />
           {errors.name && <p className='validationError text-center'>{errors.name.message}</p>}
           {/*  description */}
-          <AddDataInput type="text" label={"Product description : "} placeholder='Enter Product description ... ' ref={inputRef} inputClass='themInput'{...register("description", {
+          {/* <AddDataInput type="text" label={"Product description : "} placeholder='Enter Product description ... ' ref={inputRef} inputClass='themInput'{...register("description", {
             required: "Product description is required"
-          })} />
+          })} /> //RUNNING -  */}
+          <TextEditor name="description" control={control} />
           {errors.description && <p className='validationError text-center'>{errors.description.message}</p>}
 
           <div className="row">
