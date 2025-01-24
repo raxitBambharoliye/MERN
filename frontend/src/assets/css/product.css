@@ -9,9 +9,9 @@
 }
 
 .productItem .productImage img{
-    max-width: 250px;
-    max-height: 250px;
-    object-fit: cov;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
     border-radius: 10px;
 }
 .productItem .productRating{
@@ -31,5 +31,5 @@
     color: var(--gry);
 }
 .productButton{
-    font-size: 12px;
+    font-size: .65rem;
 }

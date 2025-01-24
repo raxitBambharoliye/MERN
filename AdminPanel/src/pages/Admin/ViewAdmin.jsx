@@ -131,8 +131,8 @@ export default function ViewAdmin() {
                     </td>
                   </tr>
                 ))}
-
               </tbody>
+                {console.log("map finished ")}
             </table>
           </div>
 
@@ -140,7 +140,7 @@ export default function ViewAdmin() {
         {/* pagination */}
 
         <div className="cuPagination d-flex justify-content-between">
-          <Limit limit={limit} onChangeHandler={setLimit} ref={inputRef} />
+          <Limit limit={limit} onChangeHandler={setLimit} />
           {maxLimit > 0 &&
             <Pagination page={page} maxLimit={maxLimit} onClickHandler={setPage} />
           }

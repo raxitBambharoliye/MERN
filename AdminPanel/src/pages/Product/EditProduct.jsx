@@ -9,6 +9,7 @@ import { setViewData, setEditData, setSinglePreviewImage, setMultiPreviewImage, 
 import { APP_URL } from '../../constant/'
 import AddDataInput from '../../components/AddDataInput/AddDataInput'
 import MultiPreviewImage from '../../components/PreviewImage/MultiPreviewImage';
+import TextEditor from '../../components/form/TextEditor';
 export default function EditProduct({
     id,
     page, totalLimit,
@@ -40,7 +41,7 @@ export default function EditProduct({
 
         })()
     }, [])
-    const { register, reset, handleSubmit, formState: { errors }, setError } = useForm({
+    const { register, reset,control, handleSubmit, formState: { errors }, setError } = useForm({
         defaultValues: {
         }
     });
@@ -69,8 +70,6 @@ export default function EditProduct({
     }, [editData])
 
     const editProductSub = async (data) => {
-        console.log('editProductSub')
-
         try {
             const formData = new FormData();
             if (data.bannerImage) { formData.append("bannerImage", data.bannerImage[0]); }
@@ -149,9 +148,10 @@ export default function EditProduct({
                             })} />
                             {errors.name && <p className='validationError text-center'>{errors.name.message}</p>}
                             {/*  description */}
-                            <AddDataInput type="text" label={"Product description : "} placeholder='Enter Product description ... ' ref={inputRef} inputClass='themInput'{...register("description", {
+                            {/* <AddDataInput type="text" label={"Product description : "} placeholder='Enter Product description ... ' ref={inputRef} inputClass='themInput'{...register("description", {
                                 required: "Product description is required"
-                            })} />
+                            })} /> */}
+                            <TextEditor defaultValue={editData.description} name={"description"} label='description : ' control={control} hight={350} />
                             {errors.description && <p className='validationError text-center'>{errors.description.message}</p>}
 
                             <div className="row">

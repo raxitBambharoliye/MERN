@@ -14,7 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
-app.use(cors())
+app.use(cors({
+  origin:'*'
+}))
 
 
 

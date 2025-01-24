@@ -4,11 +4,7 @@ import axiosClient from '../../utility/api/axiosClient'
 import { getToken, setToken } from '../../utility/common';
 
 function Home() {
-  // useEffect(()=>{
-  //   // axiosClient.get('/')
-  //   // .then(response=>console.log(response))
 
-  // },[])
   return (
       <>
       <Banner />

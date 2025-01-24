@@ -7,7 +7,7 @@ import reqEditAdminProfileValidation from "../validation/reqValidation/rea.editA
 import authToken from "../common/authToken";
 import { activeCategory, addCategory, allCategory, deleteCategory, editCategory } from "../controller/adminController/cetogry.controller";
 import { reqAddUserValidation } from "../validation/reqValidation/req.addUser.validation";
-import { activeProduct, addProduct, allProduct, deleteProduct, editProduct, inStockProduct } from "../controller/adminController/Product.controller";
+import { activeProduct, addProduct, allProduct, deleteProduct, editProduct, inStockProduct } from "../controller/adminController/product.controller";
 import { frontRouter } from "./front.router";
 
 const router = Router();

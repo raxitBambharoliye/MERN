@@ -115,10 +115,7 @@ export default function AddProduct() {
           })} />
           {errors.name && <p className='validationError text-center'>{errors.name.message}</p>}
           {/*  description */}
-          {/* <AddDataInput type="text" label={"Product description : "} placeholder='Enter Product description ... ' ref={inputRef} inputClass='themInput'{...register("description", {
-            required: "Product description is required"
-          })} /> //RUNNING -  */}
-          <TextEditor name="description" control={control} />
+          <TextEditor name="description" label='description : ' control={control} hight={350} />
           {errors.description && <p className='validationError text-center'>{errors.description.message}</p>}
 
           <div className="row">

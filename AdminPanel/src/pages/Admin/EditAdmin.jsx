@@ -32,9 +32,13 @@ export default function EditAdmin({
 
     useEffect(() => {
         setAdmin(adminSt);
-        if(admin.profile)
-            dispatch(setSinglePreviewImage(`${import.meta.env.VITE_BASE_URL}${admin.profile}`));
-        
+
+        if (typeof adminSt.profile !== 'undefined') {
+            console.log('admin.profile', typeof admin.profile)
+            // debugger;
+            console.log("test check ")
+            dispatch(setSinglePreviewImage(`${import.meta.env.VITE_BASE_URL}${adminSt.profile}`));
+        }
         reset({
             userName: adminSt.userName || '',
             email: adminSt.email || '',
@@ -75,7 +79,10 @@ export default function EditAdmin({
     const inputRef = useRef();
 
 
-
+    const clearData = () => { 
+        // dispatch(setSinglePreviewImage(import.meta.env.VITE_DEFAULT_IMAGE))
+        // dispatch(setEditData(element))
+    }
     return (
         <div
             className="modal fade"
@@ -96,6 +103,7 @@ export default function EditAdmin({
                             className="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
+                            onClick={(e)=>{clearData()}}
                         />
                     </div>
                     <div className="modal-body">

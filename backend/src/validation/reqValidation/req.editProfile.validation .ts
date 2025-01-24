@@ -30,7 +30,7 @@ export const reqEditProfileValidation = [
             if (req.file) {   
                 const imagePath = process.env.USER_PROFILE_PATH ||'/uplodd/userProfile';
                 let img = path.join(__dirname, '../..', imagePath, req.file.filename);
-                if (img) {
+                if (img && fs.existsSync(img)) {
                     fs.unlinkSync(img)
                 }
             }

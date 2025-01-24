@@ -73,7 +73,7 @@ const editProfile = async (req: any, res: any) => {
     }
     if (req.file) {
       req.body.profile = process.env.USER_PROFILE_PATH + "/" + req.file.filename;
-      if (userData.profile) {
+      if (userData.profile && fs.existsSync(path.join(__dirname, "../..", userData.profile))) {
         fs.unlinkSync(path.join(__dirname, "../..", userData.profile));
       }
     } else {

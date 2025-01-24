@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { changeSingleProductId } from '../../store/data.slice'
 function ProductItem({ product }) {
+    console.log('product', product)
 
-  const dispatch = useDispatch();
-    
+    const dispatch = useDispatch();
+
     return (
         <div className="productItem">
             <div className="productImage">
@@ -23,12 +24,17 @@ function ProductItem({ product }) {
                     <i className="fa-solid fa-star"></i>
 
                 </div>
-                <h3 className="productName" title={product.name}>{shortString(product.name,14)}</h3>
-                <h4 className="productPrice">${product.price*product.discount/100} <span>${ product.price}</span></h4>
-                <div className="d-flex">
-                    <Button className="productButton">Buy Now </Button>
-                    <Link to={"/singleProduct"}>
-                    <Button className="productButton ms-2" onClick={(e)=>{dispatch(changeSingleProductId(product._id))}} >Red More </Button></Link>
+                <h3 className="productName" title={product.name}>{shortString(product.name, 14)}</h3>
+                <h4 className="productPrice">${product.price * product.discount / 100} <span>${product.price}</span></h4>
+                <div className="row align-items-center">
+                    <div className="col-12 ">
+                        <Link className='w-100 d-block'>
+                            <Button className="productButton w-100">Buy Now </Button>
+                        </Link>
+                    </div>
+                    <div className="col-12 ">
+                        <Link to={`/singleProduct/${product._id}`} className='w-100 d-block'><Button className="productButton mt-2 w-100" onClick={(e) => { dispatch(changeSingleProductId(product._id)) }} >Read More </Button></Link>
+                    </div>
                 </div>
 
             </div>

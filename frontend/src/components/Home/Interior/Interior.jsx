@@ -4,13 +4,13 @@ function Interior() {
     {/* interior */}
     <section className="interior">
       <div className="container">
-        <div className="d-flex align-center">
-          <div className="w-2">
+        <div className="row align-center">
+          <div className="col-12 col-lg-6 mb-5 mb-lg-0">
             <div className="interior-img">
               <img src={'image/interior.jpg'} alt="" />
             </div>
           </div>
-          <div className="w-2">
+          <div className="col-12 col-lg-6">
             <div className="interior-titel">
               <h2>REFLECT YOUR INTERIOR</h2>
               <p>

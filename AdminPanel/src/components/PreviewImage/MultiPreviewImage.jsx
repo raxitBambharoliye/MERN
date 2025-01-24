@@ -54,7 +54,7 @@ function MultiPreviewImage({
         setRemoveImg(true)
     }
     return (
-        <div className='position-relative'>
+        <div className='position-relative '>
             <div className="d-flex mb-3">
                 <div className="d-flex mb-3" id='previewImgLabelMul'>
                     {preImage && preImage.length > 0 && preImage.map((image, index) => (

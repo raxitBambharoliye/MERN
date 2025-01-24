@@ -42,7 +42,7 @@ const reqAddAdminVAlidation = [
       if (req.file) {   
         const imagePath = process.env.PROFILE_PATH ||'/upload/profile';
         let img = path.join(__dirname, '../..', imagePath, req.file.filename);
-        if (img) {
+        if (fs.existsSync(img)) {
             fs.unlinkSync(img)
         }
     }
