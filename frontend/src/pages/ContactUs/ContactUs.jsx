@@ -29,7 +29,7 @@ function ContactUs() {
       <div className="container">
         <div className="contactUsInner">
           <div className="row align-items-center">
-            <div className="col-5">
+            <div className="col-12 col-lg-5">
               <div className="contactUsLeft">
                 <div className="contactUsLeftTitle ">
                   <h2 className='m-0'>Contact Information</h2>
@@ -63,7 +63,7 @@ function ContactUs() {
               </div>
             </div>
 
-            <div className="col-7">
+            <div className="col-12 col-lg-7">
               <div className="contactUsRight">
                 <form action=" " onSubmit={handleSubmit(contactUsSubmit)}>
                   <Input label="Email" placeholder="Enter Your Email ... " className="input bd-bark text-dark"

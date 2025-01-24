@@ -141,7 +141,10 @@ const deleteCategory = async (req: any, res: any) => {
         .status(400)
         .json({ message: "something was wrong try after some time " });
     }
-    fs.unlinkSync(path.join(__dirname, "../..", categoryData.categoryImage));
+    if (fs.existsSync(path.join(__dirname, "../..", categoryData.categoryImage))) {
+      fs.unlinkSync(path.join(__dirname, "../..", categoryData.categoryImage));
+    }
+
     await MQ.findByIdAndDelete(MODAL.CATEGORY_MODAL, categoryData.id);
 
     let page = req.params.page;
@@ -178,7 +181,9 @@ const editCategory = async (req: any, res: any) => {
     }
 
     if (req.file) {
-      fs.unlinkSync(path.join(__dirname, "../..", categoryData?.categoryImage));
+      if (fs.existsSync(path.join(__dirname, "../..", categoryData?.categoryImage))) {
+        fs.unlinkSync(path.join(__dirname, "../..", categoryData?.categoryImage));
+      }
       req.body.categoryImage =
         process.env.CATEGORY_IMAGE_PATH + "/" + req.file.filename;
     } else {

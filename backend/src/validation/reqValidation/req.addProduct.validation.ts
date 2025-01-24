@@ -32,7 +32,7 @@ const reqAddProductValidation = [
                 if (req.files.bannerImage[0]) {
                     const imagePath = process.env.PRODUCT_BANNER_IMAGE_PATH || '/upload/productBanner';
                     let img = path.join(__dirname, '../..', imagePath, req.files.bannerImage[0].filename);
-                    if (img) {
+                    if (img && fs.existsSync(img)) {
                         fs.unlinkSync(img)
                     }
                 }
@@ -40,7 +40,7 @@ const reqAddProductValidation = [
                     const imagePath = process.env.PRODUCT_MUL_IMAGE_PATH || '/upload/productMulti';
                     req.files.mulImage.forEach((element: any) => {
                         const img = path.join(__dirname, '../..', imagePath, element.filename)
-                        if (img) {
+                        if (img && fs.existsSync(img)) {
                             fs.unlinkSync(img);
                         }
                     });

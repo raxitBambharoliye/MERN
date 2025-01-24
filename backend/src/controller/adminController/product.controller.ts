@@ -167,7 +167,7 @@ const deleteProduct = async (req: any, res: any) => {
       if (product.mulImage && product.mulImage.length > 0) {
         product.mulImage.forEach((element: string) => {
           let img = path.join(__dirname, "../..", element);
-          if (img /* fs.existsSync(img) */) {
+          if (img&&  fs.existsSync(img)) {
             fs.unlinkSync(img);
           }
         });

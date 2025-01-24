@@ -5,6 +5,7 @@ import logger from "../../utility/log"
 
 const frontAllCategory= async (req:any,res:any)=>{
     try {
+        console.log("checking:::::")
         let data= await MQ.find(MODAL.CATEGORY_MODAL,{isActive:true});
         console.log('data', data)
         if(data){

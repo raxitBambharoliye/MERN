@@ -8,44 +8,46 @@ function Collections() {
             </div>
             <div className="collection-inner">
                 <div className="container">
-                    <div className="row">
-                        {/* 1 */}
-                        <div className="w-4">
-                            <div className="collection-item">
-                                <img src="image/collection1.jpg" alt="leamp1" />
-                                <div className="text">
-                                    <h5>moke you smiple style</h5>
-                                    <p>$44.40</p>
+                    <div className="scroll-container">
+                        <div className="d-flex">
+                            {/* 1 */}
+                            <div className="col-6 col-md-4 col-lg-3 scroll-item">
+                                <div className="collection-item">
+                                    <img src="image/collection1.jpg" alt="leamp1" />
+                                    <div className="text">
+                                        <h5>moke you smiple style</h5>
+                                        <p>$44.40</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* 2 */}
-                        <div className="w-4">
-                            <div className="collection-item">
-                                <img src="image/collection2.jpg" alt="leamp1" />
-                                <div className="text">
-                                    <h5>moke you smiple style</h5>
-                                    <p>$44.40</p>
+                            {/* 2 */}
+                            <div className="col-6 col-md-4 col-lg-3 scroll-item">
+                                <div className="collection-item">
+                                    <img src="image/collection2.jpg" alt="leamp1" />
+                                    <div className="text">
+                                        <h5>moke you smiple style</h5>
+                                        <p>$44.40</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* 3 */}
-                        <div className="w-4">
-                            <div className="collection-item">
-                                <img src="image/collection3.jpg" alt="leamp1" />
-                                <div className="text">
-                                    <h5>moke you smiple style</h5>
-                                    <p>$44.40</p>
+                            {/* 3 */}
+                            <div className="col-6 col-md-4 col-lg-3 scroll-item">
+                                <div className="collection-item">
+                                    <img src="image/collection3.jpg" alt="leamp1" />
+                                    <div className="text">
+                                        <h5>moke you smiple style</h5>
+                                        <p>$44.40</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* 4 */}
-                        <div className="w-4">
-                            <div className="collection-item">
-                                <img src="image/collection4.jpg" alt="leamp1" />
-                                <div className="text">
-                                    <h5>moke you smiple style</h5>
-                                    <p>$44.40</p>
+                            {/* 4 */}
+                            <div className="col-6 col-md-4 col-lg-3 scroll-item">
+                                <div className="collection-item">
+                                    <img src="image/collection4.jpg" alt="leamp1" />
+                                    <div className="text">
+                                        <h5>moke you smiple style</h5>
+                                        <p>$44.40</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

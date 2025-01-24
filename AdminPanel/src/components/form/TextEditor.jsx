@@ -1,15 +1,14 @@
 import React from 'react'
 import {Editor} from '@tinymce/tinymce-react'
 import { Controller } from 'react-hook-form'
-function TextEditor({name,control,defaultValue="",rules={}}) {
+function TextEditor({name,control,defaultValue="",label="label",hight,rules={},}) {
   return (
-    <div>
+      <div className='mb-4 '>
+          {label && <label className='form-label'>{label}</label>}
        <Controller
                 name={name}
         control={control}
-        rules={{
-            required: "test is reqired",
-          }}
+        rules={rules}
                 render={({ field: { onChange } }) => (
                     <Editor
                         initialValue={defaultValue}
@@ -17,7 +16,7 @@ function TextEditor({name,control,defaultValue="",rules={}}) {
                         init={
                             {
                                 branding: false,
-                                height: 200,
+                                height: hight,
                                 plugins: [
                                     "advlist",
                                     "autolink",

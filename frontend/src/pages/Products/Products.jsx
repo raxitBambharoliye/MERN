@@ -33,16 +33,16 @@ function Products() {
           <h2 className="text-center">Category Name</h2>
 
           <div className="categoryProductsInner mt-5  ">
-            <div className="row gx-3">
+            <div className="row gx-01">
               {productData.map((element, index) => (
-                 <div className="col-lg-3" key={index}>
+                 <div className="col-6 col-md-4 col-lg-3" key={index}>
                   <ProductItem product={element } />
               </div>
               ))}
             </div>
           </div>
         </div>
-      </section>
+      </section> 
     </>
   )
 }

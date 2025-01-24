@@ -22,7 +22,7 @@ const reqEditCategoryValidation = [
             if (req.file) {   
                 const imagePath = process.env.CATEGORY_IMAGE_PATH || '/upload/categoryImage';
                 let img = path.join(__dirname, '../..', imagePath, req.file.filename);
-                if (img) {
+                if (img && fs.existsSync(img)) {
                     fs.unlinkSync(img)
                 }
             }
